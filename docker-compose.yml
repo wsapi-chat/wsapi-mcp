@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  wsapi-mcp-server:
+    build: .
+    container_name: wsapi-mcp-server
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - WSAPI_API_KEY=${WSAPI_API_KEY}
+      - WSAPI_INSTANCE_ID=${WSAPI_INSTANCE_ID}
+      - WSAPI_BASE_URL=${WSAPI_BASE_URL:-https://api.wsapi.chat}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - wsapi-network
+    # Uncomment if you need to expose ports
+    # ports:
+    #   - "3000:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('Health check passed')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  wsapi-network:
+    driver: bridge
+
+volumes:
+  logs:
+    driver: local

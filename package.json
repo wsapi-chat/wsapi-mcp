@@ -1,0 +1,82 @@
+{
+  "name": "@wsapichat/mcp-server",
+  "version": "1.0.5",
+  "description": "A comprehensive Model Context Protocol (MCP) server for WSAPI - the powerful WhatsApp API Gateway. Enables LLMs to send messages, manage contacts and groups, handle chat operations, and monitor session status through WhatsApp.",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "wsapi-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc && mkdir -p logs",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build && npm run test && npm run lint",
+    "generate-types": "openapi-typescript wsapi.yml -o src/types/api.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "whatsapp",
+    "whatsapp-business-api",
+    "messaging",
+    "wsapi",
+    "chat",
+    "automation",
+    "ai",
+    "llm",
+    "claude",
+    "api",
+    "communication"
+  ],
+  "author": {
+    "name": "WSAPI",
+    "email": "support@wsapi.chat"
+  },
+  "license": "MIT",
+  "homepage": "https://wsapi.chat",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wsapi-chat/wsapi-mcp"
+  },
+  "bugs": {
+    "url": "https://github.com/wsapi-chat/wsapi-mcp/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "axios": "^1.6.0",
+    "zod": "^3.22.0",
+    "dotenv": "^16.3.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.0",
+    "openapi-typescript": "^6.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

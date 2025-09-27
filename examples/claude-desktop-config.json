@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "wsapi": {
+      "command": "node",
+      "args": ["/path/to/wsapi-mcp/dist/index.js"],
+      "env": {
+        "WSAPI_API_KEY": "your_api_key_here",
+        "WSAPI_INSTANCE_ID": "your_instance_id_here",
+        "WSAPI_BASE_URL": "https://api.wsapi.chat",
+        "LOG_LEVEL": "info"
+      }
+    }
+  }
+}
