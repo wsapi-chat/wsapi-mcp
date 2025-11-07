@@ -5,6 +5,10 @@
 
 A comprehensive Model Context Protocol (MCP) server that provides LLMs with seamless access to WhatsApp functionality through the WSAPI service. This server enables AI assistants to send messages, manage contacts and groups, handle chat operations, and much more functionallity.
 
+<a href="https://glama.ai/mcp/servers/@wsapi-chat/wsapi-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@wsapi-chat/wsapi-mcp/badge" alt="WSAPI WhatsApp Server MCP server" />
+</a>
+
 ## 🚀 Features
 
 ### 📱 Core Messaging
