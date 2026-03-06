@@ -2,54 +2,8 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { config } from '../config/index.js';
 import { createLogger, logRequest } from '../utils/logger.js';
 import { handleError, withRetry } from '../utils/errors.js';
-import type { paths } from '../types/api.js';
 
 const logger = createLogger('wsapi-client');
-
-// Type helpers for API operations
-type ApiPaths = paths;
-type GetPaths = {
-  [K in keyof ApiPaths]: ApiPaths[K] extends { get: any } ? K : never;
-}[keyof ApiPaths];
-type PostPaths = {
-  [K in keyof ApiPaths]: ApiPaths[K] extends { post: any } ? K : never;
-}[keyof ApiPaths];
-type PutPaths = {
-  [K in keyof ApiPaths]: ApiPaths[K] extends { put: any } ? K : never;
-}[keyof ApiPaths];
-type DeletePaths = {
-  [K in keyof ApiPaths]: ApiPaths[K] extends { delete: any } ? K : never;
-}[keyof ApiPaths];
-
-// Request/Response type helpers
-type GetRequest<T extends GetPaths> = ApiPaths[T]['get'] extends { parameters: any }
-  ? ApiPaths[T]['get']['parameters']
-  : {};
-type GetResponse<T extends GetPaths> = ApiPaths[T]['get'] extends { responses: any }
-  ? ApiPaths[T]['get']['responses'][200] extends { content: { 'application/json': infer U } }
-    ? U
-    : any
-  : any;
-
-type PostRequest<T extends PostPaths> = ApiPaths[T]['post'] extends { requestBody: any }
-  ? ApiPaths[T]['post']['requestBody']['content']['application/json']
-  : {};
-type PostResponse<T extends PostPaths> = ApiPaths[T]['post'] extends { responses: any }
-  ? ApiPaths[T]['post']['responses'][201] extends { content: { 'application/json': infer U } }
-    ? U
-    : ApiPaths[T]['post']['responses'][200] extends { content: { 'application/json': infer U } }
-    ? U
-    : any
-  : any;
-
-type PutRequest<T extends PutPaths> = ApiPaths[T]['put'] extends { requestBody: any }
-  ? ApiPaths[T]['put']['requestBody']['content']['application/json']
-  : {};
-type PutResponse<T extends PutPaths> = ApiPaths[T]['put'] extends { responses: any }
-  ? ApiPaths[T]['put']['responses'][200] extends { content: { 'application/json': infer U } }
-    ? U
-    : any
-  : any;
 
 export class WSAPIClient {
   private readonly client: AxiosInstance;
@@ -62,7 +16,7 @@ export class WSAPIClient {
         'Content-Type': 'application/json',
         'X-Api-Key': config.wsapi.apiKey,
         'X-Instance-Id': config.wsapi.instanceId,
-        'User-Agent': 'WSAPI-MCP-Server/1.0.0',
+        'User-Agent': 'WSAPI-MCP-Server/2.0.0',
       },
     });
 
@@ -231,10 +185,6 @@ export class WSAPIClient {
     }
   }
 
-  // Get instance info
-  async getInstanceInfo(): Promise<any> {
-    return this.get('/instance/settings');
-  }
 }
 
 // Export singleton instance

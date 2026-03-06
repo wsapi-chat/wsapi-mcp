@@ -18,22 +18,22 @@ export const getSessionStatus: ToolHandler = {
 
 export const getQRCode: ToolHandler = {
   name: 'whatsapp_get_qr_code',
-  description: 'Get QR code for WhatsApp login.',
+  description: 'Get QR code text string for WhatsApp login.',
   inputSchema: { type: 'object', properties: {} },
   handler: async () => {
-    logger.info('Getting QR code');
-    const result = await wsapiClient.get('/session/login/qr/code');
+    logger.info('Getting QR code text');
+    const result = await wsapiClient.get('/session/qr/text');
     return { success: true, qrCode: result, message: 'QR code retrieved successfully' };
   },
 };
 
 export const getQRCodeImage: ToolHandler = {
   name: 'whatsapp_get_qr_code_image',
-  description: 'Get QR code image for WhatsApp login.',
+  description: 'Get QR code PNG image for WhatsApp login.',
   inputSchema: { type: 'object', properties: {} },
   handler: async () => {
     logger.info('Getting QR code image');
-    const result = await wsapiClient.get('/session/login/qr/image');
+    const result = await wsapiClient.get('/session/qr');
     return { success: true, image: result, message: 'QR code image retrieved successfully' };
   },
 };
@@ -43,13 +43,13 @@ export const getPairCode: ToolHandler = {
   description: 'Get pairing code for WhatsApp login.',
   inputSchema: {
     type: 'object',
-    properties: { phone: { type: 'string', description: 'Phone number (10-15 digits)' } },
+    properties: { phone: { type: 'string', description: 'Phone number (7-15 digits)' } },
     required: ['phone'],
   },
   handler: async (args: any) => {
     const input = validateInput(getSessionLoginCodeSchema, args);
     logger.info('Getting pair code', { phone: input.phone });
-    const result = await wsapiClient.get(`/session/login/code/${input.phone}`);
+    const result = await wsapiClient.get(`/session/pair-code/${input.phone}`);
     return { success: true, pairCode: result, message: 'Pair code retrieved successfully' };
   },
 };
@@ -65,4 +65,15 @@ export const logout: ToolHandler = {
   },
 };
 
-export const sessionTools = { getSessionStatus, getQRCode, getQRCodeImage, getPairCode, logout };
+export const flushHistory: ToolHandler = {
+  name: 'whatsapp_flush_history',
+  description: 'Flush cached history sync messages. Returns 202 Accepted, then asynchronously publishes cached history sync messages as events.',
+  inputSchema: { type: 'object', properties: {} },
+  handler: async () => {
+    logger.info('Flushing history');
+    const result = await wsapiClient.post('/session/flush-history', {});
+    return { success: true, result, message: 'History flush initiated' };
+  },
+};
+
+export const sessionTools = { getSessionStatus, getQRCode, getQRCodeImage, getPairCode, logout, flushHistory };
