@@ -17,8 +17,12 @@ import { contactTools } from './tools/contacts.js';
 import { groupTools } from './tools/groups.js';
 import { chatTools } from './tools/chats.js';
 import { sessionTools } from './tools/session.js';
-import { instanceTools } from './tools/instance.js';
-import { accountTools } from './tools/account.js';
+import { userTools } from './tools/users.js';
+import { communityTools } from './tools/communities.js';
+import { newsletterTools } from './tools/newsletters.js';
+import { statusTools } from './tools/status.js';
+import { callTools } from './tools/calls.js';
+import { mediaTools } from './tools/media.js';
 
 const logger = createLogger('mcp-server');
 
@@ -37,7 +41,7 @@ export class WSAPIMCPServer {
     this.server = new Server(
       {
         name: 'wsapi-mcp-server',
-        version: '1.0.0',
+        version: '2.0.0',
       },
       {
         capabilities: {
@@ -53,27 +57,76 @@ export class WSAPIMCPServer {
   private setupToolHandlers(): void {
     logger.info('Setting up tool handlers');
 
-    // Register all tool categories
-    const toolCategories = [
-      messagingTools,
-      contactTools,
-      groupTools,
-      chatTools,
-      sessionTools,
-      instanceTools,
-      accountTools,
-    ];
+    // Named category map for filtering support
+    const allCategories: Record<string, Record<string, ToolHandler>> = {
+      messaging: messagingTools,
+      contacts: contactTools,
+      groups: groupTools,
+      chats: chatTools,
+      session: sessionTools,
+      users: userTools,
+      communities: communityTools,
+      newsletters: newsletterTools,
+      status: statusTools,
+      calls: callTools,
+      media: mediaTools,
+    };
 
-    toolCategories.forEach(category => {
-      Object.values(category).forEach(tool => {
-        if (this.tools.has(tool.name)) {
-          logger.warn(`Tool ${tool.name} already registered, skipping`);
-          return;
+    const { enabledCategories, enabledTools } = config.wsapi;
+    const isFiltered = enabledCategories.length > 0 || enabledTools.length > 0;
+
+    let toolsToRegister: ToolHandler[];
+
+    if (!isFiltered) {
+      // No filtering — register all tools
+      toolsToRegister = Object.values(allCategories).flatMap(cat => Object.values(cat));
+      logger.info('Loading all tool categories');
+    } else {
+      toolsToRegister = [];
+
+      // Step 1: Collect tools from enabled categories
+      if (enabledCategories.length > 0) {
+        const validCategories = enabledCategories.filter(c => c in allCategories);
+        const invalidCategories = enabledCategories.filter(c => !(c in allCategories));
+
+        if (invalidCategories.length > 0) {
+          logger.warn(`Unknown tool categories: ${invalidCategories.join(', ')}. Valid categories: ${Object.keys(allCategories).join(', ')}`);
         }
-        this.tools.set(tool.name, tool);
-        logger.debug(`Registered tool: ${tool.name}`);
-      });
-    });
+
+        for (const name of validCategories) {
+          toolsToRegister.push(...Object.values(allCategories[name]!));
+        }
+
+        logger.info(`Enabled categories: ${validCategories.join(', ')}`);
+      }
+
+      // Step 2: Add individually enabled tools from any category
+      if (enabledTools.length > 0) {
+        const allToolsList = Object.values(allCategories).flatMap(cat => Object.values(cat));
+        const registeredNames = new Set(toolsToRegister.map(t => t.name));
+
+        for (const toolName of enabledTools) {
+          if (registeredNames.has(toolName)) continue;
+          const tool = allToolsList.find(t => t.name === toolName);
+          if (tool) {
+            toolsToRegister.push(tool);
+          } else {
+            logger.warn(`Unknown tool: ${toolName}`);
+          }
+        }
+
+        logger.info(`Additionally enabled tools: ${enabledTools.join(', ')}`);
+      }
+    }
+
+    for (const tool of toolsToRegister) {
+      if (this.tools.has(tool.name)) {
+        logger.warn(`Tool ${tool.name} already registered, skipping`);
+        continue;
+      }
+      this.tools.set(tool.name, tool);
+      logger.debug(`Registered tool: ${tool.name}`);
+    }
 
     logger.info(`Registered ${this.tools.size} tools`);
   }
@@ -153,7 +206,7 @@ export class WSAPIMCPServer {
     const sanitized = { ...args };
 
     // Remove sensitive fields
-    const sensitiveFields = ['apiKey', 'token', 'password', 'imageBase64', 'videoBase64', 'audioBase64', 'voiceBase64', 'documentBase64', 'stickerBase64'];
+    const sensitiveFields = ['apiKey', 'token', 'password', 'data', 'picture', 'pictureBase64'];
 
     sensitiveFields.forEach(field => {
       if (sanitized[field]) {
@@ -200,7 +253,7 @@ export class WSAPIMCPServer {
   getServerInfo(): object {
     return {
       name: 'wsapi-mcp-server',
-      version: '1.0.0',
+      version: '2.0.0',
       toolCount: this.tools.size,
       tools: Array.from(this.tools.keys()),
       config: {

@@ -4,543 +4,320 @@ import { createLogger } from '../utils/logger.js';
 import {
   validateInput,
   sendTextMessageSchema,
-  sendImageMessageSchema,
-  sendVideoMessageSchema,
+  sendMediaMessageSchema,
   sendLinkMessageSchema,
   sendReactionMessageSchema,
   editMessageSchema,
   deleteMessageSchema,
+  deleteMessageForMeSchema,
   markMessageAsReadSchema,
   starMessageSchema,
+  pinMessageSchema,
   type SendTextMessageInput,
-  type SendImageMessageInput,
-  type SendVideoMessageInput,
+  type SendMediaMessageInput,
   type SendLinkMessageInput,
   type SendReactionMessageInput,
 } from '../validation/schemas.js';
 
 const logger = createLogger('messaging-tools');
 
-// Send text message tool
 export const sendTextMessage: ToolHandler = {
   name: 'whatsapp_send_text',
-  description: 'Send a text message to a WhatsApp contact or group. Supports mentions and replies.',
+  description: 'Send a text message to a WhatsApp contact or group. Supports mentions, replies, and ephemeral expiration.',
   inputSchema: {
     type: 'object',
     properties: {
-      to: {
-        type: 'string',
-        description: 'Recipient phone number (with @s.whatsapp.net) or group ID (with @g.us)',
-      },
-      text: {
-        type: 'string',
-        description: 'Message text content (max 4096 characters)',
-      },
-      mentions: {
-        type: 'array',
-        items: { type: 'string' },
-        description: 'List of phone numbers to mention in the message',
-        optional: true,
-      },
-      replyTo: {
-        type: 'string',
-        description: 'ID of the message being replied to',
-        optional: true,
-      },
-      isForwarded: {
-        type: 'boolean',
-        description: 'Whether the message should be marked as forwarded',
-        optional: true,
-      },
+      to: { type: 'string', description: 'Recipient JID (user or group)' },
+      text: { type: 'string', description: 'Message text content (max 4096 characters)' },
+      mentions: { type: 'array', items: { type: 'string' }, description: 'JIDs of mentioned users' },
+      replyTo: { type: 'string', description: 'ID of the message being replied to' },
+      replyToSenderId: { type: 'string', description: 'Sender JID of the message being replied to' },
+      isForwarded: { type: 'boolean', description: 'Mark as forwarded' },
+      ephemeralExpiration: { type: 'string', enum: ['off', '24h', '7d', '90d'], description: 'Disappearing message timer' },
     },
     required: ['to', 'text'],
   },
   handler: async (args: any) => {
     const input = validateInput(sendTextMessageSchema, args) as SendTextMessageInput;
-
     logger.info('Sending text message', { to: input.to, textLength: input.text.length });
-
     const result = await wsapiClient.post('/messages/text', input);
-
     logger.info('Text message sent successfully', { messageId: result.id });
-
-    return {
-      success: true,
-      messageId: result.id,
-      message: 'Text message sent successfully',
-    };
+    return { success: true, messageId: result.id, message: 'Text message sent successfully' };
   },
 };
 
-// Send image message tool
 export const sendImageMessage: ToolHandler = {
   name: 'whatsapp_send_image',
-  description: 'Send an image message to a WhatsApp contact or group. Can send from URL or base64.',
+  description: 'Send an image message. Provide either data (base64) or url.',
   inputSchema: {
     type: 'object',
     properties: {
-      to: {
-        type: 'string',
-        description: 'Recipient phone number (with @s.whatsapp.net) or group ID (with @g.us)',
-      },
-      imageBase64: {
-        type: 'string',
-        description: 'Base64 encoded image data (alternative to imageURL)',
-        optional: true,
-      },
-      imageURL: {
-        type: 'string',
-        description: 'URL of the image to send (alternative to imageBase64)',
-        optional: true,
-      },
-      mimeType: {
-        type: 'string',
-        enum: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
-        description: 'MIME type of the image',
-      },
-      caption: {
-        type: 'string',
-        description: 'Caption for the image (max 1024 characters)',
-        optional: true,
-      },
-      mentions: {
-        type: 'array',
-        items: { type: 'string' },
-        description: 'List of phone numbers to mention in the caption',
-        optional: true,
-      },
-      replyTo: {
-        type: 'string',
-        description: 'ID of the message being replied to',
-        optional: true,
-      },
-      isForwarded: {
-        type: 'boolean',
-        description: 'Whether the message should be marked as forwarded',
-        optional: true,
-      },
-      viewOnce: {
-        type: 'boolean',
-        description: 'Whether the image should be sent as view-once',
-        optional: true,
-      },
+      to: { type: 'string', description: 'Recipient JID' },
+      data: { type: 'string', description: 'Base64 encoded image data' },
+      url: { type: 'string', description: 'URL of the image' },
+      mimeType: { type: 'string', description: 'MIME type (auto-detected if omitted)' },
+      caption: { type: 'string', description: 'Caption for the image' },
+      mentions: { type: 'array', items: { type: 'string' }, description: 'JIDs of mentioned users' },
+      replyTo: { type: 'string', description: 'Message ID to reply to' },
+      replyToSenderId: { type: 'string', description: 'Sender JID of the replied message' },
+      isForwarded: { type: 'boolean', description: 'Mark as forwarded' },
+      viewOnce: { type: 'boolean', description: 'Send as view-once' },
+      ephemeralExpiration: { type: 'string', enum: ['off', '24h', '7d', '90d'] },
     },
-    required: ['to', 'mimeType'],
+    required: ['to'],
   },
   handler: async (args: any) => {
-    const input = validateInput(sendImageMessageSchema, args) as SendImageMessageInput;
-
-    logger.info('Sending image message', {
-      to: input.to,
-      mimeType: input.mimeType,
-      hasCaption: !!input.caption,
-      viewOnce: input.viewOnce,
-    });
-
+    const input = validateInput(sendMediaMessageSchema, args) as SendMediaMessageInput;
+    logger.info('Sending image message', { to: input.to, hasCaption: !!input.caption });
     const result = await wsapiClient.post('/messages/image', input);
-
     logger.info('Image message sent successfully', { messageId: result.id });
-
-    return {
-      success: true,
-      messageId: result.id,
-      message: 'Image message sent successfully',
-    };
+    return { success: true, messageId: result.id, message: 'Image message sent successfully' };
   },
 };
 
-// Send video message tool
 export const sendVideoMessage: ToolHandler = {
   name: 'whatsapp_send_video',
-  description: 'Send a video message to a WhatsApp contact or group. Can send from URL or base64.',
+  description: 'Send a video message. Provide either data (base64) or url.',
   inputSchema: {
     type: 'object',
     properties: {
-      to: {
-        type: 'string',
-        description: 'Recipient phone number (with @s.whatsapp.net) or group ID (with @g.us)',
-      },
-      videoBase64: {
-        type: 'string',
-        description: 'Base64 encoded video data (alternative to videoURL)',
-        optional: true,
-      },
-      videoURL: {
-        type: 'string',
-        description: 'URL of the video to send (alternative to videoBase64)',
-        optional: true,
-      },
-      mimeType: {
-        type: 'string',
-        enum: ['video/mp4', 'video/3gp', 'video/mov', 'video/avi'],
-        description: 'MIME type of the video',
-      },
-      caption: {
-        type: 'string',
-        description: 'Caption for the video (max 1024 characters)',
-        optional: true,
-      },
-      viewOnce: {
-        type: 'boolean',
-        description: 'Whether the video should be sent as view-once',
-        optional: true,
-      },
-      mentions: {
-        type: 'array',
-        items: { type: 'string' },
-        description: 'List of phone numbers to mention in the caption',
-        optional: true,
-      },
-      replyTo: {
-        type: 'string',
-        description: 'ID of the message being replied to',
-        optional: true,
-      },
-      isForwarded: {
-        type: 'boolean',
-        description: 'Whether the message should be marked as forwarded',
-        optional: true,
-      },
+      to: { type: 'string', description: 'Recipient JID' },
+      data: { type: 'string', description: 'Base64 encoded video data' },
+      url: { type: 'string', description: 'URL of the video' },
+      mimeType: { type: 'string', description: 'MIME type (auto-detected if omitted)' },
+      caption: { type: 'string', description: 'Caption for the video' },
+      mentions: { type: 'array', items: { type: 'string' } },
+      replyTo: { type: 'string', description: 'Message ID to reply to' },
+      replyToSenderId: { type: 'string', description: 'Sender JID of the replied message' },
+      isForwarded: { type: 'boolean' },
+      viewOnce: { type: 'boolean', description: 'Send as view-once' },
+      ephemeralExpiration: { type: 'string', enum: ['off', '24h', '7d', '90d'] },
     },
-    required: ['to', 'mimeType'],
+    required: ['to'],
   },
   handler: async (args: any) => {
-    const input = validateInput(sendVideoMessageSchema, args) as SendVideoMessageInput;
-
-    logger.info('Sending video message', {
-      to: input.to,
-      mimeType: input.mimeType,
-      hasCaption: !!input.caption,
-      viewOnce: input.viewOnce,
-    });
-
+    const input = validateInput(sendMediaMessageSchema, args) as SendMediaMessageInput;
+    logger.info('Sending video message', { to: input.to });
     const result = await wsapiClient.post('/messages/video', input);
-
     logger.info('Video message sent successfully', { messageId: result.id });
-
-    return {
-      success: true,
-      messageId: result.id,
-      message: 'Video message sent successfully',
-    };
+    return { success: true, messageId: result.id, message: 'Video message sent successfully' };
   },
 };
 
-// Send link message tool
 export const sendLinkMessage: ToolHandler = {
   name: 'whatsapp_send_link',
-  description: 'Send a link message with optional preview to a WhatsApp contact or group.',
+  description: 'Send a link message with optional preview.',
   inputSchema: {
     type: 'object',
     properties: {
-      to: {
-        type: 'string',
-        description: 'Recipient phone number (with @s.whatsapp.net) or group ID (with @g.us)',
-      },
-      text: {
-        type: 'string',
-        description: 'Message text content (max 4096 characters)',
-      },
-      url: {
-        type: 'string',
-        description: 'URL to include in the message',
-      },
-      title: {
-        type: 'string',
-        description: 'Title for the link preview (max 500 characters)',
-        optional: true,
-      },
-      description: {
-        type: 'string',
-        description: 'Description for the link preview (max 1000 characters)',
-        optional: true,
-      },
-      jpegThumbnail: {
-        type: 'string',
-        description: 'Base64 encoded JPEG thumbnail for the link preview',
-        optional: true,
-      },
-      mentions: {
-        type: 'array',
-        items: { type: 'string' },
-        description: 'List of phone numbers to mention in the message',
-        optional: true,
-      },
-      replyTo: {
-        type: 'string',
-        description: 'ID of the message being replied to',
-        optional: true,
-      },
-      isForwarded: {
-        type: 'boolean',
-        description: 'Whether the message should be marked as forwarded',
-        optional: true,
-      },
+      to: { type: 'string', description: 'Recipient JID' },
+      text: { type: 'string', description: 'Message text (max 4096 characters)' },
+      url: { type: 'string', description: 'URL to include' },
+      title: { type: 'string', description: 'Link preview title' },
+      description: { type: 'string', description: 'Link preview description' },
+      jpegThumbnail: { type: 'string', description: 'Base64 JPEG thumbnail' },
+      mentions: { type: 'array', items: { type: 'string' } },
+      replyTo: { type: 'string' },
+      replyToSenderId: { type: 'string' },
+      isForwarded: { type: 'boolean' },
+      ephemeralExpiration: { type: 'string', enum: ['off', '24h', '7d', '90d'] },
     },
     required: ['to', 'text', 'url'],
   },
   handler: async (args: any) => {
     const input = validateInput(sendLinkMessageSchema, args) as SendLinkMessageInput;
-
-    logger.info('Sending link message', {
-      to: input.to,
-      url: input.url,
-      hasTitle: !!input.title,
-      hasDescription: !!input.description,
-    });
-
+    logger.info('Sending link message', { to: input.to, url: input.url });
     const result = await wsapiClient.post('/messages/link', input);
-
     logger.info('Link message sent successfully', { messageId: result.id });
-
-    return {
-      success: true,
-      messageId: result.id,
-      message: 'Link message sent successfully',
-    };
+    return { success: true, messageId: result.id, message: 'Link message sent successfully' };
   },
 };
 
-// Send reaction message tool
 export const sendReactionMessage: ToolHandler = {
   name: 'whatsapp_send_reaction',
-  description: 'Send a reaction (emoji) to a specific message.',
+  description: 'Send a reaction (emoji) to a message. Send empty string to remove reaction.',
   inputSchema: {
     type: 'object',
     properties: {
-      messageId: {
-        type: 'string',
-        description: 'ID of the message to react to',
-      },
-      to: {
-        type: 'string',
-        description: 'Chat ID where the message is located',
-      },
-      senderId: {
-        type: 'string',
-        description: 'ID of the original message sender',
-      },
-      reaction: {
-        type: 'string',
-        description: 'Emoji reaction to send (max 10 characters)',
-      },
+      messageId: { type: 'string', description: 'ID of the message to react to' },
+      to: { type: 'string', description: 'Chat JID' },
+      senderId: { type: 'string', description: 'Sender of the original message (for groups)' },
+      reaction: { type: 'string', description: 'Emoji reaction (empty string to remove)' },
     },
-    required: ['messageId', 'to', 'senderId', 'reaction'],
+    required: ['messageId', 'to', 'reaction'],
   },
   handler: async (args: any) => {
     const input = validateInput(sendReactionMessageSchema, args) as SendReactionMessageInput;
-
-    logger.info('Sending reaction', {
-      messageId: input.messageId,
-      to: input.to,
-      reaction: input.reaction,
-    });
-
+    logger.info('Sending reaction', { messageId: input.messageId, to: input.to });
     const result = await wsapiClient.post(`/messages/${input.messageId}/reaction`, {
       to: input.to,
       senderId: input.senderId,
       reaction: input.reaction,
     });
-
-    logger.info('Reaction sent successfully', { messageId: result.id });
-
-    return {
-      success: true,
-      messageId: result.id,
-      message: 'Reaction sent successfully',
-    };
+    logger.info('Reaction sent successfully');
+    return { success: true, messageId: result.id, message: 'Reaction sent successfully' };
   },
 };
 
-// Edit message tool
 export const editMessage: ToolHandler = {
   name: 'whatsapp_edit_message',
   description: 'Edit a previously sent text message.',
   inputSchema: {
     type: 'object',
     properties: {
-      messageId: {
-        type: 'string',
-        description: 'ID of the message to edit',
-      },
-      to: {
-        type: 'string',
-        description: 'Chat ID where the message is located',
-      },
-      text: {
-        type: 'string',
-        description: 'New text content for the message (max 4096 characters)',
-      },
+      messageId: { type: 'string', description: 'ID of the message to edit' },
+      to: { type: 'string', description: 'Chat JID' },
+      text: { type: 'string', description: 'New text content (max 4096 characters)' },
+      mentions: { type: 'array', items: { type: 'string' } },
+      ephemeralExpiration: { type: 'string', enum: ['off', '24h', '7d', '90d'] },
     },
     required: ['messageId', 'to', 'text'],
   },
   handler: async (args: any) => {
     const input = validateInput(editMessageSchema, args);
-
-    logger.info('Editing message', {
-      messageId: input.messageId,
-      to: input.to,
-      textLength: input.text.length,
-    });
-
-    const result = await wsapiClient.put(`/messages/${input.messageId}/text`, {
+    logger.info('Editing message', { messageId: input.messageId });
+    const result = await wsapiClient.post(`/messages/${input.messageId}/edit`, {
       to: input.to,
       text: input.text,
+      mentions: input.mentions,
+      ephemeralExpiration: input.ephemeralExpiration,
     });
-
-    logger.info('Message edited successfully', { messageId: result.id });
-
-    return {
-      success: true,
-      messageId: result.id,
-      message: 'Message edited successfully',
-    };
+    logger.info('Message edited successfully');
+    return { success: true, messageId: result.id, message: 'Message edited successfully' };
   },
 };
 
-// Delete message tool
 export const deleteMessage: ToolHandler = {
   name: 'whatsapp_delete_message',
-  description: 'Delete a message for all participants in the chat.',
+  description: 'Delete a message for all participants.',
   inputSchema: {
     type: 'object',
     properties: {
-      messageId: {
-        type: 'string',
-        description: 'ID of the message to delete',
-      },
-      chatId: {
-        type: 'string',
-        description: 'Chat ID where the message is located',
-      },
-      senderId: {
-        type: 'string',
-        description: 'ID of the message sender',
-      },
+      messageId: { type: 'string', description: 'ID of the message to delete' },
+      chatId: { type: 'string', description: 'Chat JID' },
+      senderId: { type: 'string', description: 'Message sender JID' },
     },
     required: ['messageId', 'chatId', 'senderId'],
   },
   handler: async (args: any) => {
     const input = validateInput(deleteMessageSchema, args);
-
-    logger.info('Deleting message', {
-      messageId: input.messageId,
-      chatId: input.chatId,
-    });
-
-    await wsapiClient.put(`/messages/${input.messageId}/delete`, {
+    logger.info('Deleting message', { messageId: input.messageId });
+    await wsapiClient.post(`/messages/${input.messageId}/delete`, {
       chatId: input.chatId,
       senderId: input.senderId,
     });
-
-    logger.info('Message deleted successfully', { messageId: input.messageId });
-
-    return {
-      success: true,
-      message: 'Message deleted successfully',
-    };
+    logger.info('Message deleted successfully');
+    return { success: true, message: 'Message deleted successfully' };
   },
 };
 
-// Mark message as read tool
+export const deleteMessageForMe: ToolHandler = {
+  name: 'whatsapp_delete_message_for_me',
+  description: 'Delete a message only for yourself.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      messageId: { type: 'string', description: 'ID of the message to delete' },
+      chatId: { type: 'string', description: 'Chat JID' },
+      senderId: { type: 'string', description: 'Message sender JID' },
+      isFromMe: { type: 'boolean', description: 'Whether the message was sent by you' },
+      timestamp: { type: 'string', description: 'Message timestamp (ISO 8601)' },
+    },
+    required: ['messageId', 'chatId'],
+  },
+  handler: async (args: any) => {
+    const input = validateInput(deleteMessageForMeSchema, args);
+    logger.info('Deleting message for me', { messageId: input.messageId });
+    await wsapiClient.post(`/messages/${input.messageId}/delete-for-me`, {
+      chatId: input.chatId,
+      senderId: input.senderId,
+      isFromMe: input.isFromMe,
+      timestamp: input.timestamp,
+    });
+    logger.info('Message deleted for me successfully');
+    return { success: true, message: 'Message deleted for me successfully' };
+  },
+};
+
 export const markMessageAsRead: ToolHandler = {
   name: 'whatsapp_mark_message_read',
   description: 'Mark a message as read.',
   inputSchema: {
     type: 'object',
     properties: {
-      messageId: {
-        type: 'string',
-        description: 'ID of the message to mark as read',
-      },
-      chatId: {
-        type: 'string',
-        description: 'Chat ID where the message is located',
-      },
-      senderId: {
-        type: 'string',
-        description: 'ID of the message sender',
-      },
-      receiptType: {
-        type: 'string',
-        enum: ['delivered', 'sender', 'read', 'played'],
-        description: 'Type of receipt to send',
-      },
+      messageId: { type: 'string', description: 'Message ID' },
+      chatId: { type: 'string', description: 'Chat JID' },
+      senderId: { type: 'string', description: 'Message sender JID' },
+      receiptType: { type: 'string', enum: ['delivered', 'sender', 'read', 'played'], description: 'Receipt type' },
     },
     required: ['messageId', 'chatId', 'senderId', 'receiptType'],
   },
   handler: async (args: any) => {
     const input = validateInput(markMessageAsReadSchema, args);
-
-    logger.info('Marking message as read', {
-      messageId: input.messageId,
-      chatId: input.chatId,
-      receiptType: input.receiptType,
-    });
-
-    await wsapiClient.put(`/messages/${input.messageId}/read`, {
+    logger.info('Marking message as read', { messageId: input.messageId });
+    await wsapiClient.post(`/messages/${input.messageId}/read`, {
       chatId: input.chatId,
       senderId: input.senderId,
       receiptType: input.receiptType,
     });
-
-    logger.info('Message marked as read successfully', { messageId: input.messageId });
-
-    return {
-      success: true,
-      message: 'Message marked as read successfully',
-    };
+    return { success: true, message: 'Message marked as read successfully' };
   },
 };
 
-// Star message tool
 export const starMessage: ToolHandler = {
   name: 'whatsapp_star_message',
   description: 'Star or unstar a message.',
   inputSchema: {
     type: 'object',
     properties: {
-      messageId: {
-        type: 'string',
-        description: 'ID of the message to star',
-      },
-      chatId: {
-        type: 'string',
-        description: 'Chat ID where the message is located',
-      },
-      senderId: {
-        type: 'string',
-        description: 'ID of the message sender',
-      },
+      messageId: { type: 'string', description: 'Message ID' },
+      chatId: { type: 'string', description: 'Chat JID' },
+      senderId: { type: 'string', description: 'Message sender JID' },
+      starred: { type: 'boolean', description: 'True to star, false to unstar' },
     },
     required: ['messageId', 'chatId', 'senderId'],
   },
   handler: async (args: any) => {
     const input = validateInput(starMessageSchema, args);
-
-    logger.info('Starring message', {
-      messageId: input.messageId,
-      chatId: input.chatId,
-    });
-
-    await wsapiClient.put(`/messages/${input.messageId}/star`, {
+    logger.info('Starring message', { messageId: input.messageId });
+    await wsapiClient.post(`/messages/${input.messageId}/star`, {
       chatId: input.chatId,
       senderId: input.senderId,
+      starred: input.starred,
     });
-
-    logger.info('Message starred successfully', { messageId: input.messageId });
-
-    return {
-      success: true,
-      message: 'Message starred successfully',
-    };
+    return { success: true, message: 'Message starred successfully' };
   },
 };
 
-// Import advanced messaging tools
+export const pinMessage: ToolHandler = {
+  name: 'whatsapp_pin_message',
+  description: 'Pin or unpin a message in a chat.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      messageId: { type: 'string', description: 'Message ID' },
+      chatId: { type: 'string', description: 'Chat JID' },
+      senderId: { type: 'string', description: 'Message sender JID' },
+      pinned: { type: 'boolean', description: 'True to pin, false to unpin' },
+      pinExpiration: { type: 'string', description: 'Pin expiration (e.g. 24h, 7d, 30d)' },
+    },
+    required: ['messageId', 'chatId', 'senderId'],
+  },
+  handler: async (args: any) => {
+    const input = validateInput(pinMessageSchema, args);
+    logger.info('Pinning message', { messageId: input.messageId });
+    await wsapiClient.post(`/messages/${input.messageId}/pin`, {
+      chatId: input.chatId,
+      senderId: input.senderId,
+      pinned: input.pinned,
+      pinExpiration: input.pinExpiration,
+    });
+    return { success: true, message: 'Message pin updated successfully' };
+  },
+};
+
 import { advancedMessagingTools } from './messaging-advanced.js';
 
-// Export all messaging tools
 export const messagingTools = {
   sendTextMessage,
   sendImageMessage,
@@ -549,7 +326,9 @@ export const messagingTools = {
   sendReactionMessage,
   editMessage,
   deleteMessage,
+  deleteMessageForMe,
   markMessageAsRead,
   starMessage,
+  pinMessage,
   ...advancedMessagingTools,
 };

@@ -13,6 +13,8 @@ const configSchema = z.object({
     timeout: z.number().positive().default(30000),
     retryAttempts: z.number().min(0).default(3),
     retryDelay: z.number().positive().default(1000),
+    enabledCategories: z.string().default('').transform(s => s ? s.split(',').map(c => c.trim()).filter(Boolean) : []),
+    enabledTools: z.string().default('').transform(s => s ? s.split(',').map(c => c.trim()).filter(Boolean) : []),
   }),
   server: z.object({
     port: z.number().positive().default(3000),
@@ -33,6 +35,8 @@ function loadConfig(): Config {
       timeout: process.env.WSAPI_TIMEOUT ? parseInt(process.env.WSAPI_TIMEOUT, 10) : undefined,
       retryAttempts: process.env.WSAPI_RETRY_ATTEMPTS ? parseInt(process.env.WSAPI_RETRY_ATTEMPTS, 10) : undefined,
       retryDelay: process.env.WSAPI_RETRY_DELAY ? parseInt(process.env.WSAPI_RETRY_DELAY, 10) : undefined,
+      enabledCategories: process.env.WSAPI_ENABLED_CATEGORIES,
+      enabledTools: process.env.WSAPI_ENABLED_TOOLS,
     },
     server: {
       port: process.env.PORT ? parseInt(process.env.PORT, 10) : undefined,
@@ -45,7 +49,7 @@ function loadConfig(): Config {
     return configSchema.parse(rawConfig);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errorMessages = error.errors.map(err => `${err.path.join('.')}: ${err.message}`);
+      const errorMessages = error.issues.map((err: z.ZodIssue) => `${err.path.join('.')}: ${err.message}`);
       const message = `Configuration validation failed: ${errorMessages.join(', ')}`;
 
       // Log to stderr for MCP debugging

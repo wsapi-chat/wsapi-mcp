@@ -21,12 +21,12 @@ if (__dirname.includes('/dist/')) {
 // Silently try to create logs directory
 try {
   mkdirSync(logsDir, { recursive: true });
-} catch (error) {
+} catch {
   // Fallback to current directory
   logsDir = './logs';
   try {
     mkdirSync(logsDir, { recursive: true });
-  } catch (fallbackError) {
+  } catch {
     // Continue silently - we'll use file logging or no-op
   }
 }
@@ -50,7 +50,7 @@ try {
       maxFiles: 5,
     })
   );
-} catch (error) {
+} catch {
   // If file logging fails, just continue with empty transports
   // Winston will handle this gracefully
 }

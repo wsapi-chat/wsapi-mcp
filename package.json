@@ -1,6 +1,6 @@
 {
   "name": "@wsapichat/mcp-server",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "A comprehensive Model Context Protocol (MCP) server for WSAPI - the powerful WhatsApp API Gateway. Enables LLMs to send messages, manage contacts and groups, handle chat operations, and monitor session status through WhatsApp.",
   "main": "dist/index.js",
   "type": "module",
@@ -11,14 +11,14 @@
     "build": "tsc && mkdir -p logs",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run build && npm run test && npm run lint",
-    "generate-types": "openapi-typescript wsapi.yml -o src/types/api.ts"
+    "prepublishOnly": "npm run build && npm run lint",
+    "generate-types": "openapi-typescript openapi/wsapi-api.yml -o src/types/api.ts"
   },
   "keywords": [
     "mcp",
@@ -49,32 +49,31 @@
     "url": "https://github.com/wsapi-chat/wsapi-mcp/issues"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
-    "axios": "^1.6.0",
-    "zod": "^3.22.0",
-    "dotenv": "^16.3.0",
-    "winston": "^3.11.0"
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "axios": "^1.13.6",
+    "dotenv": "^17.3.1",
+    "winston": "^3.19.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.57.0",
-    "jest": "^29.7.0",
-    "@types/jest": "^29.5.0",
-    "ts-jest": "^29.1.0",
-    "tsx": "^4.6.0",
-    "typescript": "^5.3.0",
-    "openapi-typescript": "^6.7.0"
+    "@eslint/js": "^9.39.3",
+    "@types/node": "^25.3.4",
+    "eslint": "^10.0.2",
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.19.0 <=24.x",
     "npm": ">=9.0.0"
   },
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CLAUDE.md"
   ],
   "publishConfig": {
     "access": "public"
