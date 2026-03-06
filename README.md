@@ -3,6 +3,11 @@
 [![npm version](https://badge.fury.io/js/@wsapichat%2Fmcp-server.svg)](https://badge.fury.io/js/@wsapichat%2Fmcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+
+<a href="https://glama.ai/mcp/servers/@wsapi-chat/wsapi-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@wsapi-chat/wsapi-mcp/badge" alt="WSAPI WhatsApp Server MCP server" />
+</a>
+
 A Model Context Protocol (MCP) server for [WSAPI](https://wsapi.chat) - the WhatsApp API Gateway. Enables LLMs to send messages, manage contacts and groups, handle communities and newsletters, post status updates, and more through WhatsApp.
 
 For comprehensive documentation, see the [WSAPI MCP Server guide](https://docs.wsapi.chat/integrations/mcp-server).
