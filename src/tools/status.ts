@@ -7,12 +7,15 @@ import {
   postMediaStatusSchema,
   deleteStatusSchema,
 } from "../validation/schemas.js";
+import { CREATE, DESTRUCTIVE, READ } from "./annotations.js";
 
 const logger = createLogger("status-tools");
 
 export const getStatusPrivacy: ToolHandler = {
   name: "whatsapp_get_status_privacy",
-  description: "Get status broadcast privacy settings.",
+  description:
+    "Get who can see this number's status updates. Read-only. Returns the privacy settings.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting status privacy");
@@ -23,7 +26,9 @@ export const getStatusPrivacy: ToolHandler = {
 
 export const postTextStatus: ToolHandler = {
   name: "whatsapp_post_text_status",
-  description: "Post a text status update (story).",
+  description:
+    "Post a text status (story), visible to contacts allowed by the status privacy settings for 24 hours. Not idempotent. Returns the status message ID, which whatsapp_delete_status needs.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -46,7 +51,8 @@ export const postTextStatus: ToolHandler = {
 export const postImageStatus: ToolHandler = {
   name: "whatsapp_post_image_status",
   description:
-    "Post an image status update. Provide either data (base64) or url.",
+    "Post an image status (story) from base64 data or a public URL, with an optional caption, visible to allowed contacts for 24 hours. Not idempotent. Returns the status message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -71,7 +77,8 @@ export const postImageStatus: ToolHandler = {
 export const postVideoStatus: ToolHandler = {
   name: "whatsapp_post_video_status",
   description:
-    "Post a video status update. Provide either data (base64) or url.",
+    "Post a video status (story) from base64 data or a public URL, with an optional caption, visible to allowed contacts for 24 hours. Not idempotent. Returns the status message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -95,7 +102,9 @@ export const postVideoStatus: ToolHandler = {
 
 export const deleteStatus: ToolHandler = {
   name: "whatsapp_delete_status",
-  description: "Delete a previously posted status update.",
+  description:
+    "Delete a status this number posted, by its message ID. Contacts stop seeing it. It cannot be undone. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: {

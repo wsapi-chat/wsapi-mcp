@@ -14,12 +14,15 @@ import {
   linkGroupToCommunitySchema,
   unlinkCommunityGroupSchema,
 } from "../validation/schemas.js";
+import { CREATE, DESTRUCTIVE, READ, SET } from "./annotations.js";
 
 const logger = createLogger("community-tools");
 
 export const listCommunities: ToolHandler = {
   name: "whatsapp_list_communities",
-  description: "List all joined communities.",
+  description:
+    "List the communities the connected number belongs to. Read-only. Returns the communities and their JIDs.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Listing communities");
@@ -30,7 +33,9 @@ export const listCommunities: ToolHandler = {
 
 export const createCommunity: ToolHandler = {
   name: "whatsapp_create_community",
-  description: "Create a new WhatsApp community.",
+  description:
+    "Create a new WhatsApp community with this number as its admin, optionally adding participants. Participants are added immediately and notified. Returns the new community JID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -58,7 +63,9 @@ export const createCommunity: ToolHandler = {
 
 export const getCommunity: ToolHandler = {
   name: "whatsapp_get_community",
-  description: "Get community info.",
+  description:
+    "Get the details of a community by its JID: name, description, settings and announcement group. Read-only. Returns the community object.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Community JID" } },
@@ -73,7 +80,9 @@ export const getCommunity: ToolHandler = {
 
 export const leaveCommunity: ToolHandler = {
   name: "whatsapp_leave_community",
-  description: "Leave a community.",
+  description:
+    "Leave a community and all its groups. Other members are notified, and rejoining needs a new invite. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Community JID" } },
@@ -88,7 +97,9 @@ export const leaveCommunity: ToolHandler = {
 
 export const setCommunityName: ToolHandler = {
   name: "whatsapp_set_community_name",
-  description: "Set community name.",
+  description:
+    "Rename a community. Requires admin rights; all members see the change. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -108,7 +119,9 @@ export const setCommunityName: ToolHandler = {
 
 export const setCommunityDescription: ToolHandler = {
   name: "whatsapp_set_community_description",
-  description: "Set community description.",
+  description:
+    "Change a community's description. Requires admin rights; all members see it. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -128,7 +141,9 @@ export const setCommunityDescription: ToolHandler = {
 
 export const setCommunityPicture: ToolHandler = {
   name: "whatsapp_set_community_picture",
-  description: "Set community profile picture.",
+  description:
+    "Set a community's profile picture from base64 image data. Requires admin rights; replaces the current picture for all members. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -152,7 +167,9 @@ export const setCommunityPicture: ToolHandler = {
 
 export const setCommunityLocked: ToolHandler = {
   name: "whatsapp_set_community_locked",
-  description: "Set community locked mode (only admins can edit info).",
+  description:
+    "Turn locked mode on or off for a community. When on, only admins can edit the community's info. Requires admin rights. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -172,7 +189,9 @@ export const setCommunityLocked: ToolHandler = {
 
 export const getCommunityParticipants: ToolHandler = {
   name: "whatsapp_get_community_participants",
-  description: "Get community participants.",
+  description:
+    "List the participants of a community, with their admin status. Read-only. Returns the participants.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Community JID" } },
@@ -189,7 +208,9 @@ export const getCommunityParticipants: ToolHandler = {
 
 export const updateCommunityParticipants: ToolHandler = {
   name: "whatsapp_update_community_participants",
-  description: "Add, remove, promote, or demote community participants.",
+  description:
+    "Add, remove, promote to admin or demote participants of a community, by user JID. Requires admin rights. Removed participants lose access and everyone affected is notified. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: {
@@ -219,7 +240,9 @@ export const updateCommunityParticipants: ToolHandler = {
 
 export const getCommunityInviteLink: ToolHandler = {
   name: "whatsapp_get_community_invite_link",
-  description: "Get community invite link.",
+  description:
+    "Get the current invite link of a community. Requires admin rights. Anyone with the link can ask to join. Returns the link.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Community JID" } },
@@ -236,7 +259,9 @@ export const getCommunityInviteLink: ToolHandler = {
 
 export const resetCommunityInviteLink: ToolHandler = {
   name: "whatsapp_reset_community_invite_link",
-  description: "Reset community invite link.",
+  description:
+    "Revoke a community's invite link and create a new one. The old link stops working immediately. Requires admin rights. Returns the new link.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Community JID" } },
@@ -254,7 +279,9 @@ export const resetCommunityInviteLink: ToolHandler = {
 
 export const getCommunitySubGroups: ToolHandler = {
   name: "whatsapp_get_community_sub_groups",
-  description: "Get community sub-groups.",
+  description:
+    "List the groups linked to a community. Read-only. Returns the groups and their JIDs.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Community JID" } },
@@ -269,7 +296,9 @@ export const getCommunitySubGroups: ToolHandler = {
 
 export const createCommunityGroup: ToolHandler = {
   name: "whatsapp_create_community_group",
-  description: "Create a new sub-group inside a community.",
+  description:
+    "Create a new group inside a community, optionally with participants, who are added and notified. Requires community admin rights. To attach a group that already exists, use whatsapp_link_group_to_community. Returns the new group JID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -299,7 +328,9 @@ export const createCommunityGroup: ToolHandler = {
 
 export const linkGroupToCommunity: ToolHandler = {
   name: "whatsapp_link_group_to_community",
-  description: "Link an existing group to a community.",
+  description:
+    "Attach an existing group to a community. Requires admin rights in both. Group members become part of the community. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -319,7 +350,9 @@ export const linkGroupToCommunity: ToolHandler = {
 
 export const unlinkCommunityGroup: ToolHandler = {
   name: "whatsapp_unlink_community_group",
-  description: "Unlink a group from a community.",
+  description:
+    "Detach a group from a community. The group keeps existing on its own, but its members lose access to the community through it. Requires admin rights. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: {

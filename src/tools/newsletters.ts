@@ -9,12 +9,15 @@ import {
   setNewsletterSubscriptionSchema,
   muteNewsletterSchema,
 } from "../validation/schemas.js";
+import { CREATE, READ, SET } from "./annotations.js";
 
 const logger = createLogger("newsletter-tools");
 
 export const listNewsletters: ToolHandler = {
   name: "whatsapp_list_newsletters",
-  description: "List all subscribed newsletters.",
+  description:
+    "List the channels (newsletters) this number follows or owns. Read-only. Returns the channels and their JIDs.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Listing newsletters");
@@ -25,7 +28,9 @@ export const listNewsletters: ToolHandler = {
 
 export const createNewsletter: ToolHandler = {
   name: "whatsapp_create_newsletter",
-  description: "Create a new newsletter/channel.",
+  description:
+    "Create a new WhatsApp channel (newsletter) owned by this number, with a name and optional description and picture. It is public once created. Returns the new channel JID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -52,7 +57,9 @@ export const createNewsletter: ToolHandler = {
 
 export const getNewsletterByInvite: ToolHandler = {
   name: "whatsapp_get_newsletter_by_invite",
-  description: "Get newsletter info by invite code.",
+  description:
+    "Look up a channel by its invite code, without following it. Read-only. Returns the channel info and JID.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: {
@@ -69,7 +76,9 @@ export const getNewsletterByInvite: ToolHandler = {
 
 export const getNewsletter: ToolHandler = {
   name: "whatsapp_get_newsletter",
-  description: "Get newsletter info by JID.",
+  description:
+    "Get a channel's details by JID: name, description and follower count. Read-only. Returns the channel object.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Newsletter JID" } },
@@ -84,7 +93,9 @@ export const getNewsletter: ToolHandler = {
 
 export const setNewsletterSubscription: ToolHandler = {
   name: "whatsapp_set_newsletter_subscription",
-  description: "Subscribe or unsubscribe from a newsletter.",
+  description:
+    "Follow or unfollow a channel by JID. Following adds its updates to this account; the channel owner only sees the follower count. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -114,7 +125,9 @@ export const setNewsletterSubscription: ToolHandler = {
 
 export const muteNewsletter: ToolHandler = {
   name: "whatsapp_mute_newsletter",
-  description: "Mute or unmute a newsletter.",
+  description:
+    "Mute or unmute a channel's notifications on this account. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {

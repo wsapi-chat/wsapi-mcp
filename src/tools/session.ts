@@ -5,12 +5,15 @@ import {
   validateInput,
   getSessionLoginCodeSchema,
 } from "../validation/schemas.js";
+import { DESTRUCTIVE, READ, SET } from "./annotations.js";
 
 const logger = createLogger("session-tools");
 
 export const getSessionStatus: ToolHandler = {
   name: "whatsapp_get_session_status",
-  description: "Get current WhatsApp session status.",
+  description:
+    "Check whether the WhatsApp session is connected and logged in. Read-only. Call it first when other tools fail, to tell a logged-out session from another error. Returns the connection and login state.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting session status");
@@ -25,7 +28,9 @@ export const getSessionStatus: ToolHandler = {
 
 export const getQRCode: ToolHandler = {
   name: "whatsapp_get_qr_code",
-  description: "Get QR code text string for WhatsApp login.",
+  description:
+    "Get the login QR code as a text string, to pair a phone with this instance. Only works while logged out, and each code expires within about a minute. For an image, use whatsapp_get_qr_code_image; to pair by phone number, use whatsapp_get_pair_code. Returns the QR string.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting QR code text");
@@ -40,7 +45,9 @@ export const getQRCode: ToolHandler = {
 
 export const getQRCodeImage: ToolHandler = {
   name: "whatsapp_get_qr_code_image",
-  description: "Get QR code PNG image for WhatsApp login.",
+  description:
+    "Get the login QR code as a PNG image, to scan from WhatsApp on the phone (Linked devices). Only works while logged out, and each code expires within about a minute. Returns the image.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting QR code image");
@@ -55,7 +62,9 @@ export const getQRCodeImage: ToolHandler = {
 
 export const getPairCode: ToolHandler = {
   name: "whatsapp_get_pair_code",
-  description: "Get pairing code for WhatsApp login.",
+  description:
+    "Get an 8-character pairing code for a phone number, to link it without scanning a QR (WhatsApp, Linked devices, Link with phone number). Only works while logged out. Returns the code.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: {
@@ -77,7 +86,9 @@ export const getPairCode: ToolHandler = {
 
 export const logout: ToolHandler = {
   name: "whatsapp_logout",
-  description: "Logout from WhatsApp.",
+  description:
+    "Log this instance out of WhatsApp and unlink it from the phone. Every other tool stops working until the number is paired again with a QR or pair code. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Logging out");
@@ -89,7 +100,8 @@ export const logout: ToolHandler = {
 export const flushHistory: ToolHandler = {
   name: "whatsapp_flush_history",
   description:
-    "Flush cached history sync messages. Returns 202 Accepted, then asynchronously publishes cached history sync messages as events.",
+    "Re-publish the history sync messages cached for this instance as events. It does not return messages: they arrive later through the event stream. Returns an acknowledgement.",
+  annotations: SET,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Flushing history");

@@ -9,12 +9,15 @@ import {
   setPrivacySettingSchema,
   bulkCheckUsersSchema,
 } from "../validation/schemas.js";
+import { READ, SET } from "./annotations.js";
 
 const logger = createLogger("user-tools");
 
 export const getMyProfile: ToolHandler = {
   name: "whatsapp_get_my_profile",
-  description: "Get own WhatsApp profile info.",
+  description:
+    "Get the connected number's own profile: name, about text and picture. Read-only. Returns the profile.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting my profile");
@@ -25,7 +28,9 @@ export const getMyProfile: ToolHandler = {
 
 export const updateMyProfile: ToolHandler = {
   name: "whatsapp_update_my_profile",
-  description: "Update own WhatsApp profile. All fields are optional.",
+  description:
+    "Change the connected number's own display name, about text or picture. Contacts see the change. Only the fields you pass are updated. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -47,7 +52,9 @@ export const updateMyProfile: ToolHandler = {
 
 export const setPresence: ToolHandler = {
   name: "whatsapp_set_presence",
-  description: "Set account presence state (available or unavailable).",
+  description:
+    "Set this account as available or unavailable. Available makes it show online to contacts; for a typing indicator in one chat, use whatsapp_set_chat_presence. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -69,7 +76,9 @@ export const setPresence: ToolHandler = {
 
 export const getPrivacySettings: ToolHandler = {
   name: "whatsapp_get_privacy_settings",
-  description: "Get current privacy settings.",
+  description:
+    "Get the account's privacy settings: who can see last seen, profile picture, about, groups and read receipts. Read-only. Returns the settings.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting privacy settings");
@@ -80,7 +89,9 @@ export const getPrivacySettings: ToolHandler = {
 
 export const setPrivacySetting: ToolHandler = {
   name: "whatsapp_set_privacy_setting",
-  description: "Update a single privacy setting.",
+  description:
+    "Change one privacy setting of the account, for example who can see the profile picture. Applies immediately to all contacts. Returns the updated settings.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -122,7 +133,9 @@ export const setPrivacySetting: ToolHandler = {
 
 export const checkUser: ToolHandler = {
   name: "whatsapp_check_user",
-  description: "Check if a phone number is registered on WhatsApp.",
+  description:
+    "Check whether one phone number has WhatsApp, before sending to it. Read-only. Pass the number with country code, digits only. Returns whether it is registered and its user JID. For many numbers at once, use whatsapp_bulk_check_users.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: {
@@ -141,7 +154,8 @@ export const checkUser: ToolHandler = {
 export const bulkCheckUsers: ToolHandler = {
   name: "whatsapp_bulk_check_users",
   description:
-    "Check multiple phone numbers at once to see if they are registered on WhatsApp.",
+    "Check many phone numbers at once for WhatsApp accounts. Read-only. Pass numbers with country code, digits only. Returns whether each number is registered, with its user JID.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: {
@@ -165,7 +179,9 @@ export const bulkCheckUsers: ToolHandler = {
 
 export const getUserProfile: ToolHandler = {
   name: "whatsapp_get_user_profile",
-  description: "Get profile info for a specific user by phone number.",
+  description:
+    "Get another user's public profile by phone number: name, about text, picture and business status, as far as their privacy settings allow. Read-only. Returns the profile.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: {

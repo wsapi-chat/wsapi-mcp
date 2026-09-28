@@ -7,12 +7,15 @@ import {
   createContactSchema,
   blockContactSchema,
 } from "../validation/schemas.js";
+import { READ, SET } from "./annotations.js";
 
 const logger = createLogger("contact-tools");
 
 export const getContacts: ToolHandler = {
   name: "whatsapp_get_contacts",
-  description: "Get list of all WhatsApp contacts.",
+  description:
+    "List the contacts saved on the connected number. Read-only. To check whether a phone number has WhatsApp, use whatsapp_check_user. Returns the contacts and their count.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting contacts list");
@@ -28,7 +31,9 @@ export const getContacts: ToolHandler = {
 
 export const getContact: ToolHandler = {
   name: "whatsapp_get_contact",
-  description: "Get information about a specific WhatsApp contact.",
+  description:
+    "Get one saved contact by JID: saved name, push name and business name. Read-only. Returns the contact object.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Contact JID" } },
@@ -48,7 +53,9 @@ export const getContact: ToolHandler = {
 
 export const createContact: ToolHandler = {
   name: "whatsapp_create_contact",
-  description: "Create or update a WhatsApp contact.",
+  description:
+    "Save a contact on the connected number, or update its name if it already exists. Only affects this account's address book. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -68,7 +75,9 @@ export const createContact: ToolHandler = {
 
 export const syncContacts: ToolHandler = {
   name: "whatsapp_sync_contacts",
-  description: "Trigger a full contact sync from the WhatsApp server.",
+  description:
+    "Re-sync the address book from the WhatsApp servers. Use it when whatsapp_get_contacts looks outdated. It runs in the background. Returns an acknowledgement, not the contacts.",
+  annotations: SET,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Syncing contacts");
@@ -79,7 +88,9 @@ export const syncContacts: ToolHandler = {
 
 export const getBlocklist: ToolHandler = {
   name: "whatsapp_get_blocklist",
-  description: "Get the list of all blocked contacts.",
+  description:
+    "List the contacts this number has blocked. Read-only. To change it, use whatsapp_block_contact or whatsapp_unblock_contact. Returns the blocked JIDs.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting blocklist");
@@ -94,7 +105,9 @@ export const getBlocklist: ToolHandler = {
 
 export const blockContact: ToolHandler = {
   name: "whatsapp_block_contact",
-  description: "Block a contact.",
+  description:
+    "Block a contact by user JID: they can no longer message or call this number, and they are not notified. Reversible with whatsapp_unblock_contact. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Contact JID to block" } },
@@ -110,7 +123,9 @@ export const blockContact: ToolHandler = {
 
 export const unblockContact: ToolHandler = {
   name: "whatsapp_unblock_contact",
-  description: "Unblock a contact.",
+  description:
+    "Unblock a previously blocked contact, so they can message and call this number again. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {

@@ -2,12 +2,15 @@ import type { ToolHandler } from "../server.js";
 import { wsapiClient } from "../client/index.js";
 import { createLogger } from "../utils/logger.js";
 import { validateInput, rejectCallSchema } from "../validation/schemas.js";
+import { SET } from "./annotations.js";
 
 const logger = createLogger("call-tools");
 
 export const rejectCall: ToolHandler = {
   name: "whatsapp_reject_call",
-  description: "Reject an incoming call.",
+  description:
+    "Reject an incoming WhatsApp call, using the callId and callerId from the call_offer event. The caller sees the call as declined. Only works while the call is still ringing. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
