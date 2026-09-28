@@ -1,11 +1,13 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 // Common patterns
 const chatIdSchema = z.string().min(1);
 const messageIdSchema = z.string().min(1);
 const base64Schema = z.string().min(1);
 const urlSchema = z.string().url();
-const ephemeralExpirationSchema = z.enum(['off', '24h', '7d', '90d']).optional();
+const ephemeralExpirationSchema = z
+  .enum(["off", "24h", "7d", "90d"])
+  .optional();
 
 // ─── Messaging schemas ───────────────────────────────────────────
 
@@ -19,51 +21,57 @@ export const sendTextMessageSchema = z.object({
   ephemeralExpiration: ephemeralExpirationSchema,
 });
 
-export const sendMediaMessageSchema = z.object({
-  to: chatIdSchema,
-  data: base64Schema.optional(),
-  url: urlSchema.optional(),
-  mimeType: z.string().optional(),
-  caption: z.string().optional(),
-  mentions: z.array(z.string()).optional(),
-  replyTo: messageIdSchema.optional(),
-  replyToSenderId: z.string().optional(),
-  isForwarded: z.boolean().optional(),
-  viewOnce: z.boolean().optional(),
-  ephemeralExpiration: ephemeralExpirationSchema,
-}).refine(data => data.data || data.url, {
-  message: "Either data or url must be provided",
-});
+export const sendMediaMessageSchema = z
+  .object({
+    to: chatIdSchema,
+    data: base64Schema.optional(),
+    url: urlSchema.optional(),
+    mimeType: z.string().optional(),
+    caption: z.string().optional(),
+    mentions: z.array(z.string()).optional(),
+    replyTo: messageIdSchema.optional(),
+    replyToSenderId: z.string().optional(),
+    isForwarded: z.boolean().optional(),
+    viewOnce: z.boolean().optional(),
+    ephemeralExpiration: ephemeralExpirationSchema,
+  })
+  .refine((data) => data.data || data.url, {
+    message: "Either data or url must be provided",
+  });
 
-export const sendDocumentMessageSchema = z.object({
-  to: chatIdSchema,
-  data: base64Schema.optional(),
-  url: urlSchema.optional(),
-  mimeType: z.string().optional(),
-  filename: z.string().min(1).max(255),
-  caption: z.string().optional(),
-  mentions: z.array(z.string()).optional(),
-  replyTo: messageIdSchema.optional(),
-  replyToSenderId: z.string().optional(),
-  isForwarded: z.boolean().optional(),
-  ephemeralExpiration: ephemeralExpirationSchema,
-}).refine(data => data.data || data.url, {
-  message: "Either data or url must be provided",
-});
+export const sendDocumentMessageSchema = z
+  .object({
+    to: chatIdSchema,
+    data: base64Schema.optional(),
+    url: urlSchema.optional(),
+    mimeType: z.string().optional(),
+    filename: z.string().min(1).max(255),
+    caption: z.string().optional(),
+    mentions: z.array(z.string()).optional(),
+    replyTo: messageIdSchema.optional(),
+    replyToSenderId: z.string().optional(),
+    isForwarded: z.boolean().optional(),
+    ephemeralExpiration: ephemeralExpirationSchema,
+  })
+  .refine((data) => data.data || data.url, {
+    message: "Either data or url must be provided",
+  });
 
-export const sendStickerMessageSchema = z.object({
-  to: chatIdSchema,
-  data: base64Schema.optional(),
-  url: urlSchema.optional(),
-  isAnimated: z.boolean().optional(),
-  mentions: z.array(z.string()).optional(),
-  replyTo: messageIdSchema.optional(),
-  replyToSenderId: z.string().optional(),
-  isForwarded: z.boolean().optional(),
-  ephemeralExpiration: ephemeralExpirationSchema,
-}).refine(data => data.data || data.url, {
-  message: "Either data or url must be provided",
-});
+export const sendStickerMessageSchema = z
+  .object({
+    to: chatIdSchema,
+    data: base64Schema.optional(),
+    url: urlSchema.optional(),
+    isAnimated: z.boolean().optional(),
+    mentions: z.array(z.string()).optional(),
+    replyTo: messageIdSchema.optional(),
+    replyToSenderId: z.string().optional(),
+    isForwarded: z.boolean().optional(),
+    ephemeralExpiration: ephemeralExpirationSchema,
+  })
+  .refine((data) => data.data || data.url, {
+    message: "Either data or url must be provided",
+  });
 
 export const sendLocationMessageSchema = z.object({
   to: chatIdSchema,
@@ -75,18 +83,20 @@ export const sendLocationMessageSchema = z.object({
   ephemeralExpiration: ephemeralExpirationSchema,
 });
 
-export const sendContactMessageSchema = z.object({
-  to: chatIdSchema,
-  displayName: z.string().optional(),
-  vcard: z.string().optional(),
-  mentions: z.array(z.string()).optional(),
-  replyTo: messageIdSchema.optional(),
-  replyToSenderId: z.string().optional(),
-  isForwarded: z.boolean().optional(),
-  ephemeralExpiration: ephemeralExpirationSchema,
-}).refine(data => data.displayName || data.vcard, {
-  message: "Either displayName or vcard must be provided",
-});
+export const sendContactMessageSchema = z
+  .object({
+    to: chatIdSchema,
+    displayName: z.string().optional(),
+    vcard: z.string().optional(),
+    mentions: z.array(z.string()).optional(),
+    replyTo: messageIdSchema.optional(),
+    replyToSenderId: z.string().optional(),
+    isForwarded: z.boolean().optional(),
+    ephemeralExpiration: ephemeralExpirationSchema,
+  })
+  .refine((data) => data.displayName || data.vcard, {
+    message: "Either displayName or vcard must be provided",
+  });
 
 export const sendLinkMessageSchema = z.object({
   to: chatIdSchema,
@@ -137,7 +147,7 @@ export const markMessageAsReadSchema = z.object({
   messageId: messageIdSchema,
   chatId: chatIdSchema,
   senderId: z.string().min(1),
-  receiptType: z.enum(['delivered', 'sender', 'read', 'played']),
+  receiptType: z.enum(["delivered", "sender", "read", "played"]),
 });
 
 export const starMessageSchema = z.object({
@@ -200,7 +210,7 @@ export const setGroupPictureSchema = z.object({
 export const updateGroupParticipantsSchema = z.object({
   id: z.string().min(1),
   participants: z.array(z.string()).min(1),
-  action: z.enum(['add', 'remove', 'promote', 'demote']),
+  action: z.enum(["add", "remove", "promote", "demote"]),
 });
 
 export const setBoolSettingSchema = z.object({
@@ -231,7 +241,7 @@ export const getGroupInfoFromLinkSchema = z.object({
 export const updateGroupRequestsSchema = z.object({
   id: z.string().min(1),
   participants: z.array(z.string()).min(1),
-  action: z.enum(['approve', 'reject']),
+  action: z.enum(["approve", "reject"]),
 });
 
 // ─── Community schemas ───────────────────────────────────────────
@@ -270,7 +280,7 @@ export const getChatSchema = z.object({
 
 export const setChatPresenceSchema = z.object({
   chatId: chatIdSchema,
-  state: z.enum(['typing', 'recording', 'paused']),
+  state: z.enum(["typing", "recording", "paused"]),
 });
 
 export const updateChatArchiveSchema = z.object({
@@ -285,12 +295,12 @@ export const updateChatPinSchema = z.object({
 
 export const updateChatEphemeralSchema = z.object({
   chatId: chatIdSchema,
-  expiration: z.enum(['off', '24h', '7d', '90d']),
+  expiration: z.enum(["off", "24h", "7d", "90d"]),
 });
 
 export const updateChatMuteSchema = z.object({
   chatId: chatIdSchema,
-  duration: z.enum(['8h', '1w', 'always', 'off']),
+  duration: z.enum(["8h", "1w", "always", "off"]),
 });
 
 export const markChatAsReadSchema = z.object({
@@ -324,12 +334,27 @@ export const updateMyProfileSchema = z.object({
 });
 
 export const setPresenceSchema = z.object({
-  presence: z.enum(['available', 'unavailable']),
+  presence: z.enum(["available", "unavailable"]),
 });
 
 export const setPrivacySettingSchema = z.object({
-  setting: z.enum(['groupadd', 'last', 'status', 'profile', 'readreceipts', 'online', 'calladd']),
-  value: z.enum(['all', 'contacts', 'contact_blacklist', 'match_last_seen', 'known', 'none']),
+  setting: z.enum([
+    "groupadd",
+    "last",
+    "status",
+    "profile",
+    "readreceipts",
+    "online",
+    "calladd",
+  ]),
+  value: z.enum([
+    "all",
+    "contacts",
+    "contact_blacklist",
+    "match_last_seen",
+    "known",
+    "none",
+  ]),
 });
 
 export const bulkCheckUsersSchema = z.object({
@@ -381,14 +406,16 @@ export const postTextStatusSchema = z.object({
   text: z.string().min(1),
 });
 
-export const postMediaStatusSchema = z.object({
-  data: z.string().optional(),
-  url: urlSchema.optional(),
-  mimeType: z.string().optional(),
-  caption: z.string().optional(),
-}).refine(data => data.data || data.url, {
-  message: "Either data or url must be provided",
-});
+export const postMediaStatusSchema = z
+  .object({
+    data: z.string().optional(),
+    url: urlSchema.optional(),
+    mimeType: z.string().optional(),
+    caption: z.string().optional(),
+  })
+  .refine((data) => data.data || data.url, {
+    message: "Either data or url must be provided",
+  });
 
 export const deleteStatusSchema = z.object({
   messageId: z.string().min(1),
@@ -399,8 +426,10 @@ export const deleteStatusSchema = z.object({
 export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): T {
   const result = schema.safeParse(data);
   if (!result.success) {
-    const errors = result.error.issues.map((err: z.ZodIssue) => `${err.path.join('.')}: ${err.message}`);
-    throw new Error(`Validation failed: ${errors.join(', ')}`);
+    const errors = result.error.issues.map(
+      (err: z.ZodIssue) => `${err.path.join(".")}: ${err.message}`,
+    );
+    throw new Error(`Validation failed: ${errors.join(", ")}`);
   }
   return result.data;
 }
@@ -409,9 +438,15 @@ export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): T {
 
 export type SendTextMessageInput = z.infer<typeof sendTextMessageSchema>;
 export type SendMediaMessageInput = z.infer<typeof sendMediaMessageSchema>;
-export type SendDocumentMessageInput = z.infer<typeof sendDocumentMessageSchema>;
+export type SendDocumentMessageInput = z.infer<
+  typeof sendDocumentMessageSchema
+>;
 export type SendStickerMessageInput = z.infer<typeof sendStickerMessageSchema>;
-export type SendLocationMessageInput = z.infer<typeof sendLocationMessageSchema>;
+export type SendLocationMessageInput = z.infer<
+  typeof sendLocationMessageSchema
+>;
 export type SendContactMessageInput = z.infer<typeof sendContactMessageSchema>;
 export type SendLinkMessageInput = z.infer<typeof sendLinkMessageSchema>;
-export type SendReactionMessageInput = z.infer<typeof sendReactionMessageSchema>;
+export type SendReactionMessageInput = z.infer<
+  typeof sendReactionMessageSchema
+>;

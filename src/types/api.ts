@@ -4,5504 +4,5522 @@
  */
 
 export interface paths {
-    "/session/qr": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get QR code for pairing
-         * @description Returns a PNG image of the QR code to scan with WhatsApp.
-         */
-        get: operations["getQR"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/session/qr/text": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get QR code as text
-         * @description Returns the raw QR code string for clients that want to render the QR code themselves.
-         */
-        get: operations["getQRText"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/session/pair-code/{phone}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get pair code for phone number */
-        get: operations["getPairCode"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/session/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get session status */
-        get: operations["getSessionStatus"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/session/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Logout from WhatsApp */
-        post: operations["logout"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/session/flush-history": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Flush cached history sync messages
-         * @description Returns 202 Accepted immediately, then asynchronously publishes cached history sync
-         *     messages as `message_history_sync` events (one per chat, chunked at 500 messages).
-         *     The consumer should call this endpoint after receiving the `initial_sync_finished` event,
-         *     which is only emitted when `historySync` is enabled and fires after the RECENT history
-         *     sync completes and all messages have been cached.
-         *     Requires the instance to have `historySync` enabled and the device to be paired.
-         *     Cached messages expire after 1 hour.
-         */
-        post: operations["flushHistory"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/text": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a text message
-         * @description Send a text message to a WhatsApp contact or group. The response contains the message ID, which can be used later for reply, edit, delete, star, and other actions.
-         */
-        post: operations["sendText"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/image": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send an image message
-         * @description Send an image message via URL or base64-encoded data. The response contains the message ID.
-         */
-        post: operations["sendImage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/video": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a video message
-         * @description Send a video message via URL or base64-encoded data. The response contains the message ID.
-         */
-        post: operations["sendVideo"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/audio": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send an audio message
-         * @description Send an audio message via URL or base64-encoded data. The response contains the message ID.
-         */
-        post: operations["sendAudio"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/voice": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a voice message
-         * @description Send a voice (push-to-talk) message via URL or base64-encoded data. The response contains the message ID.
-         */
-        post: operations["sendVoice"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/document": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a document message
-         * @description Send a document via URL or base64-encoded data. The `filename` field is required. The response contains the message ID.
-         */
-        post: operations["sendDocument"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/sticker": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a sticker message
-         * @description Send a sticker (WebP format) via URL or base64-encoded data. Use `isAnimated` for animated stickers. The response contains the message ID.
-         */
-        post: operations["sendSticker"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/contact": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a contact card
-         * @description Send a contact card via display name (auto-generated vCard) or a raw vCard string. The response contains the message ID.
-         */
-        post: operations["sendContact"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/location": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a location message
-         * @description Send a location with coordinates and optional name, address, and URL details. The response contains the message ID.
-         */
-        post: operations["sendLocation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/link": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a link preview message
-         * @description Send a link message with an optional preview (title, description, and JPEG thumbnail). The response contains the message ID.
-         */
-        post: operations["sendLink"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/{messageId}/reaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * React to a message
-         * @description Send an emoji reaction to a message. Send an empty string as the reaction to remove a previous reaction.
-         */
-        post: operations["sendReaction"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/{messageId}/edit": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Edit a sent message
-         * @description Edit the text of a previously sent message. Only your own messages can be edited.
-         */
-        post: operations["editMessage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/{messageId}/read": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Mark a message as read
-         * @description Mark a message as read with the specified receipt type.
-         */
-        post: operations["markAsRead"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/{messageId}/star": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Star or unstar a message
-         * @description Star or unstar a message. Set `starred` to true to star, false to unstar.
-         */
-        post: operations["starMessage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/{messageId}/pin": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Pin or unpin a message
-         * @description Pin or unpin a message in a chat. Set `pinned` to true to pin, false to unpin. Optionally specify a pin expiration duration.
-         */
-        post: operations["pinMessage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/{messageId}/delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete a message for everyone
-         * @description Delete a message for all chat participants. Only your own sent messages can be deleted for everyone.
-         */
-        post: operations["deleteMessage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages/{messageId}/delete-for-me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete a message for me only
-         * @description Delete a message only from your own chat. The message remains visible to other participants.
-         */
-        post: operations["deleteMessageForMe"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List joined groups
-         * @description Retrieve a list of all groups the current user is a member of.
-         */
-        get: operations["listGroups"];
-        put?: never;
-        /**
-         * Create a new group
-         * @description Create a new WhatsApp group with the specified name and initial participants.
-         */
-        post: operations["createGroup"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get group info
-         * @description Retrieve detailed information about a specific group, including participants, admins, and settings.
-         */
-        get: operations["getGroup"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/name": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set group name
-         * @description Update the name of a group. Requires admin privileges.
-         */
-        put: operations["setGroupName"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/description": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set group description
-         * @description Update the description of a group. Requires admin privileges.
-         */
-        put: operations["setGroupDescription"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/picture": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set group picture
-         * @description Update the profile picture of a group. Requires admin privileges.
-         */
-        post: operations["setGroupPicture"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/leave": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Leave a group
-         * @description Leave the specified group. You will no longer receive messages from this group.
-         */
-        post: operations["leaveGroup"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/participants": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get group participants
-         * @description Retrieve the list of all participants in a group.
-         */
-        get: operations["getGroupParticipants"];
-        /**
-         * Update group participants
-         * @description Add, remove, promote, or demote participants. Requires admin privileges.
-         */
-        put: operations["updateGroupParticipants"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/invite-link": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get group invite link
-         * @description Get the current invite link for a group. Requires admin privileges.
-         */
-        get: operations["getGroupInviteLink"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/invite-link/reset": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reset group invite link
-         * @description Reset and generate a new invite link for a group. The old link will no longer work. Requires admin privileges.
-         */
-        post: operations["resetGroupInviteLink"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/settings/announce": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set group announce mode
-         * @description When enabled, only admins can send messages.
-         */
-        put: operations["setGroupAnnounce"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/settings/locked": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set group locked mode
-         * @description When enabled, only admins can edit group info.
-         */
-        put: operations["setGroupLocked"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/settings/join-approval": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set group join approval mode
-         * @description When enabled, new members require admin approval.
-         */
-        put: operations["setGroupJoinApproval"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/settings/member-add-mode": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set member add mode
-         * @description Control whether only admins can add members.
-         */
-        put: operations["setGroupMemberAddMode"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/join/link": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Join a group via invite link
-         * @description Join a group using an invite link code (the part after `https://chat.whatsapp.com/`).
-         */
-        post: operations["joinGroupWithLink"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/join/invite": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Join a group via invite message
-         * @description Accept a group invite received via a direct message. Requires the group JID, inviter JID, and invite code.
-         */
-        post: operations["joinGroupWithInvite"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/invite/{code}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get group info from invite code
-         * @description Preview group information from an invite code without joining the group.
-         */
-        get: operations["getGroupInfoFromLink"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}/requests": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get pending join requests
-         * @description Get the list of pending join requests for a group. Only available when join approval mode is enabled.
-         */
-        get: operations["getGroupRequests"];
-        /**
-         * Approve or reject join requests
-         * @description Approve or reject pending join requests for a group. Only available when join approval mode is enabled. Requires admin privileges.
-         */
-        put: operations["updateGroupRequests"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List joined communities
-         * @description Retrieve a list of all communities the current user is a member of.
-         */
-        get: operations["listCommunities"];
-        put?: never;
-        /**
-         * Create a new community
-         * @description Create a new WhatsApp community with the specified name and optional participants.
-         */
-        post: operations["createCommunity"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get community info
-         * @description Retrieve detailed information about a specific community.
-         */
-        get: operations["getCommunity"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/leave": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Leave a community
-         * @description Leave a community. This will remove the current user from the community.
-         */
-        post: operations["leaveCommunity"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/name": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set community name
-         * @description Update the name of a community. Requires admin privileges.
-         */
-        put: operations["setCommunityName"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/description": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set community description
-         * @description Update the description of a community. Requires admin privileges.
-         */
-        put: operations["setCommunityDescription"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/picture": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set community picture
-         * @description Update the profile picture of a community. Requires admin privileges.
-         */
-        post: operations["setCommunityPicture"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/settings/locked": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set community locked mode
-         * @description When enabled, only admins can edit community info.
-         */
-        put: operations["setCommunityLocked"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/participants": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get community participants
-         * @description Retrieve the list of all participants in a community.
-         */
-        get: operations["getCommunityParticipants"];
-        /**
-         * Update community participants
-         * @description Add, remove, promote, or demote participants. Requires admin privileges.
-         */
-        put: operations["updateCommunityParticipants"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/invite-link": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get community invite link
-         * @description Get the current invite link for a community. Requires admin privileges.
-         */
-        get: operations["getCommunityInviteLink"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/invite-link/reset": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reset community invite link
-         * @description Reset and generate a new invite link. The old link will no longer work. Requires admin privileges.
-         */
-        post: operations["resetCommunityInviteLink"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/groups": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get community sub-groups
-         * @description Retrieve the list of all sub-groups linked to a community.
-         */
-        get: operations["getCommunitySubGroups"];
-        put?: never;
-        /**
-         * Create a group within a community
-         * @description Create a new sub-group inside a community. Requires admin privileges.
-         */
-        post: operations["createCommunityGroup"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/groups/link": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Link an existing group to a community
-         * @description Link an existing group as a sub-group of a community. Requires admin privileges in both the group and community.
-         */
-        post: operations["linkGroupToCommunity"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communities/{id}/groups/{groupId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * Unlink a group from a community
-         * @description Remove a sub-group from a community. The group itself is not deleted. Requires admin privileges.
-         */
-        delete: operations["unlinkCommunityGroup"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contacts": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List all contacts */
-        get: operations["listContacts"];
-        put?: never;
-        /**
-         * Create or update a contact
-         * @description Creates or updates a contact via WhatsApp app state sync.
-         */
-        post: operations["createContact"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contacts/sync": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Sync contacts from WhatsApp
-         * @description Triggers a full contact sync from the WhatsApp server. This fetches the complete contact list
-         *     from the server and updates the local contact store, replacing any stale data.
-         */
-        post: operations["syncContacts"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contacts/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a specific contact */
-        get: operations["getContact"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contacts/blocklist": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get blocked contacts
-         * @description Returns the list of all blocked contacts.
-         */
-        get: operations["getBlocklist"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contacts/{id}/block": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Block a contact
-         * @description Block a contact by their JID. The contact will no longer be able to send you messages.
-         */
-        put: operations["blockContact"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contacts/{id}/unblock": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Unblock a contact
-         * @description Unblock a previously blocked contact.
-         */
-        put: operations["unblockContact"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/me/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get own profile info */
-        get: operations["getMyProfile"];
-        /**
-         * Update own profile
-         * @description Update name, status, and/or picture. All fields are optional.
-         */
-        put: operations["updateMyProfile"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/me/presence": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set presence state
-         * @description Set the account's presence to available or unavailable. This is a transient action (not persisted in the profile).
-         */
-        put: operations["setPresence"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/me/privacy": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get privacy settings
-         * @description Returns the current privacy settings for the account.
-         */
-        get: operations["getPrivacySettings"];
-        /**
-         * Update a privacy setting
-         * @description Update a single privacy setting. Returns the full updated privacy settings.
-         */
-        put: operations["setPrivacySetting"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/check": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Bulk check phone numbers on WhatsApp
-         * @description Check multiple phone numbers at once to see if they are registered on WhatsApp.
-         */
-        post: operations["bulkCheckUsers"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/{phone}/check": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Check if a phone number is on WhatsApp */
-        get: operations["checkUser"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/{phone}/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get user profile info */
-        get: operations["getUserProfile"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/media/download": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Download media by ID
-         * @description Returns the raw media file as a binary download with Content-Disposition header. Use the `media.id` field from incoming message webhook events as the `id` query parameter.
-         */
-        get: operations["downloadMedia"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List all known chats
-         * @description Returns all known chats for the instance, enriched with contact info (pushName, businessName, fullName) and chat settings (pinned, archived, muted). Sorted by last activity descending.
-         */
-        get: operations["listChats"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get chat info
-         * @description Returns details for a single chat, enriched with contact info and chat settings.
-         */
-        get: operations["getChatInfo"];
-        put?: never;
-        post?: never;
-        /** Delete a chat */
-        delete: operations["deleteChat"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/picture": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get chat profile picture */
-        get: operations["getChatPicture"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/business": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get business profile for a chat */
-        get: operations["getChatBusinessProfile"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/presence": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Send chat presence (typing, paused, recording) */
-        put: operations["setChatPresence"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/presence/subscribe": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Subscribe to presence updates for a chat */
-        put: operations["subscribeChatPresence"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/ephemeral": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Set disappearing messages timer */
-        put: operations["setChatEphemeral"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/mute": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Mute or unmute a chat */
-        put: operations["muteChat"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/pin": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Pin or unpin a chat */
-        put: operations["pinChat"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/archive": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Archive or unarchive a chat */
-        put: operations["archiveChat"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/read": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Mark a chat as read or unread */
-        put: operations["markChatAsRead"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/messages": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Request on-demand message history
-         * @description Triggers an on-demand history sync request for the given chat. The response arrives
-         *     asynchronously as a `message_history_sync` event via the configured publisher.
-         */
-        post: operations["requestChatMessages"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chats/{chatId}/clear": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Clear all messages from a chat */
-        post: operations["clearChat"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/calls/{callId}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Reject an incoming call */
-        post: operations["rejectCall"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/newsletters": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List subscribed newsletters
-         * @description Returns all newsletters the current user is subscribed to.
-         */
-        get: operations["listNewsletters"];
-        put?: never;
-        /**
-         * Create a newsletter
-         * @description Create a new newsletter/channel with the specified name, description, and optional picture.
-         */
-        post: operations["createNewsletter"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/newsletters/invite/{code}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get newsletter info by invite code
-         * @description Look up newsletter information using an invite code.
-         */
-        get: operations["getNewsletterByInviteCode"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/newsletters/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get newsletter info
-         * @description Retrieve detailed information about a specific newsletter.
-         */
-        get: operations["getNewsletter"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/newsletters/{id}/subscription": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Subscribe or unsubscribe from a newsletter
-         * @description Set the subscription state for a newsletter. Set `subscribed` to true to follow/subscribe, or false to unfollow/unsubscribe.
-         */
-        put: operations["setNewsletterSubscription"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/newsletters/{id}/mute": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Mute or unmute a newsletter
-         * @description Toggle mute state for a newsletter. Muted newsletters do not send notifications.
-         */
-        put: operations["toggleMuteNewsletter"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/status/privacy": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get status privacy settings
-         * @description Returns the status broadcast privacy settings for the logged-in account.
-         */
-        get: operations["getStatusPrivacy"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/status/text": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Post a text status
-         * @description Post a text status update (story) visible to your contacts.
-         */
-        post: operations["postTextStatus"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/status/image": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Post an image status
-         * @description Post an image status update (story) via URL or base64-encoded data.
-         */
-        post: operations["postImageStatus"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/status/video": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Post a video status
-         * @description Post a video status update (story) via URL or base64-encoded data.
-         */
-        post: operations["postVideoStatus"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/status/{messageId}/delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete a status update
-         * @description Delete (revoke) a previously posted status update so it is no longer visible to your contacts.
-         */
-        post: operations["deleteStatus"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
+  "/session/qr": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get QR code for pairing
+     * @description Returns a PNG image of the QR code to scan with WhatsApp.
+     */
+    get: operations["getQR"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/session/qr/text": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get QR code as text
+     * @description Returns the raw QR code string for clients that want to render the QR code themselves.
+     */
+    get: operations["getQRText"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/session/pair-code/{phone}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get pair code for phone number */
+    get: operations["getPairCode"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/session/status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get session status */
+    get: operations["getSessionStatus"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/session/logout": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Logout from WhatsApp */
+    post: operations["logout"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/session/flush-history": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Flush cached history sync messages
+     * @description Returns 202 Accepted immediately, then asynchronously publishes cached history sync
+     *     messages as `message_history_sync` events (one per chat, chunked at 500 messages).
+     *     The consumer should call this endpoint after receiving the `initial_sync_finished` event,
+     *     which is only emitted when `historySync` is enabled and fires after the RECENT history
+     *     sync completes and all messages have been cached.
+     *     Requires the instance to have `historySync` enabled and the device to be paired.
+     *     Cached messages expire after 1 hour.
+     */
+    post: operations["flushHistory"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/text": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send a text message
+     * @description Send a text message to a WhatsApp contact or group. The response contains the message ID, which can be used later for reply, edit, delete, star, and other actions.
+     */
+    post: operations["sendText"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/image": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send an image message
+     * @description Send an image message via URL or base64-encoded data. The response contains the message ID.
+     */
+    post: operations["sendImage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/video": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send a video message
+     * @description Send a video message via URL or base64-encoded data. The response contains the message ID.
+     */
+    post: operations["sendVideo"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/audio": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send an audio message
+     * @description Send an audio message via URL or base64-encoded data. The response contains the message ID.
+     */
+    post: operations["sendAudio"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/voice": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send a voice message
+     * @description Send a voice (push-to-talk) message via URL or base64-encoded data. The response contains the message ID.
+     */
+    post: operations["sendVoice"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/document": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send a document message
+     * @description Send a document via URL or base64-encoded data. The `filename` field is required. The response contains the message ID.
+     */
+    post: operations["sendDocument"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/sticker": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send a sticker message
+     * @description Send a sticker (WebP format) via URL or base64-encoded data. Use `isAnimated` for animated stickers. The response contains the message ID.
+     */
+    post: operations["sendSticker"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/contact": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send a contact card
+     * @description Send a contact card via display name (auto-generated vCard) or a raw vCard string. The response contains the message ID.
+     */
+    post: operations["sendContact"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/location": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send a location message
+     * @description Send a location with coordinates and optional name, address, and URL details. The response contains the message ID.
+     */
+    post: operations["sendLocation"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/link": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Send a link preview message
+     * @description Send a link message with an optional preview (title, description, and JPEG thumbnail). The response contains the message ID.
+     */
+    post: operations["sendLink"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/{messageId}/reaction": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * React to a message
+     * @description Send an emoji reaction to a message. Send an empty string as the reaction to remove a previous reaction.
+     */
+    post: operations["sendReaction"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/{messageId}/edit": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Edit a sent message
+     * @description Edit the text of a previously sent message. Only your own messages can be edited.
+     */
+    post: operations["editMessage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/{messageId}/read": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Mark a message as read
+     * @description Mark a message as read with the specified receipt type.
+     */
+    post: operations["markAsRead"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/{messageId}/star": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Star or unstar a message
+     * @description Star or unstar a message. Set `starred` to true to star, false to unstar.
+     */
+    post: operations["starMessage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/{messageId}/pin": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Pin or unpin a message
+     * @description Pin or unpin a message in a chat. Set `pinned` to true to pin, false to unpin. Optionally specify a pin expiration duration.
+     */
+    post: operations["pinMessage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/{messageId}/delete": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Delete a message for everyone
+     * @description Delete a message for all chat participants. Only your own sent messages can be deleted for everyone.
+     */
+    post: operations["deleteMessage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/messages/{messageId}/delete-for-me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Delete a message for me only
+     * @description Delete a message only from your own chat. The message remains visible to other participants.
+     */
+    post: operations["deleteMessageForMe"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List joined groups
+     * @description Retrieve a list of all groups the current user is a member of.
+     */
+    get: operations["listGroups"];
+    put?: never;
+    /**
+     * Create a new group
+     * @description Create a new WhatsApp group with the specified name and initial participants.
+     */
+    post: operations["createGroup"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get group info
+     * @description Retrieve detailed information about a specific group, including participants, admins, and settings.
+     */
+    get: operations["getGroup"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/name": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set group name
+     * @description Update the name of a group. Requires admin privileges.
+     */
+    put: operations["setGroupName"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/description": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set group description
+     * @description Update the description of a group. Requires admin privileges.
+     */
+    put: operations["setGroupDescription"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/picture": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Set group picture
+     * @description Update the profile picture of a group. Requires admin privileges.
+     */
+    post: operations["setGroupPicture"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/leave": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Leave a group
+     * @description Leave the specified group. You will no longer receive messages from this group.
+     */
+    post: operations["leaveGroup"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/participants": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get group participants
+     * @description Retrieve the list of all participants in a group.
+     */
+    get: operations["getGroupParticipants"];
+    /**
+     * Update group participants
+     * @description Add, remove, promote, or demote participants. Requires admin privileges.
+     */
+    put: operations["updateGroupParticipants"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/invite-link": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get group invite link
+     * @description Get the current invite link for a group. Requires admin privileges.
+     */
+    get: operations["getGroupInviteLink"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/invite-link/reset": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Reset group invite link
+     * @description Reset and generate a new invite link for a group. The old link will no longer work. Requires admin privileges.
+     */
+    post: operations["resetGroupInviteLink"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/settings/announce": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set group announce mode
+     * @description When enabled, only admins can send messages.
+     */
+    put: operations["setGroupAnnounce"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/settings/locked": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set group locked mode
+     * @description When enabled, only admins can edit group info.
+     */
+    put: operations["setGroupLocked"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/settings/join-approval": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set group join approval mode
+     * @description When enabled, new members require admin approval.
+     */
+    put: operations["setGroupJoinApproval"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/settings/member-add-mode": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set member add mode
+     * @description Control whether only admins can add members.
+     */
+    put: operations["setGroupMemberAddMode"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/join/link": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Join a group via invite link
+     * @description Join a group using an invite link code (the part after `https://chat.whatsapp.com/`).
+     */
+    post: operations["joinGroupWithLink"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/join/invite": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Join a group via invite message
+     * @description Accept a group invite received via a direct message. Requires the group JID, inviter JID, and invite code.
+     */
+    post: operations["joinGroupWithInvite"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/invite/{code}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get group info from invite code
+     * @description Preview group information from an invite code without joining the group.
+     */
+    get: operations["getGroupInfoFromLink"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/groups/{id}/requests": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get pending join requests
+     * @description Get the list of pending join requests for a group. Only available when join approval mode is enabled.
+     */
+    get: operations["getGroupRequests"];
+    /**
+     * Approve or reject join requests
+     * @description Approve or reject pending join requests for a group. Only available when join approval mode is enabled. Requires admin privileges.
+     */
+    put: operations["updateGroupRequests"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List joined communities
+     * @description Retrieve a list of all communities the current user is a member of.
+     */
+    get: operations["listCommunities"];
+    put?: never;
+    /**
+     * Create a new community
+     * @description Create a new WhatsApp community with the specified name and optional participants.
+     */
+    post: operations["createCommunity"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get community info
+     * @description Retrieve detailed information about a specific community.
+     */
+    get: operations["getCommunity"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/leave": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Leave a community
+     * @description Leave a community. This will remove the current user from the community.
+     */
+    post: operations["leaveCommunity"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/name": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set community name
+     * @description Update the name of a community. Requires admin privileges.
+     */
+    put: operations["setCommunityName"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/description": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set community description
+     * @description Update the description of a community. Requires admin privileges.
+     */
+    put: operations["setCommunityDescription"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/picture": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Set community picture
+     * @description Update the profile picture of a community. Requires admin privileges.
+     */
+    post: operations["setCommunityPicture"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/settings/locked": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set community locked mode
+     * @description When enabled, only admins can edit community info.
+     */
+    put: operations["setCommunityLocked"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/participants": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get community participants
+     * @description Retrieve the list of all participants in a community.
+     */
+    get: operations["getCommunityParticipants"];
+    /**
+     * Update community participants
+     * @description Add, remove, promote, or demote participants. Requires admin privileges.
+     */
+    put: operations["updateCommunityParticipants"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/invite-link": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get community invite link
+     * @description Get the current invite link for a community. Requires admin privileges.
+     */
+    get: operations["getCommunityInviteLink"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/invite-link/reset": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Reset community invite link
+     * @description Reset and generate a new invite link. The old link will no longer work. Requires admin privileges.
+     */
+    post: operations["resetCommunityInviteLink"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/groups": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get community sub-groups
+     * @description Retrieve the list of all sub-groups linked to a community.
+     */
+    get: operations["getCommunitySubGroups"];
+    put?: never;
+    /**
+     * Create a group within a community
+     * @description Create a new sub-group inside a community. Requires admin privileges.
+     */
+    post: operations["createCommunityGroup"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/groups/link": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Link an existing group to a community
+     * @description Link an existing group as a sub-group of a community. Requires admin privileges in both the group and community.
+     */
+    post: operations["linkGroupToCommunity"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/communities/{id}/groups/{groupId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * Unlink a group from a community
+     * @description Remove a sub-group from a community. The group itself is not deleted. Requires admin privileges.
+     */
+    delete: operations["unlinkCommunityGroup"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/contacts": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all contacts */
+    get: operations["listContacts"];
+    put?: never;
+    /**
+     * Create or update a contact
+     * @description Creates or updates a contact via WhatsApp app state sync.
+     */
+    post: operations["createContact"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/contacts/sync": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Sync contacts from WhatsApp
+     * @description Triggers a full contact sync from the WhatsApp server. This fetches the complete contact list
+     *     from the server and updates the local contact store, replacing any stale data.
+     */
+    post: operations["syncContacts"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/contacts/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get a specific contact */
+    get: operations["getContact"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/contacts/blocklist": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get blocked contacts
+     * @description Returns the list of all blocked contacts.
+     */
+    get: operations["getBlocklist"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/contacts/{id}/block": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Block a contact
+     * @description Block a contact by their JID. The contact will no longer be able to send you messages.
+     */
+    put: operations["blockContact"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/contacts/{id}/unblock": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Unblock a contact
+     * @description Unblock a previously blocked contact.
+     */
+    put: operations["unblockContact"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/me/profile": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get own profile info */
+    get: operations["getMyProfile"];
+    /**
+     * Update own profile
+     * @description Update name, status, and/or picture. All fields are optional.
+     */
+    put: operations["updateMyProfile"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/me/presence": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Set presence state
+     * @description Set the account's presence to available or unavailable. This is a transient action (not persisted in the profile).
+     */
+    put: operations["setPresence"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/me/privacy": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get privacy settings
+     * @description Returns the current privacy settings for the account.
+     */
+    get: operations["getPrivacySettings"];
+    /**
+     * Update a privacy setting
+     * @description Update a single privacy setting. Returns the full updated privacy settings.
+     */
+    put: operations["setPrivacySetting"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/check": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Bulk check phone numbers on WhatsApp
+     * @description Check multiple phone numbers at once to see if they are registered on WhatsApp.
+     */
+    post: operations["bulkCheckUsers"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/{phone}/check": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Check if a phone number is on WhatsApp */
+    get: operations["checkUser"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/{phone}/profile": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get user profile info */
+    get: operations["getUserProfile"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/media/download": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Download media by ID
+     * @description Returns the raw media file as a binary download with Content-Disposition header. Use the `media.id` field from incoming message webhook events as the `id` query parameter.
+     */
+    get: operations["downloadMedia"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List all known chats
+     * @description Returns all known chats for the instance, enriched with contact info (pushName, businessName, fullName) and chat settings (pinned, archived, muted). Sorted by last activity descending.
+     */
+    get: operations["listChats"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get chat info
+     * @description Returns details for a single chat, enriched with contact info and chat settings.
+     */
+    get: operations["getChatInfo"];
+    put?: never;
+    post?: never;
+    /** Delete a chat */
+    delete: operations["deleteChat"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/picture": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get chat profile picture */
+    get: operations["getChatPicture"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/business": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get business profile for a chat */
+    get: operations["getChatBusinessProfile"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/presence": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Send chat presence (typing, paused, recording) */
+    put: operations["setChatPresence"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/presence/subscribe": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Subscribe to presence updates for a chat */
+    put: operations["subscribeChatPresence"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/ephemeral": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Set disappearing messages timer */
+    put: operations["setChatEphemeral"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/mute": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Mute or unmute a chat */
+    put: operations["muteChat"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/pin": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Pin or unpin a chat */
+    put: operations["pinChat"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/archive": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Archive or unarchive a chat */
+    put: operations["archiveChat"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/read": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Mark a chat as read or unread */
+    put: operations["markChatAsRead"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/messages": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Request on-demand message history
+     * @description Triggers an on-demand history sync request for the given chat. The response arrives
+     *     asynchronously as a `message_history_sync` event via the configured publisher.
+     */
+    post: operations["requestChatMessages"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/chats/{chatId}/clear": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Clear all messages from a chat */
+    post: operations["clearChat"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/calls/{callId}/reject": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Reject an incoming call */
+    post: operations["rejectCall"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/newsletters": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List subscribed newsletters
+     * @description Returns all newsletters the current user is subscribed to.
+     */
+    get: operations["listNewsletters"];
+    put?: never;
+    /**
+     * Create a newsletter
+     * @description Create a new newsletter/channel with the specified name, description, and optional picture.
+     */
+    post: operations["createNewsletter"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/newsletters/invite/{code}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get newsletter info by invite code
+     * @description Look up newsletter information using an invite code.
+     */
+    get: operations["getNewsletterByInviteCode"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/newsletters/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get newsletter info
+     * @description Retrieve detailed information about a specific newsletter.
+     */
+    get: operations["getNewsletter"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/newsletters/{id}/subscription": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Subscribe or unsubscribe from a newsletter
+     * @description Set the subscription state for a newsletter. Set `subscribed` to true to follow/subscribe, or false to unfollow/unsubscribe.
+     */
+    put: operations["setNewsletterSubscription"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/newsletters/{id}/mute": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Mute or unmute a newsletter
+     * @description Toggle mute state for a newsletter. Muted newsletters do not send notifications.
+     */
+    put: operations["toggleMuteNewsletter"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/status/privacy": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get status privacy settings
+     * @description Returns the status broadcast privacy settings for the logged-in account.
+     */
+    get: operations["getStatusPrivacy"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/status/text": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Post a text status
+     * @description Post a text status update (story) visible to your contacts.
+     */
+    post: operations["postTextStatus"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/status/image": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Post an image status
+     * @description Post an image status update (story) via URL or base64-encoded data.
+     */
+    post: operations["postImageStatus"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/status/video": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Post a video status
+     * @description Post a video status update (story) via URL or base64-encoded data.
+     */
+    post: operations["postVideoStatus"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/status/{messageId}/delete": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Delete a status update
+     * @description Delete (revoke) a previously posted status update so it is no longer visible to your contacts.
+     */
+    post: operations["deleteStatus"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        /** @description Standard error response returned by all API endpoints */
-        Error: {
-            /**
-             * @description Human-readable error message
-             * @example invalid request body
-             */
-            detail: string;
-            /**
-             * @description HTTP status code
-             * @example 400
-             */
-            status: number;
-        };
-        SessionStatus: {
-            isConnected?: boolean;
-            isLoggedIn?: boolean;
-            deviceId?: string;
-        };
-        SendTextRequest: {
-            /** @description Recipient JID (user or group) */
-            to: string;
-            /** @description Message text */
-            text: string;
-            /** @description JIDs of mentioned users */
-            mentions?: string[];
-            /** @description Message ID to reply to */
-            replyTo?: string;
-            /** @description Sender JID of the message being replied to */
-            replyToSenderId?: string;
-            /** @description Mark message as forwarded */
-            isForwarded?: boolean;
-            /**
-             * @description Disappearing message timer
-             * @enum {string}
-             */
-            ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
-        };
-        SendMediaRequest: {
-            /** @description Recipient JID */
-            to: string;
-            /** @description Base64-encoded file data (mutually exclusive with `url`) */
-            data?: string;
-            /**
-             * Format: uri
-             * @description URL to download the media from (mutually exclusive with `data`, max 50 MB)
-             */
-            url?: string;
-            /** @description MIME type of the file (auto-detected if omitted) */
-            mimeType?: string;
-            /** @description Media caption */
-            caption?: string;
-            mentions?: string[];
-            replyTo?: string;
-            replyToSenderId?: string;
-            isForwarded?: boolean;
-            /** @description Send as view-once media */
-            viewOnce?: boolean;
-            /** @enum {string} */
-            ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
-        };
-        SendDocumentRequest: components["schemas"]["SendMediaRequest"] & {
-            /** @description Filename shown to the recipient */
-            filename: string;
-        };
-        SendStickerRequest: {
-            to: string;
-            /** @description Base64-encoded sticker data (WebP, mutually exclusive with `url`) */
-            data?: string;
-            /**
-             * Format: uri
-             * @description URL to download the sticker from (mutually exclusive with `data`, max 50 MB)
-             */
-            url?: string;
-            isAnimated?: boolean;
-            mentions?: string[];
-            replyTo?: string;
-            replyToSenderId?: string;
-            isForwarded?: boolean;
-            /** @enum {string} */
-            ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
-        };
-        SendContactRequest: {
-            to: string;
-            /** @description Contact display name */
-            displayName?: string;
-            /** @description vCard string */
-            vcard?: string;
-            mentions?: string[];
-            replyTo?: string;
-            replyToSenderId?: string;
-            isForwarded?: boolean;
-            /** @enum {string} */
-            ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
-        };
-        SendLocationRequest: {
-            to: string;
-            /** Format: double */
-            latitude?: number;
-            /** Format: double */
-            longitude?: number;
-            /** @description Location name */
-            name?: string;
-            /** @description Location address */
-            address?: string;
-            /** @description Location URL */
-            url?: string;
-            /** @enum {string} */
-            ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
-        };
-        SendLinkRequest: {
-            to: string;
-            /** @description Message text accompanying the link */
-            text: string;
-            /**
-             * Format: uri
-             * @description URL to preview
-             */
-            url: string;
-            /** @description Link preview title */
-            title?: string;
-            /** @description Link preview description */
-            description?: string;
-            /** @description Base64-encoded JPEG thumbnail for preview */
-            jpegThumbnail?: string;
-            mentions?: string[];
-            replyTo?: string;
-            replyToSenderId?: string;
-            isForwarded?: boolean;
-            /** @enum {string} */
-            ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
-        };
-        SendReactionRequest: {
-            /** @description Chat JID where the message is */
-            to: string;
-            /** @description Sender of the original message (for group messages) */
-            senderId?: string;
-            /** @description Emoji reaction character. Send an empty string to remove a previous reaction. */
-            reaction: string;
-        };
-        EditMessageRequest: {
-            /** @description Chat JID */
-            to: string;
-            /** @description New message text */
-            text: string;
-            mentions?: string[];
-            /** @enum {string} */
-            ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
-        };
-        MarkAsReadRequest: {
-            /** @description Chat JID */
-            chatId: string;
-            /** @description Sender JID */
-            senderId: string;
-            /** @enum {string} */
-            receiptType: "delivered" | "sender" | "read" | "played";
-        };
-        StarMessageRequest: {
-            chatId: string;
-            senderId: string;
-            /** @description True to star, false to unstar */
-            starred?: boolean;
-        };
-        DeleteMessageRequest: {
-            chatId: string;
-            senderId: string;
-        };
-        DeleteMessageForMeRequest: {
-            chatId: string;
-            senderId?: string;
-            isFromMe?: boolean;
-            /** Format: date-time */
-            timestamp?: string;
-        };
-        PinMessageRequest: {
-            /** @description Chat JID */
-            chatId: string;
-            /** @description Sender JID of the message to pin */
-            senderId: string;
-            /** @description True to pin, false to unpin */
-            pinned?: boolean;
-            /** @description Pin expiration duration (e.g. 24h, 7d, 30d) */
-            pinExpiration?: string;
-        };
-        CreateGroupRequest: {
-            name: string;
-            /** @description List of participant JIDs */
-            participants: string[];
-        };
-        UpdateParticipantsRequest: {
-            participants: string[];
-            /** @enum {string} */
-            action: "add" | "remove" | "promote" | "demote";
-        };
-        SetNameRequest: {
-            name: string;
-        };
-        SetDescriptionRequest: {
-            description?: string;
-        };
-        SetPictureRequest: {
-            /** @description Base64-encoded JPEG image */
-            data: string;
-        };
-        SetBoolRequest: {
-            enabled?: boolean;
-        };
-        SetMemberAddModeRequest: {
-            onlyAdminAdd?: boolean;
-        };
-        JoinWithLinkRequest: {
-            /** @description Invite link code (e.g. "abc123" from https://chat.whatsapp.com/abc123) */
-            code: string;
-        };
-        JoinWithInviteRequest: {
-            groupId: string;
-            inviterId: string;
-            code: string;
-            /** Format: int64 */
-            expiration?: number;
-        };
-        UpdateRequestsRequest: {
-            participants: string[];
-            /** @enum {string} */
-            action: "approve" | "reject";
-        };
-        CreateCommunityRequest: {
-            name: string;
-            participants?: string[];
-            /** @description Join approval mode */
-            approvalMode?: string;
-        };
-        CreateCommunityGroupRequest: {
-            name: string;
-            participants?: string[];
-        };
-        LinkGroupRequest: {
-            /** @description JID of the group to link */
-            groupId: string;
-        };
-        ChatListItem: {
-            /**
-             * @description Chat JID
-             * @example 1234567890@s.whatsapp.net
-             */
-            id?: string;
-            /**
-             * @description LID-based JID for the chat (omitted for groups or if unknown)
-             * @example 222424242@lid
-             */
-            lid?: string;
-            isGroup?: boolean;
-            isArchived?: boolean;
-            isPinned?: boolean;
-            isMuted?: boolean;
-            /**
-             * Format: date-time
-             * @description When the mute expires (omitted if not muted)
-             */
-            muteEndTime?: string;
-            /** @description Contact push name (omitted if unknown) */
-            pushName?: string;
-            /** @description Business name (omitted if not a business) */
-            businessName?: string;
-            /** @description Full name from contacts (omitted if unknown) */
-            fullName?: string;
-            /**
-             * Format: date-time
-             * @description Timestamp of last activity (omitted if unknown)
-             */
-            lastActivity?: string;
-        };
-        ChatPictureResponse: {
-            pictureId?: string;
-            pictureUrl?: string;
-        };
-        BusinessProfileResponse: {
-            id?: string;
-            address?: string;
-            email?: string;
-            description?: string;
-            website?: string;
-            /** Format: double */
-            latitude?: number;
-            /** Format: double */
-            longitude?: number;
-            memberSince?: string;
-            categories?: {
-                id?: string;
-                name?: string;
-            }[];
-            businessHours?: {
-                dayOfWeek?: string;
-                mode?: string;
-                openTime?: string;
-                closeTime?: string;
-            }[];
-            businessHoursTimeZone?: string;
-            profileOptions?: {
-                [key: string]: string;
-            };
-        };
-        SetPresenceRequest: {
-            /** @enum {string} */
-            state: "typing" | "paused" | "recording";
-        };
-        SetChatEphemeralRequest: {
-            /**
-             * @description Disappearing messages timer
-             * @enum {string}
-             */
-            expiration: "off" | "24h" | "7d" | "90d";
-        };
-        MuteChatRequest: {
-            /** @enum {string} */
-            duration: "8h" | "1w" | "always" | "off";
-        };
-        PinChatRequest: {
-            pinned?: boolean;
-        };
-        ArchiveChatRequest: {
-            archived?: boolean;
-        };
-        ChatMarkAsReadRequest: {
-            read?: boolean;
-        };
-        RequestMessagesRequest: {
-            /** @description ID of the last known message in the chat */
-            lastMessageId: string;
-            /** @description Phone number or JID of the sender of the last known message */
-            lastMessageSenderId: string;
-            /**
-             * @description Number of messages to request (default 50, max 500)
-             * @default 50
-             */
-            count: number;
-        };
-        CreateContactRequest: {
-            /** @description Phone number or JID of the contact */
-            id: string;
-            /** @description Full name of the contact */
-            fullName: string;
-            /** @description First name of the contact (optional) */
-            firstName?: string;
-        };
-        UpdateProfileRequest: {
-            /** @description Display name */
-            name?: string;
-            /** @description Status text */
-            status?: string;
-            /** @description Base64-encoded JPEG profile picture */
-            picture?: string;
-        };
-        SetMyPresenceRequest: {
-            /**
-             * @description Presence state
-             * @enum {string}
-             */
-            presence: "available" | "unavailable";
-        };
-        /** @description Represents a WhatsApp user with all known identifiers. The `id` field is always present: it prefers a phone-based JID, falling back to LID. */
-        Identity: {
-            /**
-             * @description Primary identifier (phone-based JID preferred, LID fallback)
-             * @example 1234567890@s.whatsapp.net
-             */
-            id?: string;
-            /**
-             * @description LID-based JID (omitted if unknown)
-             * @example 222424242@lid
-             */
-            lid?: string;
-            /**
-             * @description Phone number without prefix (omitted if unknown)
-             * @example 1234567890
-             */
-            phone?: string;
-            /**
-             * @description Device number (omitted if 0)
-             * @example 2
-             */
-            device?: number;
-        };
-        Sender: components["schemas"]["Identity"] & {
-            /**
-             * @description Whether this sender is the logged-in account
-             * @example false
-             */
-            isMe?: boolean;
-        };
-        GroupParticipant: components["schemas"]["Identity"] & {
-            isAdmin?: boolean;
-            isSuperAdmin?: boolean;
-            displayName?: string;
-        };
-        GroupInfoResponse: {
-            groupId?: string;
-            owner?: components["schemas"]["Identity"];
-            name?: string;
-            /** Format: date-time */
-            createdAt?: string;
-            description?: string;
-            isAnnounce?: boolean;
-            isLocked?: boolean;
-            isEphemeral?: boolean;
-            /** Format: int64 */
-            ephemeralExpiration?: number;
-            participants?: components["schemas"]["GroupParticipant"][];
-            communityId?: string;
-            isAnnouncementGroup?: boolean;
-            isJoinApprovalRequired?: boolean;
-            memberAddMode?: string;
-        };
-        GroupParticipantRequest: {
-            user?: components["schemas"]["Identity"];
-            /** Format: date-time */
-            requestedAt?: string;
-        };
-        CommunitySubGroupResponse: {
-            /** @description Group JID */
-            groupId?: string;
-            /** @description Group name */
-            name?: string;
-            /**
-             * Format: date-time
-             * @description When the group name was last set
-             */
-            nameSetAt?: string;
-            /** @description Whether this is the community's announcement group */
-            isAnnouncementGroup?: boolean;
-        };
-        CommunityInfoResponse: {
-            communityId?: string;
-            owner?: components["schemas"]["Identity"];
-            name?: string;
-            /** Format: date-time */
-            created?: string;
-            description?: string;
-            isLocked?: boolean;
-            communityApprovalMode?: string;
-            participants?: components["schemas"]["GroupParticipant"][];
-        };
-        ContactInfo: components["schemas"]["Identity"] & {
-            fullName?: string;
-            firstName?: string;
-            pushName?: string;
-            businessName?: string;
-            inPhoneAddressBook?: boolean;
-        };
-        UserInfo: components["schemas"]["Identity"] & {
-            isInWhatsApp?: boolean;
-            status?: string;
-            pictureId?: string;
-            /** @description Profile picture URL (omitted if unavailable) */
-            pictureUrl?: string;
-            isVerified?: boolean;
-        };
-        UserMeInfo: components["schemas"]["Identity"] & {
-            deviceId?: number;
-            pushName?: string;
-            businessName?: string;
-            status?: string;
-            pictureId?: string;
-            isVerified?: boolean;
-        };
-        RejectCallRequest: {
-            /** @description JID of the caller */
-            callerId: string;
-        };
-        BulkCheckRequest: {
-            /** @description List of phone numbers to check */
-            phones: string[];
-        };
-        BulkCheckResult: {
-            /** @description The phone number that was queried */
-            query?: string;
-            /** @description Whether the phone number is registered on WhatsApp */
-            isInWhatsApp?: boolean;
-            /** @description JID of the user (only present if registered) */
-            jid?: string;
-        };
-        SetPrivacyRequest: {
-            /**
-             * @description The privacy setting to update
-             * @enum {string}
-             */
-            setting: "groupadd" | "last" | "status" | "profile" | "readreceipts" | "online" | "calladd";
-            /**
-             * @description The privacy level to set
-             * @enum {string}
-             */
-            value: "all" | "contacts" | "contact_blacklist" | "match_last_seen" | "known" | "none";
-        };
-        PrivacySettingsResponse: {
-            /** @description Who can add you to groups */
-            groupAdd?: string;
-            /** @description Who can see your last seen */
-            lastSeen?: string;
-            /** @description Who can see your status */
-            status?: string;
-            /** @description Who can see your profile picture */
-            profile?: string;
-            /** @description Whether read receipts are enabled */
-            readReceipts?: string;
-            /** @description Who can see when you are online */
-            online?: string;
-            /** @description Who can call you */
-            callAdd?: string;
-        };
-        CreateNewsletterRequest: {
-            /** @description Newsletter name */
-            name: string;
-            /** @description Newsletter description */
-            description?: string;
-            /** @description Base64-encoded profile picture for the newsletter */
-            picture?: string;
-        };
-        SetSubscriptionRequest: {
-            /** @description True to subscribe, false to unsubscribe */
-            subscribed: boolean;
-        };
-        ToggleMuteNewsletterRequest: {
-            /** @description True to mute, false to unmute */
-            mute?: boolean;
-        };
-        NewsletterInfoResponse: {
-            /** @description Newsletter JID */
-            id?: string;
-            /** @description Newsletter name */
-            name?: string;
-            /** @description Newsletter description */
-            description?: string;
-            /** @description Number of subscribers */
-            subscriberCount?: number;
-            /** @description Verification state of the newsletter */
-            verificationState?: string;
-            /** @description Profile picture URL */
-            pictureUrl?: string;
-            /** @description Invite code for the newsletter */
-            inviteCode?: string;
-            /** @description Current user's role in the newsletter */
-            role?: string;
-            /** @description Mute state for the current user */
-            mute?: string;
-            /** @description Newsletter state */
-            state?: string;
-            /**
-             * Format: date-time
-             * @description Creation timestamp
-             */
-            createdAt?: string;
-        };
-        PostTextStatusRequest: {
-            /** @description Status text content */
-            text: string;
-        };
-        PostMediaStatusRequest: {
-            /** @description Base64-encoded media data (mutually exclusive with `url`) */
-            data?: string;
-            /**
-             * Format: uri
-             * @description URL to download the media from (mutually exclusive with `data`, max 50 MB)
-             */
-            url?: string;
-            /** @description MIME type of the media */
-            mimeType?: string;
-            /** @description Media caption */
-            caption?: string;
-        };
-        StatusPrivacyResponse: {
-            /**
-             * @description Privacy setting type
-             * @enum {string}
-             */
-            type?: "contacts" | "blacklist" | "whitelist";
-            /** @description List of JIDs included in the privacy setting */
-            list?: string[];
-            /** @description Whether this is the default privacy setting */
-            isDefault?: boolean;
-        };
+  schemas: {
+    /** @description Standard error response returned by all API endpoints */
+    Error: {
+      /**
+       * @description Human-readable error message
+       * @example invalid request body
+       */
+      detail: string;
+      /**
+       * @description HTTP status code
+       * @example 400
+       */
+      status: number;
     };
-    responses: {
-        /** @description Resource created */
-        Created: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                /**
-                 * @example {
-                 *       "id": "01234567890123456"
-                 *     }
-                 */
-                "application/json": {
-                    /** @description ID of the created resource */
-                    id?: string;
-                };
-            };
-        };
-        /** @description Success */
-        OK: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                /**
-                 * @example {
-                 *       "id": "01234567890123456"
-                 *     }
-                 */
-                "application/json": {
-                    /** @description ID of the resource */
-                    id?: string;
-                };
-            };
-        };
-        /** @description Bad request */
-        BadRequest: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                /**
-                 * @example {
-                 *       "status": 400,
-                 *       "detail": "invalid request body"
-                 *     }
-                 */
-                "application/json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Authentication failed */
-        Unauthorized: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                /**
-                 * @example {
-                 *       "status": 401,
-                 *       "detail": "unauthorized"
-                 *     }
-                 */
-                "application/json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Resource not found */
-        NotFound: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                /**
-                 * @example {
-                 *       "status": 404,
-                 *       "detail": "not found"
-                 *     }
-                 */
-                "application/json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Instance not available (not connected or service is nil) */
-        ServiceUnavailable: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                /**
-                 * @example {
-                 *       "status": 503,
-                 *       "detail": "instance not available"
-                 *     }
-                 */
-                "application/json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Device is not paired. Complete the pairing process first. */
-        DeviceNotPaired: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                /**
-                 * @example {
-                 *       "status": 403,
-                 *       "detail": "device not paired"
-                 *     }
-                 */
-                "application/json": components["schemas"]["Error"];
-            };
-        };
+    SessionStatus: {
+      isConnected?: boolean;
+      isLoggedIn?: boolean;
+      deviceId?: string;
     };
-    parameters: {
-        /** @description The ID of the WhatsApp instance to use */
-        XInstanceId: string;
-        /** @description Message ID */
-        MessageIdPath: string;
-        /** @description Group JID */
-        GroupIdPath: string;
-        /** @description Community JID */
-        CommunityIdPath: string;
-        /** @description Newsletter JID */
-        NewsletterIdPath: string;
-        /** @description Chat JID (user or group) */
-        ChatIdPath: string;
-        /** @description Phone number (e.g. 1234567890) */
-        PhonePath: string;
+    SendTextRequest: {
+      /** @description Recipient JID (user or group) */
+      to: string;
+      /** @description Message text */
+      text: string;
+      /** @description JIDs of mentioned users */
+      mentions?: string[];
+      /** @description Message ID to reply to */
+      replyTo?: string;
+      /** @description Sender JID of the message being replied to */
+      replyToSenderId?: string;
+      /** @description Mark message as forwarded */
+      isForwarded?: boolean;
+      /**
+       * @description Disappearing message timer
+       * @enum {string}
+       */
+      ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
     };
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    SendMediaRequest: {
+      /** @description Recipient JID */
+      to: string;
+      /** @description Base64-encoded file data (mutually exclusive with `url`) */
+      data?: string;
+      /**
+       * Format: uri
+       * @description URL to download the media from (mutually exclusive with `data`, max 50 MB)
+       */
+      url?: string;
+      /** @description MIME type of the file (auto-detected if omitted) */
+      mimeType?: string;
+      /** @description Media caption */
+      caption?: string;
+      mentions?: string[];
+      replyTo?: string;
+      replyToSenderId?: string;
+      isForwarded?: boolean;
+      /** @description Send as view-once media */
+      viewOnce?: boolean;
+      /** @enum {string} */
+      ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
+    };
+    SendDocumentRequest: components["schemas"]["SendMediaRequest"] & {
+      /** @description Filename shown to the recipient */
+      filename: string;
+    };
+    SendStickerRequest: {
+      to: string;
+      /** @description Base64-encoded sticker data (WebP, mutually exclusive with `url`) */
+      data?: string;
+      /**
+       * Format: uri
+       * @description URL to download the sticker from (mutually exclusive with `data`, max 50 MB)
+       */
+      url?: string;
+      isAnimated?: boolean;
+      mentions?: string[];
+      replyTo?: string;
+      replyToSenderId?: string;
+      isForwarded?: boolean;
+      /** @enum {string} */
+      ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
+    };
+    SendContactRequest: {
+      to: string;
+      /** @description Contact display name */
+      displayName?: string;
+      /** @description vCard string */
+      vcard?: string;
+      mentions?: string[];
+      replyTo?: string;
+      replyToSenderId?: string;
+      isForwarded?: boolean;
+      /** @enum {string} */
+      ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
+    };
+    SendLocationRequest: {
+      to: string;
+      /** Format: double */
+      latitude?: number;
+      /** Format: double */
+      longitude?: number;
+      /** @description Location name */
+      name?: string;
+      /** @description Location address */
+      address?: string;
+      /** @description Location URL */
+      url?: string;
+      /** @enum {string} */
+      ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
+    };
+    SendLinkRequest: {
+      to: string;
+      /** @description Message text accompanying the link */
+      text: string;
+      /**
+       * Format: uri
+       * @description URL to preview
+       */
+      url: string;
+      /** @description Link preview title */
+      title?: string;
+      /** @description Link preview description */
+      description?: string;
+      /** @description Base64-encoded JPEG thumbnail for preview */
+      jpegThumbnail?: string;
+      mentions?: string[];
+      replyTo?: string;
+      replyToSenderId?: string;
+      isForwarded?: boolean;
+      /** @enum {string} */
+      ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
+    };
+    SendReactionRequest: {
+      /** @description Chat JID where the message is */
+      to: string;
+      /** @description Sender of the original message (for group messages) */
+      senderId?: string;
+      /** @description Emoji reaction character. Send an empty string to remove a previous reaction. */
+      reaction: string;
+    };
+    EditMessageRequest: {
+      /** @description Chat JID */
+      to: string;
+      /** @description New message text */
+      text: string;
+      mentions?: string[];
+      /** @enum {string} */
+      ephemeralExpiration?: "off" | "24h" | "7d" | "90d";
+    };
+    MarkAsReadRequest: {
+      /** @description Chat JID */
+      chatId: string;
+      /** @description Sender JID */
+      senderId: string;
+      /** @enum {string} */
+      receiptType: "delivered" | "sender" | "read" | "played";
+    };
+    StarMessageRequest: {
+      chatId: string;
+      senderId: string;
+      /** @description True to star, false to unstar */
+      starred?: boolean;
+    };
+    DeleteMessageRequest: {
+      chatId: string;
+      senderId: string;
+    };
+    DeleteMessageForMeRequest: {
+      chatId: string;
+      senderId?: string;
+      isFromMe?: boolean;
+      /** Format: date-time */
+      timestamp?: string;
+    };
+    PinMessageRequest: {
+      /** @description Chat JID */
+      chatId: string;
+      /** @description Sender JID of the message to pin */
+      senderId: string;
+      /** @description True to pin, false to unpin */
+      pinned?: boolean;
+      /** @description Pin expiration duration (e.g. 24h, 7d, 30d) */
+      pinExpiration?: string;
+    };
+    CreateGroupRequest: {
+      name: string;
+      /** @description List of participant JIDs */
+      participants: string[];
+    };
+    UpdateParticipantsRequest: {
+      participants: string[];
+      /** @enum {string} */
+      action: "add" | "remove" | "promote" | "demote";
+    };
+    SetNameRequest: {
+      name: string;
+    };
+    SetDescriptionRequest: {
+      description?: string;
+    };
+    SetPictureRequest: {
+      /** @description Base64-encoded JPEG image */
+      data: string;
+    };
+    SetBoolRequest: {
+      enabled?: boolean;
+    };
+    SetMemberAddModeRequest: {
+      onlyAdminAdd?: boolean;
+    };
+    JoinWithLinkRequest: {
+      /** @description Invite link code (e.g. "abc123" from https://chat.whatsapp.com/abc123) */
+      code: string;
+    };
+    JoinWithInviteRequest: {
+      groupId: string;
+      inviterId: string;
+      code: string;
+      /** Format: int64 */
+      expiration?: number;
+    };
+    UpdateRequestsRequest: {
+      participants: string[];
+      /** @enum {string} */
+      action: "approve" | "reject";
+    };
+    CreateCommunityRequest: {
+      name: string;
+      participants?: string[];
+      /** @description Join approval mode */
+      approvalMode?: string;
+    };
+    CreateCommunityGroupRequest: {
+      name: string;
+      participants?: string[];
+    };
+    LinkGroupRequest: {
+      /** @description JID of the group to link */
+      groupId: string;
+    };
+    ChatListItem: {
+      /**
+       * @description Chat JID
+       * @example 1234567890@s.whatsapp.net
+       */
+      id?: string;
+      /**
+       * @description LID-based JID for the chat (omitted for groups or if unknown)
+       * @example 222424242@lid
+       */
+      lid?: string;
+      isGroup?: boolean;
+      isArchived?: boolean;
+      isPinned?: boolean;
+      isMuted?: boolean;
+      /**
+       * Format: date-time
+       * @description When the mute expires (omitted if not muted)
+       */
+      muteEndTime?: string;
+      /** @description Contact push name (omitted if unknown) */
+      pushName?: string;
+      /** @description Business name (omitted if not a business) */
+      businessName?: string;
+      /** @description Full name from contacts (omitted if unknown) */
+      fullName?: string;
+      /**
+       * Format: date-time
+       * @description Timestamp of last activity (omitted if unknown)
+       */
+      lastActivity?: string;
+    };
+    ChatPictureResponse: {
+      pictureId?: string;
+      pictureUrl?: string;
+    };
+    BusinessProfileResponse: {
+      id?: string;
+      address?: string;
+      email?: string;
+      description?: string;
+      website?: string;
+      /** Format: double */
+      latitude?: number;
+      /** Format: double */
+      longitude?: number;
+      memberSince?: string;
+      categories?: {
+        id?: string;
+        name?: string;
+      }[];
+      businessHours?: {
+        dayOfWeek?: string;
+        mode?: string;
+        openTime?: string;
+        closeTime?: string;
+      }[];
+      businessHoursTimeZone?: string;
+      profileOptions?: {
+        [key: string]: string;
+      };
+    };
+    SetPresenceRequest: {
+      /** @enum {string} */
+      state: "typing" | "paused" | "recording";
+    };
+    SetChatEphemeralRequest: {
+      /**
+       * @description Disappearing messages timer
+       * @enum {string}
+       */
+      expiration: "off" | "24h" | "7d" | "90d";
+    };
+    MuteChatRequest: {
+      /** @enum {string} */
+      duration: "8h" | "1w" | "always" | "off";
+    };
+    PinChatRequest: {
+      pinned?: boolean;
+    };
+    ArchiveChatRequest: {
+      archived?: boolean;
+    };
+    ChatMarkAsReadRequest: {
+      read?: boolean;
+    };
+    RequestMessagesRequest: {
+      /** @description ID of the last known message in the chat */
+      lastMessageId: string;
+      /** @description Phone number or JID of the sender of the last known message */
+      lastMessageSenderId: string;
+      /**
+       * @description Number of messages to request (default 50, max 500)
+       * @default 50
+       */
+      count: number;
+    };
+    CreateContactRequest: {
+      /** @description Phone number or JID of the contact */
+      id: string;
+      /** @description Full name of the contact */
+      fullName: string;
+      /** @description First name of the contact (optional) */
+      firstName?: string;
+    };
+    UpdateProfileRequest: {
+      /** @description Display name */
+      name?: string;
+      /** @description Status text */
+      status?: string;
+      /** @description Base64-encoded JPEG profile picture */
+      picture?: string;
+    };
+    SetMyPresenceRequest: {
+      /**
+       * @description Presence state
+       * @enum {string}
+       */
+      presence: "available" | "unavailable";
+    };
+    /** @description Represents a WhatsApp user with all known identifiers. The `id` field is always present: it prefers a phone-based JID, falling back to LID. */
+    Identity: {
+      /**
+       * @description Primary identifier (phone-based JID preferred, LID fallback)
+       * @example 1234567890@s.whatsapp.net
+       */
+      id?: string;
+      /**
+       * @description LID-based JID (omitted if unknown)
+       * @example 222424242@lid
+       */
+      lid?: string;
+      /**
+       * @description Phone number without prefix (omitted if unknown)
+       * @example 1234567890
+       */
+      phone?: string;
+      /**
+       * @description Device number (omitted if 0)
+       * @example 2
+       */
+      device?: number;
+    };
+    Sender: components["schemas"]["Identity"] & {
+      /**
+       * @description Whether this sender is the logged-in account
+       * @example false
+       */
+      isMe?: boolean;
+    };
+    GroupParticipant: components["schemas"]["Identity"] & {
+      isAdmin?: boolean;
+      isSuperAdmin?: boolean;
+      displayName?: string;
+    };
+    GroupInfoResponse: {
+      groupId?: string;
+      owner?: components["schemas"]["Identity"];
+      name?: string;
+      /** Format: date-time */
+      createdAt?: string;
+      description?: string;
+      isAnnounce?: boolean;
+      isLocked?: boolean;
+      isEphemeral?: boolean;
+      /** Format: int64 */
+      ephemeralExpiration?: number;
+      participants?: components["schemas"]["GroupParticipant"][];
+      communityId?: string;
+      isAnnouncementGroup?: boolean;
+      isJoinApprovalRequired?: boolean;
+      memberAddMode?: string;
+    };
+    GroupParticipantRequest: {
+      user?: components["schemas"]["Identity"];
+      /** Format: date-time */
+      requestedAt?: string;
+    };
+    CommunitySubGroupResponse: {
+      /** @description Group JID */
+      groupId?: string;
+      /** @description Group name */
+      name?: string;
+      /**
+       * Format: date-time
+       * @description When the group name was last set
+       */
+      nameSetAt?: string;
+      /** @description Whether this is the community's announcement group */
+      isAnnouncementGroup?: boolean;
+    };
+    CommunityInfoResponse: {
+      communityId?: string;
+      owner?: components["schemas"]["Identity"];
+      name?: string;
+      /** Format: date-time */
+      created?: string;
+      description?: string;
+      isLocked?: boolean;
+      communityApprovalMode?: string;
+      participants?: components["schemas"]["GroupParticipant"][];
+    };
+    ContactInfo: components["schemas"]["Identity"] & {
+      fullName?: string;
+      firstName?: string;
+      pushName?: string;
+      businessName?: string;
+      inPhoneAddressBook?: boolean;
+    };
+    UserInfo: components["schemas"]["Identity"] & {
+      isInWhatsApp?: boolean;
+      status?: string;
+      pictureId?: string;
+      /** @description Profile picture URL (omitted if unavailable) */
+      pictureUrl?: string;
+      isVerified?: boolean;
+    };
+    UserMeInfo: components["schemas"]["Identity"] & {
+      deviceId?: number;
+      pushName?: string;
+      businessName?: string;
+      status?: string;
+      pictureId?: string;
+      isVerified?: boolean;
+    };
+    RejectCallRequest: {
+      /** @description JID of the caller */
+      callerId: string;
+    };
+    BulkCheckRequest: {
+      /** @description List of phone numbers to check */
+      phones: string[];
+    };
+    BulkCheckResult: {
+      /** @description The phone number that was queried */
+      query?: string;
+      /** @description Whether the phone number is registered on WhatsApp */
+      isInWhatsApp?: boolean;
+      /** @description JID of the user (only present if registered) */
+      jid?: string;
+    };
+    SetPrivacyRequest: {
+      /**
+       * @description The privacy setting to update
+       * @enum {string}
+       */
+      setting:
+        | "groupadd"
+        | "last"
+        | "status"
+        | "profile"
+        | "readreceipts"
+        | "online"
+        | "calladd";
+      /**
+       * @description The privacy level to set
+       * @enum {string}
+       */
+      value:
+        | "all"
+        | "contacts"
+        | "contact_blacklist"
+        | "match_last_seen"
+        | "known"
+        | "none";
+    };
+    PrivacySettingsResponse: {
+      /** @description Who can add you to groups */
+      groupAdd?: string;
+      /** @description Who can see your last seen */
+      lastSeen?: string;
+      /** @description Who can see your status */
+      status?: string;
+      /** @description Who can see your profile picture */
+      profile?: string;
+      /** @description Whether read receipts are enabled */
+      readReceipts?: string;
+      /** @description Who can see when you are online */
+      online?: string;
+      /** @description Who can call you */
+      callAdd?: string;
+    };
+    CreateNewsletterRequest: {
+      /** @description Newsletter name */
+      name: string;
+      /** @description Newsletter description */
+      description?: string;
+      /** @description Base64-encoded profile picture for the newsletter */
+      picture?: string;
+    };
+    SetSubscriptionRequest: {
+      /** @description True to subscribe, false to unsubscribe */
+      subscribed: boolean;
+    };
+    ToggleMuteNewsletterRequest: {
+      /** @description True to mute, false to unmute */
+      mute?: boolean;
+    };
+    NewsletterInfoResponse: {
+      /** @description Newsletter JID */
+      id?: string;
+      /** @description Newsletter name */
+      name?: string;
+      /** @description Newsletter description */
+      description?: string;
+      /** @description Number of subscribers */
+      subscriberCount?: number;
+      /** @description Verification state of the newsletter */
+      verificationState?: string;
+      /** @description Profile picture URL */
+      pictureUrl?: string;
+      /** @description Invite code for the newsletter */
+      inviteCode?: string;
+      /** @description Current user's role in the newsletter */
+      role?: string;
+      /** @description Mute state for the current user */
+      mute?: string;
+      /** @description Newsletter state */
+      state?: string;
+      /**
+       * Format: date-time
+       * @description Creation timestamp
+       */
+      createdAt?: string;
+    };
+    PostTextStatusRequest: {
+      /** @description Status text content */
+      text: string;
+    };
+    PostMediaStatusRequest: {
+      /** @description Base64-encoded media data (mutually exclusive with `url`) */
+      data?: string;
+      /**
+       * Format: uri
+       * @description URL to download the media from (mutually exclusive with `data`, max 50 MB)
+       */
+      url?: string;
+      /** @description MIME type of the media */
+      mimeType?: string;
+      /** @description Media caption */
+      caption?: string;
+    };
+    StatusPrivacyResponse: {
+      /**
+       * @description Privacy setting type
+       * @enum {string}
+       */
+      type?: "contacts" | "blacklist" | "whitelist";
+      /** @description List of JIDs included in the privacy setting */
+      list?: string[];
+      /** @description Whether this is the default privacy setting */
+      isDefault?: boolean;
+    };
+  };
+  responses: {
+    /** @description Resource created */
+    Created: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "id": "01234567890123456"
+         *     }
+         */
+        "application/json": {
+          /** @description ID of the created resource */
+          id?: string;
+        };
+      };
+    };
+    /** @description Success */
+    OK: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "id": "01234567890123456"
+         *     }
+         */
+        "application/json": {
+          /** @description ID of the resource */
+          id?: string;
+        };
+      };
+    };
+    /** @description Bad request */
+    BadRequest: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "status": 400,
+         *       "detail": "invalid request body"
+         *     }
+         */
+        "application/json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Authentication failed */
+    Unauthorized: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "status": 401,
+         *       "detail": "unauthorized"
+         *     }
+         */
+        "application/json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Resource not found */
+    NotFound: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "status": 404,
+         *       "detail": "not found"
+         *     }
+         */
+        "application/json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Instance not available (not connected or service is nil) */
+    ServiceUnavailable: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "status": 503,
+         *       "detail": "instance not available"
+         *     }
+         */
+        "application/json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Device is not paired. Complete the pairing process first. */
+    DeviceNotPaired: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "status": 403,
+         *       "detail": "device not paired"
+         *     }
+         */
+        "application/json": components["schemas"]["Error"];
+      };
+    };
+  };
+  parameters: {
+    /** @description The ID of the WhatsApp instance to use */
+    XInstanceId: string;
+    /** @description Message ID */
+    MessageIdPath: string;
+    /** @description Group JID */
+    GroupIdPath: string;
+    /** @description Community JID */
+    CommunityIdPath: string;
+    /** @description Newsletter JID */
+    NewsletterIdPath: string;
+    /** @description Chat JID (user or group) */
+    ChatIdPath: string;
+    /** @description Phone number (e.g. 1234567890) */
+    PhonePath: string;
+  };
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    getQR: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description QR code PNG image */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "image/png": string;
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getQRText: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description QR code string */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @description Raw QR code string */
-                        code: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getPairCode: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Phone number to pair with (e.g. 1234567890) */
-                phone: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Pair code generated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example ABCD-EFGH */
-                        code?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getSessionStatus: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Session status */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SessionStatus"];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    logout: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Logged out */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    flushHistory: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description History flush initiated */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example ok */
-                        status?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendText: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendTextRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendImage: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendMediaRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendVideo: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendMediaRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendAudio: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendMediaRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendVoice: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendMediaRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendDocument: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendDocumentRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendSticker: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendStickerRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendContact: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendContactRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendLocation: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendLocationRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendLink: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendLinkRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    sendReaction: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Message ID */
-                messageId: components["parameters"]["MessageIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SendReactionRequest"];
-            };
-        };
-        responses: {
-            200: components["responses"]["OK"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    editMessage: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Message ID */
-                messageId: components["parameters"]["MessageIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "to": "1234567890@s.whatsapp.net",
-                 *       "text": "Updated message"
-                 *     }
-                 */
-                "application/json": components["schemas"]["EditMessageRequest"];
-            };
-        };
-        responses: {
-            200: components["responses"]["OK"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    markAsRead: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Message ID */
-                messageId: components["parameters"]["MessageIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "chatId": "1234567890@s.whatsapp.net",
-                 *       "senderId": "1234567890@s.whatsapp.net",
-                 *       "receiptType": "read"
-                 *     }
-                 */
-                "application/json": components["schemas"]["MarkAsReadRequest"];
-            };
-        };
-        responses: {
-            /** @description Message marked as read */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    starMessage: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Message ID */
-                messageId: components["parameters"]["MessageIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "chatId": "1234567890@s.whatsapp.net",
-                 *       "senderId": "1234567890@s.whatsapp.net",
-                 *       "starred": true
-                 *     }
-                 */
-                "application/json": components["schemas"]["StarMessageRequest"];
-            };
-        };
-        responses: {
-            /** @description Message starred/unstarred */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    pinMessage: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Message ID */
-                messageId: components["parameters"]["MessageIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PinMessageRequest"];
-            };
-        };
-        responses: {
-            /** @description Message pinned/unpinned */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    deleteMessage: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Message ID */
-                messageId: components["parameters"]["MessageIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "chatId": "1234567890@s.whatsapp.net",
-                 *       "senderId": "1234567890@s.whatsapp.net"
-                 *     }
-                 */
-                "application/json": components["schemas"]["DeleteMessageRequest"];
-            };
-        };
-        responses: {
-            /** @description Message deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    deleteMessageForMe: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Message ID */
-                messageId: components["parameters"]["MessageIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "chatId": "1234567890@s.whatsapp.net",
-                 *       "senderId": "1234567890@s.whatsapp.net",
-                 *       "isFromMe": true,
-                 *       "timestamp": "2025-05-19T00:51:44.816Z"
-                 *     }
-                 */
-                "application/json": components["schemas"]["DeleteMessageForMeRequest"];
-            };
-        };
-        responses: {
-            /** @description Message deleted for me */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    listGroups: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of groups */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GroupInfoResponse"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    createGroup: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateGroupRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getGroup: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Group info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GroupInfoResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setGroupName: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetNameRequest"];
-            };
-        };
-        responses: {
-            /** @description Name updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setGroupDescription: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetDescriptionRequest"];
-            };
-        };
-        responses: {
-            /** @description Description updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setGroupPicture: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetPictureRequest"];
-            };
-        };
-        responses: {
-            /** @description Picture updated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        pictureId?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    leaveGroup: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Left group */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getGroupParticipants: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of participants */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GroupParticipant"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    updateGroupParticipants: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateParticipantsRequest"];
-            };
-        };
-        responses: {
-            /** @description Participants updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getGroupInviteLink: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Invite link */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example https://chat.whatsapp.com/abc123 */
-                        link?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    resetGroupInviteLink: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description New invite link */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example https://chat.whatsapp.com/xyz789 */
-                        link?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setGroupAnnounce: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetBoolRequest"];
-            };
-        };
-        responses: {
-            /** @description Setting updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setGroupLocked: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetBoolRequest"];
-            };
-        };
-        responses: {
-            /** @description Setting updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setGroupJoinApproval: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetBoolRequest"];
-            };
-        };
-        responses: {
-            /** @description Setting updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setGroupMemberAddMode: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetMemberAddModeRequest"];
-            };
-        };
-        responses: {
-            /** @description Setting updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    joinGroupWithLink: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JoinWithLinkRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    joinGroupWithInvite: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JoinWithInviteRequest"];
-            };
-        };
-        responses: {
-            /** @description Joined group */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getGroupInfoFromLink: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Invite link code */
-                code: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Group info from invite link */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GroupInfoResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getGroupRequests: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of pending join requests */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GroupParticipantRequest"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    updateGroupRequests: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Group JID */
-                id: components["parameters"]["GroupIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateRequestsRequest"];
-            };
-        };
-        responses: {
-            /** @description Requests updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    listCommunities: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of communities */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CommunityInfoResponse"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    createCommunity: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateCommunityRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getCommunity: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Community info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CommunityInfoResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    leaveCommunity: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Left community */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setCommunityName: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetNameRequest"];
-            };
-        };
-        responses: {
-            /** @description Name updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setCommunityDescription: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetDescriptionRequest"];
-            };
-        };
-        responses: {
-            /** @description Description updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setCommunityPicture: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetPictureRequest"];
-            };
-        };
-        responses: {
-            /** @description Picture updated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        pictureId?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setCommunityLocked: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetBoolRequest"];
-            };
-        };
-        responses: {
-            /** @description Setting updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getCommunityParticipants: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of participants */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Identity"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    updateCommunityParticipants: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateParticipantsRequest"];
-            };
-        };
-        responses: {
-            /** @description Participants updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getCommunityInviteLink: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Invite link */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example https://chat.whatsapp.com/abc123 */
-                        link?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    resetCommunityInviteLink: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description New invite link */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example https://chat.whatsapp.com/xyz789 */
-                        link?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getCommunitySubGroups: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of sub-groups */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CommunitySubGroupResponse"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    createCommunityGroup: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateCommunityGroupRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    linkGroupToCommunity: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LinkGroupRequest"];
-            };
-        };
-        responses: {
-            /** @description Group linked */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    unlinkCommunityGroup: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Community JID */
-                id: components["parameters"]["CommunityIdPath"];
-                /** @description Group JID to unlink */
-                groupId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Group unlinked */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    listContacts: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of contacts */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ContactInfo"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    createContact: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateContactRequest"];
-            };
-        };
-        responses: {
-            /** @description Contact created or updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    syncContacts: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Contact sync triggered */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getContact: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Contact JID */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Contact info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ContactInfo"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getBlocklist: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of blocked contacts */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Identity"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    blockContact: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Contact JID */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Contact blocked */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    unblockContact: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Contact JID */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Contact unblocked */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getMyProfile: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Account profile info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserMeInfo"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    updateMyProfile: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateProfileRequest"];
-            };
-        };
-        responses: {
-            /** @description Profile updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setPresence: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetMyPresenceRequest"];
-            };
-        };
-        responses: {
-            /** @description Presence updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getPrivacySettings: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Current privacy settings */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PrivacySettingsResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setPrivacySetting: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetPrivacyRequest"];
-            };
-        };
-        responses: {
-            /** @description Updated privacy settings */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PrivacySettingsResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    bulkCheckUsers: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "phones": [
-                 *         "1234567890",
-                 *         "9876543210"
-                 *       ]
-                 *     }
-                 */
-                "application/json": components["schemas"]["BulkCheckRequest"];
-            };
-        };
-        responses: {
-            /** @description Bulk check results */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BulkCheckResult"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    checkUser: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Phone number (e.g. 1234567890) */
-                phone: components["parameters"]["PhonePath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description WhatsApp presence check result */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        isInWhatsApp?: boolean;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getUserProfile: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Phone number (e.g. 1234567890) */
-                phone: components["parameters"]["PhonePath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description User profile info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserInfo"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    downloadMedia: {
-        parameters: {
-            query: {
-                /** @description Media ID from a received message event */
-                id: string;
-            };
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Media file download */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/octet-stream": string;
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    listChats: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of chats */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ChatListItem"][];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getChatInfo: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Chat info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ChatListItem"];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    deleteChat: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Chat deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getChatPicture: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Chat picture info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ChatPictureResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getChatBusinessProfile: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Business profile */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BusinessProfileResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setChatPresence: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetPresenceRequest"];
-            };
-        };
-        responses: {
-            /** @description Presence sent */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    subscribeChatPresence: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Subscribed */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setChatEphemeral: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetChatEphemeralRequest"];
-            };
-        };
-        responses: {
-            /** @description Timer set */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    muteChat: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MuteChatRequest"];
-            };
-        };
-        responses: {
-            /** @description Mute setting updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    pinChat: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PinChatRequest"];
-            };
-        };
-        responses: {
-            /** @description Pin setting updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    archiveChat: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ArchiveChatRequest"];
-            };
-        };
-        responses: {
-            /** @description Archive setting updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    markChatAsRead: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ChatMarkAsReadRequest"];
-            };
-        };
-        responses: {
-            /** @description Read state updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    requestChatMessages: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "lastMessageId": "3EB0A0B0C1D2E3F4",
-                 *       "lastMessageSenderId": "1234567890",
-                 *       "count": 50
-                 *     }
-                 */
-                "application/json": components["schemas"]["RequestMessagesRequest"];
-            };
-        };
-        responses: {
-            /** @description History sync request accepted */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example ok */
-                        status?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    clearChat: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Chat JID (user or group) */
-                chatId: components["parameters"]["ChatIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Chat cleared */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    rejectCall: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Call ID from the call event */
-                callId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RejectCallRequest"];
-            };
-        };
-        responses: {
-            /** @description Call rejected */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    listNewsletters: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of newsletters */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NewsletterInfoResponse"][];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    createNewsletter: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "name": "My Newsletter",
-                 *       "description": "Updates about cool stuff"
-                 *     }
-                 */
-                "application/json": components["schemas"]["CreateNewsletterRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getNewsletterByInviteCode: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Newsletter invite code */
-                code: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Newsletter info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NewsletterInfoResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getNewsletter: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Newsletter JID */
-                id: components["parameters"]["NewsletterIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Newsletter info */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NewsletterInfoResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    setNewsletterSubscription: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Newsletter JID */
-                id: components["parameters"]["NewsletterIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetSubscriptionRequest"];
-            };
-        };
-        responses: {
-            /** @description Subscription state updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    toggleMuteNewsletter: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Newsletter JID */
-                id: components["parameters"]["NewsletterIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ToggleMuteNewsletterRequest"];
-            };
-        };
-        responses: {
-            /** @description Mute state updated */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    getStatusPrivacy: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Status privacy settings */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example [
-                     *       {
-                     *         "type": "contacts",
-                     *         "list": [],
-                     *         "isDefault": true
-                     *       }
-                     *     ]
-                     */
-                    "application/json": components["schemas"]["StatusPrivacyResponse"][];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    postTextStatus: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "text": "Hello from WSAPI!"
-                 *     }
-                 */
-                "application/json": components["schemas"]["PostTextStatusRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    postImageStatus: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PostMediaStatusRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    postVideoStatus: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PostMediaStatusRequest"];
-            };
-        };
-        responses: {
-            201: components["responses"]["Created"];
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
-    deleteStatus: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description The ID of the WhatsApp instance to use */
-                "X-Instance-Id": components["parameters"]["XInstanceId"];
-            };
-            path: {
-                /** @description Message ID */
-                messageId: components["parameters"]["MessageIdPath"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Status deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            401: components["responses"]["Unauthorized"];
-            409: components["responses"]["DeviceNotPaired"];
-            503: components["responses"]["ServiceUnavailable"];
-        };
-    };
+  getQR: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description QR code PNG image */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "image/png": string;
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getQRText: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description QR code string */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @description Raw QR code string */
+            code: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getPairCode: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Phone number to pair with (e.g. 1234567890) */
+        phone: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Pair code generated */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @example ABCD-EFGH */
+            code?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getSessionStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Session status */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SessionStatus"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  logout: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Logged out */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  flushHistory: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description History flush initiated */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @example ok */
+            status?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendText: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendTextRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendImage: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendMediaRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendVideo: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendMediaRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendAudio: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendMediaRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendVoice: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendMediaRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendDocument: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendDocumentRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendSticker: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendStickerRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendContact: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendContactRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendLocation: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendLocationRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendLink: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendLinkRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  sendReaction: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Message ID */
+        messageId: components["parameters"]["MessageIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendReactionRequest"];
+      };
+    };
+    responses: {
+      200: components["responses"]["OK"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  editMessage: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Message ID */
+        messageId: components["parameters"]["MessageIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "to": "1234567890@s.whatsapp.net",
+         *       "text": "Updated message"
+         *     }
+         */
+        "application/json": components["schemas"]["EditMessageRequest"];
+      };
+    };
+    responses: {
+      200: components["responses"]["OK"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  markAsRead: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Message ID */
+        messageId: components["parameters"]["MessageIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "chatId": "1234567890@s.whatsapp.net",
+         *       "senderId": "1234567890@s.whatsapp.net",
+         *       "receiptType": "read"
+         *     }
+         */
+        "application/json": components["schemas"]["MarkAsReadRequest"];
+      };
+    };
+    responses: {
+      /** @description Message marked as read */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  starMessage: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Message ID */
+        messageId: components["parameters"]["MessageIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "chatId": "1234567890@s.whatsapp.net",
+         *       "senderId": "1234567890@s.whatsapp.net",
+         *       "starred": true
+         *     }
+         */
+        "application/json": components["schemas"]["StarMessageRequest"];
+      };
+    };
+    responses: {
+      /** @description Message starred/unstarred */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  pinMessage: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Message ID */
+        messageId: components["parameters"]["MessageIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PinMessageRequest"];
+      };
+    };
+    responses: {
+      /** @description Message pinned/unpinned */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  deleteMessage: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Message ID */
+        messageId: components["parameters"]["MessageIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "chatId": "1234567890@s.whatsapp.net",
+         *       "senderId": "1234567890@s.whatsapp.net"
+         *     }
+         */
+        "application/json": components["schemas"]["DeleteMessageRequest"];
+      };
+    };
+    responses: {
+      /** @description Message deleted */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  deleteMessageForMe: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Message ID */
+        messageId: components["parameters"]["MessageIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "chatId": "1234567890@s.whatsapp.net",
+         *       "senderId": "1234567890@s.whatsapp.net",
+         *       "isFromMe": true,
+         *       "timestamp": "2025-05-19T00:51:44.816Z"
+         *     }
+         */
+        "application/json": components["schemas"]["DeleteMessageForMeRequest"];
+      };
+    };
+    responses: {
+      /** @description Message deleted for me */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  listGroups: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of groups */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GroupInfoResponse"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  createGroup: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateGroupRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getGroup: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Group info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GroupInfoResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setGroupName: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetNameRequest"];
+      };
+    };
+    responses: {
+      /** @description Name updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setGroupDescription: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetDescriptionRequest"];
+      };
+    };
+    responses: {
+      /** @description Description updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setGroupPicture: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetPictureRequest"];
+      };
+    };
+    responses: {
+      /** @description Picture updated */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            pictureId?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  leaveGroup: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Left group */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getGroupParticipants: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of participants */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GroupParticipant"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  updateGroupParticipants: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateParticipantsRequest"];
+      };
+    };
+    responses: {
+      /** @description Participants updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getGroupInviteLink: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Invite link */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @example https://chat.whatsapp.com/abc123 */
+            link?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  resetGroupInviteLink: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description New invite link */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @example https://chat.whatsapp.com/xyz789 */
+            link?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setGroupAnnounce: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetBoolRequest"];
+      };
+    };
+    responses: {
+      /** @description Setting updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setGroupLocked: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetBoolRequest"];
+      };
+    };
+    responses: {
+      /** @description Setting updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setGroupJoinApproval: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetBoolRequest"];
+      };
+    };
+    responses: {
+      /** @description Setting updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setGroupMemberAddMode: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetMemberAddModeRequest"];
+      };
+    };
+    responses: {
+      /** @description Setting updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  joinGroupWithLink: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["JoinWithLinkRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  joinGroupWithInvite: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["JoinWithInviteRequest"];
+      };
+    };
+    responses: {
+      /** @description Joined group */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getGroupInfoFromLink: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Invite link code */
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Group info from invite link */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GroupInfoResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getGroupRequests: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of pending join requests */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GroupParticipantRequest"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  updateGroupRequests: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Group JID */
+        id: components["parameters"]["GroupIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateRequestsRequest"];
+      };
+    };
+    responses: {
+      /** @description Requests updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  listCommunities: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of communities */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommunityInfoResponse"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  createCommunity: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateCommunityRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getCommunity: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Community info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommunityInfoResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  leaveCommunity: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Left community */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setCommunityName: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetNameRequest"];
+      };
+    };
+    responses: {
+      /** @description Name updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setCommunityDescription: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetDescriptionRequest"];
+      };
+    };
+    responses: {
+      /** @description Description updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setCommunityPicture: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetPictureRequest"];
+      };
+    };
+    responses: {
+      /** @description Picture updated */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            pictureId?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setCommunityLocked: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetBoolRequest"];
+      };
+    };
+    responses: {
+      /** @description Setting updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getCommunityParticipants: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of participants */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Identity"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  updateCommunityParticipants: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateParticipantsRequest"];
+      };
+    };
+    responses: {
+      /** @description Participants updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getCommunityInviteLink: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Invite link */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @example https://chat.whatsapp.com/abc123 */
+            link?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  resetCommunityInviteLink: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description New invite link */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @example https://chat.whatsapp.com/xyz789 */
+            link?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getCommunitySubGroups: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of sub-groups */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommunitySubGroupResponse"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  createCommunityGroup: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateCommunityGroupRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  linkGroupToCommunity: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LinkGroupRequest"];
+      };
+    };
+    responses: {
+      /** @description Group linked */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  unlinkCommunityGroup: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Community JID */
+        id: components["parameters"]["CommunityIdPath"];
+        /** @description Group JID to unlink */
+        groupId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Group unlinked */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  listContacts: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of contacts */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ContactInfo"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  createContact: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateContactRequest"];
+      };
+    };
+    responses: {
+      /** @description Contact created or updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  syncContacts: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Contact sync triggered */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getContact: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Contact JID */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Contact info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ContactInfo"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getBlocklist: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of blocked contacts */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Identity"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  blockContact: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Contact JID */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Contact blocked */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  unblockContact: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Contact JID */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Contact unblocked */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getMyProfile: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Account profile info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserMeInfo"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  updateMyProfile: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateProfileRequest"];
+      };
+    };
+    responses: {
+      /** @description Profile updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setPresence: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetMyPresenceRequest"];
+      };
+    };
+    responses: {
+      /** @description Presence updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getPrivacySettings: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Current privacy settings */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PrivacySettingsResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setPrivacySetting: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetPrivacyRequest"];
+      };
+    };
+    responses: {
+      /** @description Updated privacy settings */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PrivacySettingsResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  bulkCheckUsers: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "phones": [
+         *         "1234567890",
+         *         "9876543210"
+         *       ]
+         *     }
+         */
+        "application/json": components["schemas"]["BulkCheckRequest"];
+      };
+    };
+    responses: {
+      /** @description Bulk check results */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["BulkCheckResult"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  checkUser: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Phone number (e.g. 1234567890) */
+        phone: components["parameters"]["PhonePath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description WhatsApp presence check result */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            isInWhatsApp?: boolean;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getUserProfile: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Phone number (e.g. 1234567890) */
+        phone: components["parameters"]["PhonePath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description User profile info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserInfo"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  downloadMedia: {
+    parameters: {
+      query: {
+        /** @description Media ID from a received message event */
+        id: string;
+      };
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Media file download */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/octet-stream": string;
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  listChats: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of chats */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ChatListItem"][];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getChatInfo: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Chat info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ChatListItem"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  deleteChat: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Chat deleted */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getChatPicture: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Chat picture info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ChatPictureResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getChatBusinessProfile: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Business profile */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["BusinessProfileResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setChatPresence: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetPresenceRequest"];
+      };
+    };
+    responses: {
+      /** @description Presence sent */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  subscribeChatPresence: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Subscribed */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setChatEphemeral: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetChatEphemeralRequest"];
+      };
+    };
+    responses: {
+      /** @description Timer set */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  muteChat: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["MuteChatRequest"];
+      };
+    };
+    responses: {
+      /** @description Mute setting updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  pinChat: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PinChatRequest"];
+      };
+    };
+    responses: {
+      /** @description Pin setting updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  archiveChat: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ArchiveChatRequest"];
+      };
+    };
+    responses: {
+      /** @description Archive setting updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  markChatAsRead: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ChatMarkAsReadRequest"];
+      };
+    };
+    responses: {
+      /** @description Read state updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  requestChatMessages: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "lastMessageId": "3EB0A0B0C1D2E3F4",
+         *       "lastMessageSenderId": "1234567890",
+         *       "count": 50
+         *     }
+         */
+        "application/json": components["schemas"]["RequestMessagesRequest"];
+      };
+    };
+    responses: {
+      /** @description History sync request accepted */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @example ok */
+            status?: string;
+          };
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  clearChat: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Chat JID (user or group) */
+        chatId: components["parameters"]["ChatIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Chat cleared */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  rejectCall: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Call ID from the call event */
+        callId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RejectCallRequest"];
+      };
+    };
+    responses: {
+      /** @description Call rejected */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  listNewsletters: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of newsletters */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NewsletterInfoResponse"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  createNewsletter: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "name": "My Newsletter",
+         *       "description": "Updates about cool stuff"
+         *     }
+         */
+        "application/json": components["schemas"]["CreateNewsletterRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getNewsletterByInviteCode: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Newsletter invite code */
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Newsletter info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NewsletterInfoResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getNewsletter: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Newsletter JID */
+        id: components["parameters"]["NewsletterIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Newsletter info */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NewsletterInfoResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  setNewsletterSubscription: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Newsletter JID */
+        id: components["parameters"]["NewsletterIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetSubscriptionRequest"];
+      };
+    };
+    responses: {
+      /** @description Subscription state updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  toggleMuteNewsletter: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Newsletter JID */
+        id: components["parameters"]["NewsletterIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ToggleMuteNewsletterRequest"];
+      };
+    };
+    responses: {
+      /** @description Mute state updated */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getStatusPrivacy: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Status privacy settings */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example [
+           *       {
+           *         "type": "contacts",
+           *         "list": [],
+           *         "isDefault": true
+           *       }
+           *     ]
+           */
+          "application/json": components["schemas"]["StatusPrivacyResponse"][];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  postTextStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        /**
+         * @example {
+         *       "text": "Hello from WSAPI!"
+         *     }
+         */
+        "application/json": components["schemas"]["PostTextStatusRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  postImageStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PostMediaStatusRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  postVideoStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PostMediaStatusRequest"];
+      };
+    };
+    responses: {
+      201: components["responses"]["Created"];
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  deleteStatus: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path: {
+        /** @description Message ID */
+        messageId: components["parameters"]["MessageIdPath"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Status deleted */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["DeviceNotPaired"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
 }

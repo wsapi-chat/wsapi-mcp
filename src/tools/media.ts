@@ -1,25 +1,42 @@
-import type { ToolHandler } from '../server.js';
-import { wsapiClient } from '../client/index.js';
-import { createLogger } from '../utils/logger.js';
-import { validateInput, downloadMediaSchema } from '../validation/schemas.js';
+import type { ToolHandler } from "../server.js";
+import { wsapiClient } from "../client/index.js";
+import { createLogger } from "../utils/logger.js";
+import { validateInput, downloadMediaSchema } from "../validation/schemas.js";
 
-const logger = createLogger('media-tools');
+const logger = createLogger("media-tools");
 
 export const downloadMedia: ToolHandler = {
-  name: 'whatsapp_download_media',
-  description: 'Download media by ID. Use the media.id field from incoming message events.',
+  name: "whatsapp_download_media",
+  description:
+    "Download media by ID. Use the media.id field from incoming message events.",
   inputSchema: {
-    type: 'object',
+    type: "object",
     properties: {
-      id: { type: 'string', description: 'Media ID from a received message event' },
+      id: {
+        type: "string",
+        description: "Media ID from a received message event",
+      },
     },
-    required: ['id'],
+    required: ["id"],
   },
   handler: async (args: any) => {
     const input = validateInput(downloadMediaSchema, args);
-    logger.info('Downloading media', { id: input.id });
-    const result = await wsapiClient.get('/media/download', { id: input.id });
-    return { success: true, media: result, message: 'Media downloaded' };
+    logger.info("Downloading media", { id: input.id });
+    const result = await wsapiClient.getBinary("/media/download", {
+      id: input.id,
+    });
+    return {
+      content: [
+        {
+          type: "resource",
+          resource: {
+            uri: `wsapi://media/${encodeURIComponent(input.id)}`,
+            mimeType: result.mimeType,
+            blob: result.data,
+          },
+        },
+      ],
+    };
   },
 };
 

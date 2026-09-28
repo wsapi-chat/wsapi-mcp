@@ -1,9 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { config } from '../config/index.js';
-import { createLogger, logRequest } from '../utils/logger.js';
-import { handleError, withRetry } from '../utils/errors.js';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { config } from "../config/index.js";
+import { createLogger, logRequest } from "../utils/logger.js";
+import { handleError, withRetry } from "../utils/errors.js";
 
-const logger = createLogger('wsapi-client');
+const logger = createLogger("wsapi-client");
 
 export class WSAPIClient {
   private readonly client: AxiosInstance;
@@ -13,10 +13,10 @@ export class WSAPIClient {
       baseURL: config.wsapi.baseUrl,
       timeout: config.wsapi.timeout,
       headers: {
-        'Content-Type': 'application/json',
-        'X-Api-Key': config.wsapi.apiKey,
-        'X-Instance-Id': config.wsapi.instanceId,
-        'User-Agent': 'WSAPI-MCP-Server/2.0.0',
+        "Content-Type": "application/json",
+        "X-Api-Key": config.wsapi.apiKey,
+        "X-Instance-Id": config.wsapi.instanceId,
+        "User-Agent": "WSAPI-MCP-Server/2.0.0",
       },
     });
 
@@ -30,35 +30,39 @@ export class WSAPIClient {
         const startTime = Date.now();
         (config as any).metadata = { startTime };
 
-        logger.debug('Making API request', {
+        logger.debug("Making API request", {
           method: config.method?.toUpperCase(),
           url: config.url,
-          headers: { ...config.headers, 'X-Api-Key': '[REDACTED]' },
+          headers: { ...config.headers, "X-Api-Key": "[REDACTED]" },
         });
 
         return config;
       },
       (error) => {
-        logger.error('Request interceptor error', { error: error.message });
+        logger.error("Request interceptor error", { error: error.message });
         return Promise.reject(error);
-      }
+      },
     );
 
     // Response interceptor
     this.client.interceptors.response.use(
-      (response: AxiosResponse & { config: AxiosRequestConfig & { metadata?: { startTime: number } } }) => {
+      (
+        response: AxiosResponse & {
+          config: AxiosRequestConfig & { metadata?: { startTime: number } };
+        },
+      ) => {
         const duration = response.config.metadata?.startTime
           ? Date.now() - response.config.metadata.startTime
           : undefined;
 
         logRequest(
-          response.config.method?.toUpperCase() || 'UNKNOWN',
-          response.config.url || 'UNKNOWN',
+          response.config.method?.toUpperCase() || "UNKNOWN",
+          response.config.url || "UNKNOWN",
           response.status,
-          duration
+          duration,
         );
 
-        logger.debug('API request successful', {
+        logger.debug("API request successful", {
           method: response.config.method?.toUpperCase(),
           url: response.config.url,
           status: response.status,
@@ -73,14 +77,14 @@ export class WSAPIClient {
           : undefined;
 
         logRequest(
-          error.config?.method?.toUpperCase() || 'UNKNOWN',
-          error.config?.url || 'UNKNOWN',
+          error.config?.method?.toUpperCase() || "UNKNOWN",
+          error.config?.url || "UNKNOWN",
           error.response?.status,
-          duration
+          duration,
         );
 
         return Promise.reject(error);
-      }
+      },
     );
   }
 
@@ -101,8 +105,8 @@ export class WSAPIClient {
       {
         maxAttempts: config.wsapi.retryAttempts,
         delay: config.wsapi.retryDelay,
-        retryableErrors: ['NETWORK_ERROR', 'INSTANCE_ERROR'],
-      }
+        retryableErrors: ["NETWORK_ERROR", "INSTANCE_ERROR"],
+      },
     );
   }
 
@@ -110,16 +114,48 @@ export class WSAPIClient {
   async get(path: string, params?: any): Promise<any> {
     const url = this.buildUrl(path, params);
     return this.request<any>({
-      method: 'GET',
+      method: "GET",
       url,
     });
+  }
+
+  // POST request
+  async getBinary(
+    path: string,
+    params?: Record<string, string>,
+  ): Promise<{ data: string; mimeType: string }> {
+    return withRetry(
+      async () => {
+        try {
+          const response = await this.client.request<ArrayBuffer>({
+            method: "GET",
+            url: this.buildUrl(path, params),
+            responseType: "arraybuffer",
+          });
+          return {
+            data: Buffer.from(response.data).toString("base64"),
+            mimeType:
+              String(
+                response.headers["content-type"] || "application/octet-stream",
+              ).split(";")[0] || "application/octet-stream",
+          };
+        } catch (error) {
+          throw handleError(error, { method: "GET", url: path });
+        }
+      },
+      {
+        maxAttempts: config.wsapi.retryAttempts,
+        delay: config.wsapi.retryDelay,
+        retryableErrors: ["NETWORK_ERROR", "INSTANCE_ERROR"],
+      },
+    );
   }
 
   // POST request
   async post(path: string, data: any, params?: any): Promise<any> {
     const url = this.buildUrl(path, params);
     return this.request<any>({
-      method: 'POST',
+      method: "POST",
       url,
       data,
     });
@@ -129,7 +165,7 @@ export class WSAPIClient {
   async put(path: string, data: any, params?: any): Promise<any> {
     const url = this.buildUrl(path, params);
     return this.request<any>({
-      method: 'PUT',
+      method: "PUT",
       url,
       data,
     });
@@ -139,7 +175,7 @@ export class WSAPIClient {
   async delete(path: string, params?: any): Promise<void> {
     const url = this.buildUrl(path, params);
     return this.request<void>({
-      method: 'DELETE',
+      method: "DELETE",
       url,
     });
   }
@@ -151,7 +187,7 @@ export class WSAPIClient {
     if (params) {
       // Replace path parameters
       Object.entries(params).forEach(([key, value]) => {
-        if (typeof value === 'string' || typeof value === 'number') {
+        if (typeof value === "string" || typeof value === "number") {
           url = url.replace(`{${key}}`, encodeURIComponent(value.toString()));
         }
       });
@@ -159,7 +195,7 @@ export class WSAPIClient {
       // Add query parameters
       const queryParams = new URLSearchParams();
       Object.entries(params).forEach(([key, value]) => {
-        if (typeof value === 'string' || typeof value === 'number') {
+        if (typeof value === "string" || typeof value === "number") {
           if (!path.includes(`{${key}}`)) {
             queryParams.append(key, value.toString());
           }
@@ -177,14 +213,13 @@ export class WSAPIClient {
   // Health check method
   async healthCheck(): Promise<boolean> {
     try {
-      await this.get('/session/status');
+      await this.get("/session/status");
       return true;
     } catch (error) {
-      logger.warn('Health check failed', { error: (error as Error).message });
+      logger.warn("Health check failed", { error: (error as Error).message });
       return false;
     }
   }
-
 }
 
 // Export singleton instance

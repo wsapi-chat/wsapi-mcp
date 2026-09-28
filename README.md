@@ -3,7 +3,6 @@
 [![npm version](https://badge.fury.io/js/@wsapichat%2Fmcp-server.svg)](https://badge.fury.io/js/@wsapichat%2Fmcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-
 <a href="https://glama.ai/mcp/servers/@wsapi-chat/wsapi-mcp">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@wsapi-chat/wsapi-mcp/badge" alt="WSAPI WhatsApp Server MCP server" />
 </a>
@@ -17,6 +16,7 @@ For comprehensive documentation, see the [WSAPI MCP Server guide](https://docs.w
 ## Installation
 
 ### Prerequisites
+
 - Node.js >= 20.19.0
 - WSAPI account with API credentials ([wsapi.chat](https://wsapi.chat))
 
@@ -87,14 +87,14 @@ If neither variable is set, all tools are loaded.
 
 ## Configuration
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `WSAPI_API_KEY` | Yes | - | Your WSAPI API key |
-| `WSAPI_INSTANCE_ID` | Yes | - | Your WSAPI instance ID |
-| `WSAPI_BASE_URL` | No | `https://wsapi.chat` | WSAPI base URL |
-| `WSAPI_ENABLED_CATEGORIES` | No | *(all)* | Comma-separated tool categories to load |
-| `WSAPI_ENABLED_TOOLS` | No | *(all)* | Comma-separated tool names to load |
-| `LOG_LEVEL` | No | `info` | Logging level (error, warn, info, debug) |
+| Variable                   | Required | Default              | Description                              |
+| -------------------------- | -------- | -------------------- | ---------------------------------------- |
+| `WSAPI_API_KEY`            | Yes      | -                    | Your WSAPI API key                       |
+| `WSAPI_INSTANCE_ID`        | Yes      | -                    | Your WSAPI instance ID                   |
+| `WSAPI_BASE_URL`           | No       | `https://wsapi.chat` | WSAPI base URL                           |
+| `WSAPI_ENABLED_CATEGORIES` | No       | _(all)_              | Comma-separated tool categories to load  |
+| `WSAPI_ENABLED_TOOLS`      | No       | _(all)_              | Comma-separated tool names to load       |
+| `LOG_LEVEL`                | No       | `info`               | Logging level (error, warn, info, debug) |
 
 ## Development
 
@@ -116,3 +116,7 @@ MIT - see [LICENSE](LICENSE) for details.
 - [WSAPI MCP Server Documentation](https://docs.wsapi.chat/integrations/mcp-server)
 - [WSAPI Documentation](https://docs.wsapi.chat)
 - [Model Context Protocol](https://modelcontextprotocol.io)
+
+## Unreleased contract update
+
+The source covers 101 WhatsApp operations; Cloud Account/subscription and OSS admin APIs are outside this integration's scope. Changes in this working tree have not been published. See [CHANGELOG.md](CHANGELOG.md).

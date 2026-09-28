@@ -8,6 +8,7 @@
     "wsapi-mcp": "dist/index.js"
   },
   "scripts": {
+    "test": "node --import tsx --test tests/*.test.ts",
     "build": "tsc && mkdir -p logs",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",

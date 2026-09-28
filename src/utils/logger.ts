@@ -1,8 +1,8 @@
-import winston from 'winston';
-import { config } from '../config/index.js';
-import { mkdirSync } from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import winston from "winston";
+import { config } from "../config/index.js";
+import { mkdirSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 // Get the project root directory (handle both dev and production scenarios)
 const __filename = fileURLToPath(import.meta.url);
@@ -10,12 +10,12 @@ const __dirname = dirname(__filename);
 
 // Try to find the correct logs directory
 let logsDir: string;
-if (__dirname.includes('/dist/')) {
+if (__dirname.includes("/dist/")) {
   // Production: we're in dist/utils, go up to project root
-  logsDir = join(__dirname, '../../logs');
+  logsDir = join(__dirname, "../../logs");
 } else {
   // Development: we're in src/utils, go up to project root
-  logsDir = join(__dirname, '../../logs');
+  logsDir = join(__dirname, "../../logs");
 }
 
 // Silently try to create logs directory
@@ -23,7 +23,7 @@ try {
   mkdirSync(logsDir, { recursive: true });
 } catch {
   // Fallback to current directory
-  logsDir = './logs';
+  logsDir = "./logs";
   try {
     mkdirSync(logsDir, { recursive: true });
   } catch {
@@ -39,16 +39,16 @@ const transports: winston.transport[] = [];
 try {
   transports.push(
     new winston.transports.File({
-      filename: join(logsDir, 'error.log'),
-      level: 'error',
+      filename: join(logsDir, "error.log"),
+      level: "error",
       maxsize: 5242880, // 5MB
       maxFiles: 5,
     }),
     new winston.transports.File({
-      filename: join(logsDir, 'combined.log'),
+      filename: join(logsDir, "combined.log"),
       maxsize: 5242880, // 5MB
       maxFiles: 5,
-    })
+    }),
   );
 } catch {
   // If file logging fails, just continue with empty transports
@@ -59,14 +59,14 @@ export const logger = winston.createLogger({
   level: config.server.logLevel,
   format: winston.format.combine(
     winston.format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
+      format: "YYYY-MM-DD HH:mm:ss",
     }),
     winston.format.errors({ stack: true }),
-    winston.format.json()
+    winston.format.json(),
   ),
   defaultMeta: {
-    service: 'wsapi-mcp-server',
-    version: process.env.npm_package_version || '1.0.0'
+    service: "wsapi-mcp-server",
+    version: process.env.npm_package_version || "1.0.0",
   },
   transports,
   // Prevent any output to stdout/stderr
@@ -77,17 +77,26 @@ export const logger = winston.createLogger({
 // Helper functions for structured logging
 export const createLogger = (component: string) => {
   return {
-    error: (message: string, meta?: object) => logger.error(message, { component, ...meta }),
-    warn: (message: string, meta?: object) => logger.warn(message, { component, ...meta }),
-    info: (message: string, meta?: object) => logger.info(message, { component, ...meta }),
-    debug: (message: string, meta?: object) => logger.debug(message, { component, ...meta }),
+    error: (message: string, meta?: object) =>
+      logger.error(message, { component, ...meta }),
+    warn: (message: string, meta?: object) =>
+      logger.warn(message, { component, ...meta }),
+    info: (message: string, meta?: object) =>
+      logger.info(message, { component, ...meta }),
+    debug: (message: string, meta?: object) =>
+      logger.debug(message, { component, ...meta }),
   };
 };
 
 // Request logging helper
-export const logRequest = (method: string, url: string, statusCode?: number, duration?: number) => {
-  logger.info('API Request', {
-    component: 'http-client',
+export const logRequest = (
+  method: string,
+  url: string,
+  statusCode?: number,
+  duration?: number,
+) => {
+  logger.info("API Request", {
+    component: "http-client",
     method,
     url,
     statusCode,
@@ -97,8 +106,8 @@ export const logRequest = (method: string, url: string, statusCode?: number, dur
 
 // Error logging helper
 export const logError = (error: Error, context?: object) => {
-  logger.error('Error occurred', {
-    component: 'error-handler',
+  logger.error("Error occurred", {
+    component: "error-handler",
     error: {
       name: error.name,
       message: error.message,
