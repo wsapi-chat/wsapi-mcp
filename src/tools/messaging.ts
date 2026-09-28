@@ -24,7 +24,8 @@ const logger = createLogger("messaging-tools");
 export const sendTextMessage: ToolHandler = {
   name: "whatsapp_send_text",
   description:
-    "Send a text message to a WhatsApp contact or group. Supports mentions, replies, and ephemeral expiration.",
+    "Send a text message to a user JID or a group JID (<id>@g.us). The recipient receives it immediately and it cannot be unsent, only deleted with whatsapp_delete_message. Supports mentions, replies and a disappearing timer. Not idempotent: calling it twice sends two messages. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -76,7 +77,9 @@ export const sendTextMessage: ToolHandler = {
 
 export const sendImageMessage: ToolHandler = {
   name: "whatsapp_send_image",
-  description: "Send an image message. Provide either data (base64) or url.",
+  description:
+    "Send an image, from base64 data or a public URL, with an optional caption, to a user or group JID. The recipient receives it immediately; set viewOnce for a view-once image. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -128,7 +131,9 @@ export const sendImageMessage: ToolHandler = {
 
 export const sendVideoMessage: ToolHandler = {
   name: "whatsapp_send_video",
-  description: "Send a video message. Provide either data (base64) or url.",
+  description:
+    "Send a video, from base64 data or a public URL, with an optional caption, to a user or group JID. The recipient receives it immediately. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -173,7 +178,9 @@ export const sendVideoMessage: ToolHandler = {
 
 export const sendLinkMessage: ToolHandler = {
   name: "whatsapp_send_link",
-  description: "Send a link message with optional preview.",
+  description:
+    "Send a text message with a link preview (title, description and thumbnail). Use it instead of whatsapp_send_text when you want to control how the preview looks. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -216,7 +223,8 @@ export const sendLinkMessage: ToolHandler = {
 export const sendReactionMessage: ToolHandler = {
   name: "whatsapp_send_reaction",
   description:
-    "Send a reaction (emoji) to a message. Send empty string to remove reaction.",
+    "React to a message with an emoji, or remove this number's reaction by sending an empty string. Everyone in the chat sees it. Repeating it replaces the reaction. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -264,7 +272,9 @@ export const sendReactionMessage: ToolHandler = {
 
 export const editMessage: ToolHandler = {
   name: "whatsapp_edit_message",
-  description: "Edit a previously sent text message.",
+  description:
+    "Edit the text of a message this number sent. Everyone in the chat sees it marked as edited. WhatsApp only allows it for about 15 minutes after sending. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -302,7 +312,9 @@ export const editMessage: ToolHandler = {
 
 export const deleteMessage: ToolHandler = {
   name: "whatsapp_delete_message",
-  description: "Delete a message for all participants.",
+  description:
+    "Delete a message for everyone in the chat. It cannot be undone; participants see that a message was deleted. Only works on messages this number sent (or, as group admin, on others' messages in the group). To hide a message only on this account, use whatsapp_delete_message_for_me. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: {
@@ -326,7 +338,9 @@ export const deleteMessage: ToolHandler = {
 
 export const deleteMessageForMe: ToolHandler = {
   name: "whatsapp_delete_message_for_me",
-  description: "Delete a message only for yourself.",
+  description:
+    "Delete a message only on this account. Other participants still see it. It cannot be undone. To remove it for everyone, use whatsapp_delete_message. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: {
@@ -360,7 +374,9 @@ export const deleteMessageForMe: ToolHandler = {
 
 export const markMessageAsRead: ToolHandler = {
   name: "whatsapp_mark_message_read",
-  description: "Mark a message as read.",
+  description:
+    "Send a read receipt for a message, so the sender sees it as read (blue ticks, if their privacy settings allow). To mark a whole chat, use whatsapp_mark_chat_as_read. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -389,7 +405,9 @@ export const markMessageAsRead: ToolHandler = {
 
 export const starMessage: ToolHandler = {
   name: "whatsapp_star_message",
-  description: "Star or unstar a message.",
+  description:
+    "Star or unstar a message on this account. Only this account sees it. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -417,7 +435,9 @@ export const starMessage: ToolHandler = {
 
 export const pinMessage: ToolHandler = {
   name: "whatsapp_pin_message",
-  description: "Pin or unpin a message in a chat.",
+  description:
+    "Pin or unpin a message in a chat, optionally for a limited time. Everyone in the chat sees the pin. To pin a whole chat in the list, use whatsapp_pin_chat. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -446,6 +466,7 @@ export const pinMessage: ToolHandler = {
 };
 
 import { advancedMessagingTools } from "./messaging-advanced.js";
+import { CREATE, DESTRUCTIVE, SET } from "./annotations.js";
 
 export const messagingTools = {
   sendTextMessage,

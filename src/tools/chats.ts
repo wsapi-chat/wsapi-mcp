@@ -12,12 +12,15 @@ import {
   markChatAsReadSchema,
   requestChatMessagesSchema,
 } from "../validation/schemas.js";
+import { CREATE, DESTRUCTIVE, READ, SET } from "./annotations.js";
 
 const logger = createLogger("chat-tools");
 
 export const getChats: ToolHandler = {
   name: "whatsapp_get_chats",
-  description: "Get list of all WhatsApp chats.",
+  description:
+    "List every chat on the connected number, both direct and group. Read-only. Use this to discover chat JIDs; use whatsapp_get_chat for one chat's details. Returns the chats and their count.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting chats list");
@@ -28,7 +31,9 @@ export const getChats: ToolHandler = {
 
 export const getChat: ToolHandler = {
   name: "whatsapp_get_chat",
-  description: "Get information about a specific chat.",
+  description:
+    "Get the details of one chat by its JID: name, unread state, and settings such as mute, pin, archive and disappearing timer. Read-only. Returns the chat object.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { chatId: { type: "string", description: "Chat JID" } },
@@ -43,7 +48,9 @@ export const getChat: ToolHandler = {
 
 export const deleteChat: ToolHandler = {
   name: "whatsapp_delete_chat",
-  description: "Delete a chat.",
+  description:
+    "Delete a whole chat and its messages from this account. It cannot be undone, and it only affects this account: the other participants keep their copy. To empty a chat but keep it in the list, use whatsapp_clear_chat. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: { chatId: { type: "string", description: "Chat JID" } },
@@ -58,7 +65,9 @@ export const deleteChat: ToolHandler = {
 
 export const getChatPicture: ToolHandler = {
   name: "whatsapp_get_chat_picture",
-  description: "Get chat profile picture.",
+  description:
+    "Get the profile picture of a chat (a contact or a group) by its JID. Read-only. Returns the picture URL and ID; fails if the chat has no picture or it is hidden by privacy settings.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { chatId: { type: "string", description: "Chat JID" } },
@@ -73,7 +82,9 @@ export const getChatPicture: ToolHandler = {
 
 export const getChatBusinessProfile: ToolHandler = {
   name: "whatsapp_get_chat_business_profile",
-  description: "Get business profile for a chat.",
+  description:
+    "Get the WhatsApp Business profile of a chat: description, category, website, email and address. Read-only. Only business accounts have one. Returns the profile object.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { chatId: { type: "string", description: "Chat JID" } },
@@ -88,7 +99,9 @@ export const getChatBusinessProfile: ToolHandler = {
 
 export const setChatPresence: ToolHandler = {
   name: "whatsapp_set_chat_presence",
-  description: "Set presence status in a chat (typing, recording, paused).",
+  description:
+    "Show a typing or recording indicator in a chat, or clear it with paused. The other side sees it in real time. Use it just before sending a reply; it does not send anything by itself. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -112,7 +125,9 @@ export const setChatPresence: ToolHandler = {
 
 export const subscribeChatPresence: ToolHandler = {
   name: "whatsapp_subscribe_chat_presence",
-  description: "Subscribe to presence updates for a chat.",
+  description:
+    "Subscribe to a contact's presence (online, typing) so it arrives as presence events. It does not return presence: the updates come later through the event stream. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: { chatId: { type: "string", description: "Chat JID" } },
@@ -127,7 +142,9 @@ export const subscribeChatPresence: ToolHandler = {
 
 export const setChatEphemeral: ToolHandler = {
   name: "whatsapp_set_chat_ephemeral",
-  description: "Set disappearing messages timer for a chat.",
+  description:
+    "Set the disappearing messages timer for a chat (off, 24 hours, 7 days or 90 days). All participants see the change and new messages follow it. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -151,7 +168,9 @@ export const setChatEphemeral: ToolHandler = {
 
 export const muteChat: ToolHandler = {
   name: "whatsapp_mute_chat",
-  description: "Mute or unmute a chat.",
+  description:
+    "Mute a chat's notifications for a duration, or unmute it. Only affects this account; the other side is not told. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -175,7 +194,9 @@ export const muteChat: ToolHandler = {
 
 export const archiveChat: ToolHandler = {
   name: "whatsapp_archive_chat",
-  description: "Archive or unarchive a chat.",
+  description:
+    "Archive or unarchive a chat. Archiving only hides it from the main list on this account; messages are kept and it can be undone. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -198,7 +219,9 @@ export const archiveChat: ToolHandler = {
 
 export const pinChat: ToolHandler = {
   name: "whatsapp_pin_chat",
-  description: "Pin or unpin a chat.",
+  description:
+    "Pin a chat to the top of the chat list, or unpin it. Only affects this account. To pin a message inside a chat, use whatsapp_pin_message. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -221,7 +244,9 @@ export const pinChat: ToolHandler = {
 
 export const markChatAsRead: ToolHandler = {
   name: "whatsapp_mark_chat_as_read",
-  description: "Mark a chat as read or unread.",
+  description:
+    "Mark a whole chat as read or unread on this account. To send a read receipt for one message, use whatsapp_mark_message_read. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -243,7 +268,8 @@ export const markChatAsRead: ToolHandler = {
 export const requestChatMessages: ToolHandler = {
   name: "whatsapp_request_chat_messages",
   description:
-    "Request on-demand message history for a chat. Results arrive asynchronously.",
+    "Ask WhatsApp for older messages of a chat, starting before a given message. It does not return messages: they arrive later as history sync events, if the phone provides them. Returns an acknowledgement only.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -280,7 +306,9 @@ export const requestChatMessages: ToolHandler = {
 
 export const clearChat: ToolHandler = {
   name: "whatsapp_clear_chat",
-  description: "Clear all messages from a chat.",
+  description:
+    "Delete all messages in a chat on this account but keep the chat in the list. It cannot be undone and does not affect other participants. To remove the chat entirely, use whatsapp_delete_chat. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: { chatId: { type: "string", description: "Chat JID" } },

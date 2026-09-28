@@ -16,12 +16,15 @@ import {
   getGroupInfoFromLinkSchema,
   updateGroupRequestsSchema,
 } from "../validation/schemas.js";
+import { CREATE, DESTRUCTIVE, READ, SET } from "./annotations.js";
 
 const logger = createLogger("group-tools");
 
 export const getGroups: ToolHandler = {
   name: "whatsapp_get_groups",
-  description: "Get list of all WhatsApp groups.",
+  description:
+    "List the groups the connected number belongs to. Read-only. Use this to find group JIDs (ending in @g.us). Returns the groups and their count.",
+  annotations: READ,
   inputSchema: { type: "object", properties: {} },
   handler: async () => {
     logger.info("Getting groups list");
@@ -32,7 +35,9 @@ export const getGroups: ToolHandler = {
 
 export const createGroup: ToolHandler = {
   name: "whatsapp_create_group",
-  description: "Create a new WhatsApp group.",
+  description:
+    "Create a new group with this number as admin and the given participants (user JIDs). Participants are added immediately and notified. Calling it twice creates two groups. Returns the new group JID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -59,7 +64,9 @@ export const createGroup: ToolHandler = {
 
 export const getGroup: ToolHandler = {
   name: "whatsapp_get_group",
-  description: "Get information about a specific group.",
+  description:
+    "Get the details of a group by JID: name, description, settings and participants. Read-only. Returns the group object.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Group JID" } },
@@ -74,7 +81,9 @@ export const getGroup: ToolHandler = {
 
 export const updateGroupName: ToolHandler = {
   name: "whatsapp_update_group_name",
-  description: "Update group name.",
+  description:
+    "Rename a group. All participants see the change; it may require admin rights if the group is locked. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -92,7 +101,9 @@ export const updateGroupName: ToolHandler = {
 
 export const updateGroupDescription: ToolHandler = {
   name: "whatsapp_update_group_description",
-  description: "Update group description.",
+  description:
+    "Change a group's description. All participants see it; it may require admin rights if the group is locked. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -112,7 +123,9 @@ export const updateGroupDescription: ToolHandler = {
 
 export const setGroupPicture: ToolHandler = {
   name: "whatsapp_set_group_picture",
-  description: "Set group profile picture.",
+  description:
+    "Set a group's picture from base64 image data, replacing the current one for all participants. May require admin rights. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -136,7 +149,9 @@ export const setGroupPicture: ToolHandler = {
 
 export const leaveGroup: ToolHandler = {
   name: "whatsapp_leave_group",
-  description: "Leave a group.",
+  description:
+    "Leave a group. Other participants are notified, and rejoining needs a new invite. If this number is the only admin, WhatsApp picks another one. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Group JID" } },
@@ -151,7 +166,9 @@ export const leaveGroup: ToolHandler = {
 
 export const getGroupParticipants: ToolHandler = {
   name: "whatsapp_get_group_participants",
-  description: "Get group participants.",
+  description:
+    "List a group's participants with their admin status. Read-only. Returns the participants.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Group JID" } },
@@ -166,7 +183,9 @@ export const getGroupParticipants: ToolHandler = {
 
 export const updateGroupParticipants: ToolHandler = {
   name: "whatsapp_update_group_participants",
-  description: "Add, remove, promote, or demote group participants.",
+  description:
+    "Add, remove, promote to admin or demote participants of a group, by user JID. Requires admin rights. Removed participants lose access and everyone affected is notified. Some adds can fail silently because of the invitee's privacy settings, so check with whatsapp_get_group_participants. Returns a success confirmation.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: {
@@ -196,7 +215,9 @@ export const updateGroupParticipants: ToolHandler = {
 
 export const getGroupInviteLink: ToolHandler = {
   name: "whatsapp_get_group_invite_link",
-  description: "Get group invite link.",
+  description:
+    "Get the current invite link of a group. Requires admin rights. Anyone with the link can join. Returns the link.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Group JID" } },
@@ -211,7 +232,9 @@ export const getGroupInviteLink: ToolHandler = {
 
 export const resetGroupInviteLink: ToolHandler = {
   name: "whatsapp_reset_group_invite_link",
-  description: "Reset group invite link.",
+  description:
+    "Revoke a group's invite link and create a new one. The old link stops working immediately. Requires admin rights. Returns the new link.",
+  annotations: DESTRUCTIVE,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Group JID" } },
@@ -229,7 +252,9 @@ export const resetGroupInviteLink: ToolHandler = {
 
 export const setGroupAnnounce: ToolHandler = {
   name: "whatsapp_set_group_announce",
-  description: "Set group announce mode (only admins can send messages).",
+  description:
+    "Turn announcement mode on or off. When on, only admins can send messages in the group. Requires admin rights. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -249,7 +274,9 @@ export const setGroupAnnounce: ToolHandler = {
 
 export const setGroupLocked: ToolHandler = {
   name: "whatsapp_set_group_locked",
-  description: "Set group locked mode (only admins can edit info).",
+  description:
+    "Turn locked mode on or off. When on, only admins can edit the group's name, description and picture. Requires admin rights. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -270,7 +297,8 @@ export const setGroupLocked: ToolHandler = {
 export const setGroupJoinApproval: ToolHandler = {
   name: "whatsapp_set_group_join_approval",
   description:
-    "Set group join approval mode (new members require admin approval).",
+    "Turn join approval on or off. When on, people joining by link need an admin to approve them (see whatsapp_get_group_requests). Requires admin rights. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -290,7 +318,9 @@ export const setGroupJoinApproval: ToolHandler = {
 
 export const setGroupMemberAddMode: ToolHandler = {
   name: "whatsapp_set_group_member_add_mode",
-  description: "Control whether only admins can add members.",
+  description:
+    "Choose whether only admins or all members can add participants to a group. Requires admin rights. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {
@@ -313,7 +343,9 @@ export const setGroupMemberAddMode: ToolHandler = {
 
 export const joinGroupWithLink: ToolHandler = {
   name: "whatsapp_join_group_with_link",
-  description: "Join a group via invite link code.",
+  description:
+    "Join a group using the code from an invite link (chat.whatsapp.com/<code>). Other participants see this number join. To preview the group first, use whatsapp_get_group_info_from_link. Returns the joined group JID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: { code: { type: "string", description: "Invite link code" } },
@@ -334,7 +366,9 @@ export const joinGroupWithLink: ToolHandler = {
 
 export const joinGroupWithInvite: ToolHandler = {
   name: "whatsapp_join_group_with_invite",
-  description: "Accept a group invite received via direct message.",
+  description:
+    "Accept a group invite that was received as a direct message (not a link), using the fields from that invite message. Other participants see this number join. Returns a success confirmation.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -357,7 +391,9 @@ export const joinGroupWithInvite: ToolHandler = {
 
 export const getGroupInfoFromLink: ToolHandler = {
   name: "whatsapp_get_group_info_from_link",
-  description: "Preview group information from an invite code without joining.",
+  description:
+    "Preview a group from an invite code without joining it: name, description and size. Read-only. Returns the group info.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { code: { type: "string", description: "Invite link code" } },
@@ -372,7 +408,9 @@ export const getGroupInfoFromLink: ToolHandler = {
 
 export const getGroupRequests: ToolHandler = {
   name: "whatsapp_get_group_requests",
-  description: "Get pending join requests for a group.",
+  description:
+    "List the pending requests to join a group that has join approval on. Requires admin rights. Read-only. Returns the requesting user JIDs.",
+  annotations: READ,
   inputSchema: {
     type: "object",
     properties: { id: { type: "string", description: "Group JID" } },
@@ -387,7 +425,9 @@ export const getGroupRequests: ToolHandler = {
 
 export const updateGroupRequests: ToolHandler = {
   name: "whatsapp_update_group_requests",
-  description: "Approve or reject pending join requests.",
+  description:
+    "Approve or reject pending join requests for a group, by user JID. Approved users become participants immediately. Requires admin rights. Returns a success confirmation.",
+  annotations: SET,
   inputSchema: {
     type: "object",
     properties: {

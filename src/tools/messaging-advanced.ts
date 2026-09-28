@@ -14,13 +14,15 @@ import {
   type SendLocationMessageInput,
   type SendContactMessageInput,
 } from "../validation/schemas.js";
+import { CREATE } from "./annotations.js";
 
 const logger = createLogger("messaging-advanced-tools");
 
 export const sendAudioMessage: ToolHandler = {
   name: "whatsapp_send_audio",
   description:
-    "Send an audio file message. Provide either data (base64) or url.",
+    "Send an audio file as a regular audio attachment, from base64 data or a public URL. For a voice note that plays like a recorded message, use whatsapp_send_voice. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -62,7 +64,8 @@ export const sendAudioMessage: ToolHandler = {
 export const sendVoiceMessage: ToolHandler = {
   name: "whatsapp_send_voice",
   description:
-    "Send a voice message (PTT). Provide either data (base64) or url.",
+    "Send a voice note (push-to-talk), from base64 data or a public URL; OGG/Opus plays best. It appears as a recorded voice message. For a music or audio file, use whatsapp_send_audio. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -104,7 +107,8 @@ export const sendVoiceMessage: ToolHandler = {
 export const sendDocumentMessage: ToolHandler = {
   name: "whatsapp_send_document",
   description:
-    "Send a document file. Provide either data (base64) or url. Filename is required.",
+    "Send a file as a document, from base64 data or a public URL, with a required filename and optional caption. Use it for PDFs and any file that should not be shown inline as media. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -150,7 +154,8 @@ export const sendDocumentMessage: ToolHandler = {
 export const sendStickerMessage: ToolHandler = {
   name: "whatsapp_send_sticker",
   description:
-    "Send a sticker message (WebP format). Provide either data (base64) or url.",
+    "Send a sticker in WebP format, from base64 data or a public URL. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -190,7 +195,9 @@ export const sendStickerMessage: ToolHandler = {
 
 export const sendLocationMessage: ToolHandler = {
   name: "whatsapp_send_location",
-  description: "Send a location message.",
+  description:
+    "Send a map location by latitude and longitude, with an optional place name and address. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {
@@ -236,7 +243,8 @@ export const sendLocationMessage: ToolHandler = {
 export const sendContactMessage: ToolHandler = {
   name: "whatsapp_send_contact",
   description:
-    "Send a contact (vCard) message. Provide either displayName or vcard.",
+    "Send a contact card, either from a display name or a full vCard. The recipient can save it to their address book. Not idempotent. Returns the message ID.",
+  annotations: CREATE,
   inputSchema: {
     type: "object",
     properties: {

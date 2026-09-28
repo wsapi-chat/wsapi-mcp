@@ -5,6 +5,7 @@ import {
   ListToolsRequestSchema,
   CallToolResult,
   ListToolsResult,
+  ToolAnnotations,
 } from "@modelcontextprotocol/sdk/types.js";
 import { createLogger } from "./utils/logger.js";
 import { handleError, getUserFriendlyMessage } from "./utils/errors.js";
@@ -29,6 +30,7 @@ const logger = createLogger("mcp-server");
 export interface ToolHandler {
   name: string;
   description: string;
+  annotations?: ToolAnnotations;
   inputSchema: any;
   handler: (args: any) => Promise<any>;
 }
@@ -152,6 +154,7 @@ export class WSAPIMCPServer {
           name: tool.name,
           description: tool.description,
           inputSchema: tool.inputSchema,
+          ...(tool.annotations && { annotations: tool.annotations }),
         }));
 
         logger.debug(`Returning ${tools.length} tools`);
