@@ -36,7 +36,7 @@ export const getGroups: ToolHandler = {
 export const createGroup: ToolHandler = {
   name: "whatsapp_create_group",
   description:
-    "Create a new group with this number as admin and the given participants (user JIDs). Participants are added immediately and notified. Calling it twice creates two groups. Returns the new group JID.",
+    "Create a new group with this number as admin. Participants (user JIDs) are optional: they are added immediately and notified; omit them or pass an empty list to create a group with only this number, then add people later with whatsapp_update_group_participants. Calling it twice creates two groups. Returns the new group JID.",
   annotations: CREATE,
   inputSchema: {
     type: "object",
@@ -45,10 +45,11 @@ export const createGroup: ToolHandler = {
       participants: {
         type: "array",
         items: { type: "string" },
-        description: "Participant JIDs",
+        description:
+          "Initial participant JIDs (optional). Omit or pass [] to create a group with only this number.",
       },
     },
-    required: ["name", "participants"],
+    required: ["name"],
   },
   handler: async (args: any) => {
     const input = validateInput(createGroupSchema, args);

@@ -86,8 +86,8 @@ test("stdio negotiation, full catalog and binary tool calls work end to end", as
   try {
     await client.connect(transport);
     const catalog = await client.listTools();
-    assert.equal(catalog.tools.length, 101);
-    assert.equal(new Set(catalog.tools.map((t) => t.name)).size, 101);
+    assert.equal(catalog.tools.length, 105);
+    assert.equal(new Set(catalog.tools.map((t) => t.name)).size, 105);
     const qr = await client.callTool({
       name: "whatsapp_get_qr_code_image",
       arguments: {},

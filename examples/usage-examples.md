@@ -185,6 +185,7 @@ This document provides practical examples of how to use the WSAPI MCP Server too
 ## Group Management
 
 ### Create a New Group
+`participants` is optional: omit it (or pass `[]`) to create a group with only your number.
 ```json
 {
   "tool": "whatsapp_create_group",
@@ -324,6 +325,52 @@ This document provides practical examples of how to use the WSAPI MCP Server too
   }
 }
 ```
+
+### Passkey Pairing
+Some accounts ask for the owner's passkey after the QR scan or pair code. The QR and pair-code tools then fail with 409, and `passkeyStatus` in the session status is `required`. Get the challenge:
+```json
+{
+  "tool": "whatsapp_get_passkey_state",
+  "arguments": {}
+}
+```
+
+If no challenge arrived (or to link with a passkey alone), request one:
+```json
+{
+  "tool": "whatsapp_request_passkey_challenge",
+  "arguments": {}
+}
+```
+
+The agent cannot sign the challenge. The account owner signs it in a browser on `https://web.whatsapp.com` (an extension, or the DevTools console there):
+```js
+const options = PublicKeyCredential.parseRequestOptionsFromJSON(challenge);
+const credential = await navigator.credentials.get({ publicKey: options });
+console.log(JSON.stringify(credential.toJSON()));
+```
+
+Submit the resulting object as `assertion`:
+```json
+{
+  "tool": "whatsapp_submit_passkey",
+  "arguments": {
+    "assertion": {
+      "id": "credential-id",
+      "rawId": "credential-id",
+      "type": "public-key",
+      "response": {
+        "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0Ii...",
+        "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4...",
+        "signature": "MEUCIQD...",
+        "userHandle": null
+      }
+    }
+  }
+}
+```
+
+If the state becomes `confirmation_required`, show `confirmationCode` to the owner so they can compare it and approve on their phone. The confirmation is sent automatically; `whatsapp_confirm_passkey` is only a compatibility fallback. The step expires 5 minutes after it is requested.
 
 ### Logout
 ```json
@@ -507,6 +554,12 @@ Most tools will return success/error responses. Here are examples of handling co
   "error": "Invalid phone number format",
   "code": "VALIDATION_ERROR"
 }
+```
+
+### Passkey Pending Response
+Returned by the QR and pair-code tools while a passkey step is pending:
+```text
+Error: A passkey verification step is pending, so no new QR or pair code can be generated. Stop polling and call whatsapp_get_passkey_state for the challenge the account owner must sign on https://web.whatsapp.com.
 ```
 
 ### Rate Limit Response

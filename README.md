@@ -85,6 +85,15 @@ WSAPI_ENABLED_TOOLS=whatsapp_get_contacts,whatsapp_get_chats
 
 If neither variable is set, all tools are loaded.
 
+## Passkey pairing
+
+Some WhatsApp accounts make the owner verify with their passkey (WebAuthn) before a device links. While that step is pending, the QR and pair-code tools return 409 and `whatsapp_get_session_status` reports `passkeyStatus`. The `session` category covers the flow:
+
+1. `whatsapp_get_passkey_state` returns the WebAuthn `challenge` (or `whatsapp_request_passkey_challenge` asks WhatsApp for one).
+2. The account owner signs it with `navigator.credentials.get()` in a browser on `https://web.whatsapp.com`. The agent cannot do this itself, because WebAuthn binds the origin into the signature.
+3. `whatsapp_submit_passkey` forwards the browser's `PublicKeyCredential.toJSON()` output.
+4. If the state becomes `confirmation_required`, show `confirmationCode` to the owner, who approves on their phone. The server sends the confirmation automatically; `whatsapp_confirm_passkey` exists only for compatibility.
+
 ## Configuration
 
 | Variable                   | Required | Default              | Description                              |
@@ -119,4 +128,4 @@ MIT - see [LICENSE](LICENSE) for details.
 
 ## Unreleased contract update
 
-The source covers 101 WhatsApp operations; Cloud Account/subscription and OSS admin APIs are outside this integration's scope. Changes in this working tree have not been published. See [CHANGELOG.md](CHANGELOG.md).
+The source covers 105 WhatsApp operations; Cloud Account/subscription and OSS admin APIs are outside this integration's scope. Changes in this working tree have not been published. See [CHANGELOG.md](CHANGELOG.md).

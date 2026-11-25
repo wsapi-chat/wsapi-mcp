@@ -64,6 +64,17 @@ export class WSAPISessionError extends WSAPIError {
   }
 }
 
+// 409 from the QR / pair-code endpoints while a passkey step is pending.
+export class WSAPIPasskeyPendingError extends WSAPIError {
+  constructor(
+    message: string = "Passkey verification pending",
+    context?: object,
+  ) {
+    super(message, "PASSKEY_PENDING", 409, context);
+    this.name = "WSAPIPasskeyPendingError";
+  }
+}
+
 // MCP-specific errors
 export class MCPToolError extends WSAPIError {
   constructor(message: string, context?: object) {
@@ -81,6 +92,13 @@ export function mapHttpError(error: AxiosError): WSAPIError {
     method: error.config?.method,
     status,
   };
+
+  if (
+    status === 409 &&
+    /^\/session\/(qr|pair-code)(\/|$)/.test(error.config?.url ?? "")
+  ) {
+    return new WSAPIPasskeyPendingError(message, context);
+  }
 
   switch (status) {
     case 400:
@@ -149,6 +167,8 @@ export function getUserFriendlyMessage(error: WSAPIError): string {
       return "WhatsApp instance error. Please check your instance status.";
     case "SESSION_ERROR":
       return "WhatsApp session error. You may need to login again.";
+    case "PASSKEY_PENDING":
+      return "A passkey verification step is pending, so no new QR or pair code can be generated. Stop polling and call whatsapp_get_passkey_state for the challenge the account owner must sign on https://web.whatsapp.com.";
     case "MCP_TOOL_ERROR":
       return `Tool error: ${error.message}`;
     default:

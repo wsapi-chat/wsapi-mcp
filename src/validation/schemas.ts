@@ -185,7 +185,7 @@ export const blockContactSchema = z.object({
 
 export const createGroupSchema = z.object({
   name: z.string().min(1).max(255),
-  participants: z.array(z.string()).min(1),
+  participants: z.array(z.string()).optional(),
 });
 
 export const getGroupSchema = z.object({
@@ -319,6 +319,32 @@ export const requestChatMessagesSchema = z.object({
 
 export const getSessionLoginCodeSchema = z.object({
   phone: z.string().min(7).max(15),
+});
+
+// WebAuthn assertion from PublicKeyCredential.toJSON(); unknown fields
+// (authenticatorAttachment, clientExtensionResults) are forwarded as-is.
+export const passkeyAssertionSchema = z.looseObject({
+  id: z.string().optional(),
+  rawId: z.string().min(1),
+  type: z.string().optional(),
+  response: z.looseObject({
+    clientDataJSON: z.string().min(1),
+    authenticatorData: z.string().optional(),
+    signature: z.string().min(1),
+    userHandle: z.string().nullable().optional(),
+  }),
+});
+
+export const submitPasskeySchema = z.object({
+  // Agents sometimes pass the browser output as a JSON string; accept both.
+  assertion: z.preprocess((value) => {
+    if (typeof value !== "string") return value;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
+  }, passkeyAssertionSchema),
 });
 
 // ─── User schemas ────────────────────────────────────────────────

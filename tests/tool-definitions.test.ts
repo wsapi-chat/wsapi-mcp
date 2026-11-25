@@ -35,7 +35,7 @@ for (const tool of all) byName.set(tool.name, tool);
 const tools = [...byName.values()];
 
 test("every tool is described and annotated", () => {
-  assert.equal(tools.length, 101);
+  assert.equal(tools.length, 105);
   for (const tool of tools) {
     assert.ok(tool.annotations, `${tool.name} has no annotations`);
     assert.equal(tool.annotations.openWorldHint, true, tool.name);
