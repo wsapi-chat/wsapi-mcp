@@ -14,6 +14,11 @@ export interface paths {
     /**
      * Get QR code for pairing
      * @description Returns a PNG image of the QR code to scan with WhatsApp.
+     *
+     *     Returns 409 while a passkey verification step is pending (see `GET /session/passkey`):
+     *     generating a new QR would disconnect the client and discard the in-progress pairing.
+     *     Stop polling this endpoint while `passkeyStatus` on `GET /session/status` is
+     *     `required`, `submitted` or `confirmation_required`.
      */
     get: operations["getQR"];
     put?: never;
@@ -34,6 +39,9 @@ export interface paths {
     /**
      * Get QR code as text
      * @description Returns the raw QR code string for clients that want to render the QR code themselves.
+     *
+     *     Returns 409 while a passkey verification step is pending (see `GET /session/passkey`).
+     *     Stop polling this endpoint until the step completes, fails or expires.
      */
     get: operations["getQRText"];
     put?: never;
@@ -51,7 +59,13 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get pair code for phone number */
+    /**
+     * Get pair code for phone number
+     * @description Generates a pair code to enter on the phone (Linked devices → Link with phone number).
+     *
+     *     Returns 409 while a passkey verification step is pending (see `GET /session/passkey`).
+     *     Stop requesting new pair codes until the step completes, fails or expires.
+     */
     get: operations["getPairCode"];
     put?: never;
     post?: never;
@@ -72,6 +86,145 @@ export interface paths {
     get: operations["getSessionStatus"];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/session/passkey": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get passkey verification state
+     * @description Returns the state of the passkey verification step, if any.
+     *
+     *     On some accounts WhatsApp does not finish linking after the QR scan or pair code is
+     *     accepted. Instead it asks the account owner to verify with their passkey, sending a
+     *     standard WebAuthn challenge. While `status` is `required`, this endpoint returns that
+     *     challenge in `challenge` (a `PublicKeyCredentialRequestOptionsJSON` object with
+     *     base64url-encoded binary fields).
+     *
+     *     The challenge must be signed with `navigator.credentials.get()` in a browser on the
+     *     `https://web.whatsapp.com` origin (WebAuthn binds the origin into `clientDataJSON`, so
+     *     a server cannot sign it on its own) — typically via a browser extension or a snippet
+     *     pasted into the DevTools console on web.whatsapp.com. Submit the resulting assertion
+     *     with `POST /session/passkey`.
+     *
+     *     The step expires 5 minutes after it is requested (`expiresAt`); after that the status
+     *     becomes `error` and a new QR or pair code must be generated. While the step is pending,
+     *     `GET /session/qr`, `GET /session/qr/text` and `GET /session/pair-code/{phone}` return
+     *     409 — stop polling them. `GET /session/status` also reports the state as `passkeyStatus`,
+     *     so a single poll is enough to notice the step.
+     *
+     *     Statuses:
+     *     - `none` — no passkey step in progress
+     *     - `required` — WhatsApp is waiting for the passkey assertion; `challenge` and `origin` are set
+     *     - `submitted` — the assertion was sent; waiting for WhatsApp to complete the link
+     *     - `confirmation_required` — show `confirmationCode` to the user so they can check it
+     *       matches the code on their phone and approve there. wsapi-app sends the confirmation
+     *       automatically (`confirmationSent` becomes `true`); the link then completes by itself
+     *       (`isLoggedIn` becomes `true`). No confirm call is needed.
+     *     - `error` — the step failed or expired; see `error`
+     */
+    get: operations["getPasskeyState"];
+    put?: never;
+    /**
+     * Submit passkey assertion
+     * @description Forwards the WebAuthn assertion produced by the account owner's passkey to WhatsApp.
+     *
+     *     The request body is the JSON from `PublicKeyCredential.toJSON()` (binary fields
+     *     base64url-encoded) after calling `navigator.credentials.get()` on
+     *     `https://web.whatsapp.com` with the `challenge` from `GET /session/passkey`, e.g.:
+     *
+     *     ```js
+     *     const options = PublicKeyCredential.parseRequestOptionsFromJSON(challenge);
+     *     const credential = await navigator.credentials.get({ publicKey: options });
+     *     const body = JSON.stringify(credential.toJSON());
+     *     ```
+     *
+     *     Only valid while the status is `required` and the step has not expired (5 minutes
+     *     after it was requested); otherwise returns 409. On success the returned state is
+     *     usually `submitted`, or `confirmation_required` if WhatsApp wants the user to confirm
+     *     a code.
+     *
+     *     Before forwarding, the assertion's `clientDataJSON` is checked locally: its `type` must
+     *     be `webauthn.get`, its `origin` must be `https://web.whatsapp.com`, and its `challenge`
+     *     must match the pending one. If any check fails the request returns 400 with a message
+     *     explaining the mismatch, nothing is sent to WhatsApp, and the step stays `required` so
+     *     the user can try again.
+     */
+    post: operations["submitPasskey"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/session/passkey/request": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Request passkey challenge
+     * @description Asks WhatsApp for a passkey challenge for an unpaired device. Use it when the account is
+     *     known to use a passkey but WhatsApp's own notification (which normally sets the status to
+     *     `required` after the QR scan or pair code) does not arrive, or to start a passkey-only
+     *     link with no QR or pair code at all.
+     *
+     *     No existing QR or pair-code connection is required: if the device is not connected, the
+     *     call opens a connection itself (without a QR channel), waits a few seconds, then requests
+     *     the challenge. Without a prior QR scan, WhatsApp returns a challenge for a discoverable
+     *     credential (empty `allowCredentials`, `rpId` `whatsapp.com`, `timeout` 600000), and the
+     *     passkey the user picks identifies the account. Returns 409 if that connection does not
+     *     come up. If a challenge is already pending (status `required`, not expired), it is
+     *     returned unchanged, so the call is idempotent. While a passkey step is active (from
+     *     either source), QR code rotation is stopped so the QR timeout no longer disconnects
+     *     the device mid-passkey.
+     *     On success the state is `required` with `source: requested`; sign the `challenge` and
+     *     submit it with `POST /session/passkey`.
+     *
+     *     Without the QR handoff proof that a notification-driven challenge carries, WhatsApp asks
+     *     the owner to approve the new device on their phone, so expect `confirmation_required`
+     *     after submitting the assertion. The confirmation is sent automatically; show
+     *     `confirmationCode` so the owner can compare it and approve on their phone.
+     */
+    post: operations["requestPasskey"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/session/passkey/confirm": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Confirm passkey pairing code
+     * @description Fallback / compatibility endpoint. wsapi-app now sends the confirmation automatically as
+     *     soon as the status becomes `confirmation_required` (`confirmationSent` is `true` in
+     *     `GET /session/passkey`); the user only compares `confirmationCode` and approves on their
+     *     phone, and the link completes by itself. Clients do not need to call this.
+     *
+     *     If the confirmation was already sent, returns 204 without doing anything. Otherwise
+     *     sends it. Returns 409 if no step is in `confirmation_required` or the step has expired.
+     */
+    post: operations["confirmPasskey"];
     delete?: never;
     options?: never;
     head?: never;
@@ -476,7 +629,7 @@ export interface paths {
     put?: never;
     /**
      * Create a new group
-     * @description Create a new WhatsApp group with the specified name and initial participants.
+     * @description Create a new WhatsApp group with the specified name and optional initial participants.
      */
     post: operations["createGroup"];
     delete?: never;
@@ -1817,6 +1970,110 @@ export interface components {
       isConnected?: boolean;
       isLoggedIn?: boolean;
       deviceId?: string;
+      /**
+       * @description Passkey verification state (same as `status` from `GET /session/passkey`). While it is
+       *     `required`, `submitted` or `confirmation_required`, stop polling QR / pair-code endpoints.
+       * @enum {string}
+       */
+      passkeyStatus?:
+        | "none"
+        | "required"
+        | "submitted"
+        | "confirmation_required"
+        | "error";
+    };
+    PasskeyState: {
+      /**
+       * @description Current passkey verification state
+       * @enum {string}
+       */
+      status:
+        | "none"
+        | "required"
+        | "submitted"
+        | "confirmation_required"
+        | "error";
+      /**
+       * @description Where the challenge came from: `notification` (WhatsApp pushed it after the QR scan
+       *     or pair code) or `requested` (fetched via `POST /session/passkey/request`, which
+       *     usually leads to `confirmation_required`). Omitted when no step is in progress.
+       * @enum {string}
+       */
+      source?: "notification" | "requested";
+      /**
+       * @description WebAuthn `PublicKeyCredentialRequestOptionsJSON` sent by WhatsApp, with binary fields
+       *     base64url-encoded (accepted by `PublicKeyCredential.parseRequestOptionsFromJSON`).
+       *     Pass it to `navigator.credentials.get()` on `origin`. Only set while `status` is `required`.
+       */
+      challenge?: {
+        /** @description Challenge bytes (base64url, unpadded) */
+        challenge?: string;
+        /** @description Timeout in milliseconds */
+        timeout?: number;
+        /** @description Relying party ID */
+        rpId?: string;
+        allowCredentials?: {
+          /** @description Credential ID (base64url, unpadded) */
+          id?: string;
+          /** @example public-key */
+          type?: string;
+          transports?: string[];
+        }[];
+        /** @example required */
+        userVerification?: string;
+        extensions?: {
+          [key: string]: unknown;
+        };
+      };
+      /**
+       * @description Origin the challenge must be signed on. Only set while `status` is `required`.
+       * @example https://web.whatsapp.com
+       */
+      origin?: string;
+      /**
+       * @description Code to show the user while `status` is `confirmation_required`. They must check it
+       *     matches the code on their phone and approve the link there.
+       */
+      confirmationCode?: string;
+      /**
+       * @description `true` once the confirmation has been sent to WhatsApp (sent automatically when
+       *     `status` becomes `confirmation_required`). Omitted until then.
+       */
+      confirmationSent?: boolean;
+      /** @description Failure reason when `status` is `error` */
+      error?: string;
+      /**
+       * Format: date-time
+       * @description When WhatsApp requested the passkey verification
+       */
+      requestedAt?: string;
+      /**
+       * Format: date-time
+       * @description When the step expires (5 minutes after `requestedAt`)
+       */
+      expiresAt?: string;
+    };
+    /**
+     * @description WebAuthn assertion as produced by `PublicKeyCredential.toJSON()` in the browser.
+     *     Binary fields are base64url-encoded.
+     */
+    PasskeyAssertion: {
+      /** @description Credential ID */
+      id?: string;
+      /** @description Raw credential ID (base64url) */
+      rawId: string;
+      /** @example public-key */
+      type?: string;
+      response: {
+        /** @description Client data JSON (base64url) */
+        clientDataJSON: string;
+        /** @description Authenticator data (base64url) */
+        authenticatorData?: string;
+        /** @description Assertion signature (base64url) */
+        signature: string;
+        /** @description User handle (base64url), if returned by the authenticator */
+        userHandle?: string | null;
+      };
     };
     SendTextRequest: {
       /** @description Recipient JID (user or group) */
@@ -1985,8 +2242,8 @@ export interface components {
     };
     CreateGroupRequest: {
       name: string;
-      /** @description List of participant JIDs */
-      participants: string[];
+      /** @description Initial participant JIDs. Omit or pass an empty array to create a group with only the paired account. */
+      participants?: string[];
     };
     UpdateParticipantsRequest: {
       participants: string[];
@@ -2254,7 +2511,10 @@ export interface components {
       pictureId?: string;
       /** @description Profile picture URL (omitted if unavailable) */
       pictureUrl?: string;
+      /** @description Whether the account is a verified WhatsApp Business account */
       isVerified?: boolean;
+      /** @description Verified business name (omitted unless the account is a verified business) */
+      verifiedName?: string;
     };
     UserMeInfo: components["schemas"]["Identity"] & {
       deviceId?: number;
@@ -2503,6 +2763,40 @@ export interface components {
         "application/json": components["schemas"]["Error"];
       };
     };
+    /**
+     * @description A passkey verification step is pending. Generating a new QR or pair code would discard
+     *     the in-progress pairing. Complete it via `/session/passkey` or wait for it to expire
+     *     (5 minutes after it was requested).
+     */
+    PasskeyPending: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "status": 409,
+         *       "detail": "passkey verification pending: complete it via /session/passkey or wait for it to expire"
+         *     }
+         */
+        "application/json": components["schemas"]["Error"];
+      };
+    };
+    /** @description No matching passkey verification step is pending (or it has expired). */
+    NoPasskeyPending: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        /**
+         * @example {
+         *       "status": 409,
+         *       "detail": "no passkey verification pending"
+         *     }
+         */
+        "application/json": components["schemas"]["Error"];
+      };
+    };
   };
   parameters: {
     /** @description The ID of the WhatsApp instance to use */
@@ -2549,6 +2843,7 @@ export interface operations {
       };
       400: components["responses"]["BadRequest"];
       401: components["responses"]["Unauthorized"];
+      409: components["responses"]["PasskeyPending"];
       503: components["responses"]["ServiceUnavailable"];
     };
   };
@@ -2578,6 +2873,7 @@ export interface operations {
       };
       400: components["responses"]["BadRequest"];
       401: components["responses"]["Unauthorized"];
+      409: components["responses"]["PasskeyPending"];
       503: components["responses"]["ServiceUnavailable"];
     };
   };
@@ -2610,6 +2906,7 @@ export interface operations {
       };
       400: components["responses"]["BadRequest"];
       401: components["responses"]["Unauthorized"];
+      409: components["responses"]["PasskeyPending"];
       503: components["responses"]["ServiceUnavailable"];
     };
   };
@@ -2635,6 +2932,194 @@ export interface operations {
         };
       };
       401: components["responses"]["Unauthorized"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  getPasskeyState: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Passkey verification state */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PasskeyState"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  submitPasskey: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PasskeyAssertion"];
+      };
+    };
+    responses: {
+      /** @description Assertion forwarded to WhatsApp */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PasskeyState"];
+        };
+      };
+      /**
+       * @description Malformed assertion, or `clientDataJSON` failed a local check (wrong `type`, wrong
+       *     `origin`, or a challenge other than the pending one). The step stays `required`.
+       */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "status": 400,
+           *       "detail": "the passkey was used on \"https://example.com\"; it must be used on https://web.whatsapp.com"
+           *     }
+           */
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["NoPasskeyPending"];
+      /** @description Request body too large (limit 64 KB) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+      /** @description WhatsApp rejected the passkey response. The state becomes `error`. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  requestPasskey: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Pending passkey challenge */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PasskeyState"];
+        };
+      };
+      /** @description The device is already registered (paired) */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "status": 400,
+           *       "detail": "device already registered"
+           *     }
+           */
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      /** @description Could not connect to WhatsApp to request the passkey challenge. Try again. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "status": 409,
+           *       "detail": "could not connect to whatsapp to request the passkey challenge; try again"
+           *     }
+           */
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+      /** @description WhatsApp did not return a passkey challenge (the account may not use a passkey). */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+      503: components["responses"]["ServiceUnavailable"];
+    };
+  };
+  confirmPasskey: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description The ID of the WhatsApp instance to use */
+        "X-Instance-Id": components["parameters"]["XInstanceId"];
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Confirmation sent to WhatsApp, or it had already been sent (no-op) */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      401: components["responses"]["Unauthorized"];
+      409: components["responses"]["NoPasskeyPending"];
+      /** @description WhatsApp rejected the confirmation. The state becomes `error`. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
       503: components["responses"]["ServiceUnavailable"];
     };
   };

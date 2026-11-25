@@ -180,7 +180,7 @@ export const bulkCheckUsers: ToolHandler = {
 export const getUserProfile: ToolHandler = {
   name: "whatsapp_get_user_profile",
   description:
-    "Get another user's public profile by phone number: name, about text, picture and business status, as far as their privacy settings allow. Read-only. Returns the profile.",
+    "Get another user's public profile by phone number: name, about text, picture and business status (isVerified, plus verifiedName for a verified business), as far as their privacy settings allow. Read-only. Returns the profile.",
   annotations: READ,
   inputSchema: {
     type: "object",
