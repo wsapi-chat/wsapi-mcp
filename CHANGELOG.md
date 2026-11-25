@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [3.2.0] - 2026-11-25
 
 ### Added
 
@@ -11,6 +11,11 @@
 ### Changed
 
 - `whatsapp_create_group`: `participants` is optional. Omit it or pass `[]` to create a group with only the paired account.
+
+### Fixed
+
+- The bundled OpenAPI spec documented the `DeviceNotPaired` response with status 403; the API returns 409
+- The server reported version 2.0.0 to MCP clients regardless of the installed package; it now reports the package version
 
 ## [3.1.0]
 
