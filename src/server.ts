@@ -1,3 +1,4 @@
+import { createRequire } from "node:module";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -25,6 +26,13 @@ import { statusTools } from "./tools/status.js";
 import { callTools } from "./tools/calls.js";
 import { mediaTools } from "./tools/media.js";
 
+// Read at runtime so the reported version always matches the published package.
+const { version: SERVER_VERSION } = createRequire(import.meta.url)(
+  "../package.json",
+) as {
+  version: string;
+};
+
 const logger = createLogger("mcp-server");
 
 export interface ToolHandler {
@@ -43,7 +51,7 @@ export class WSAPIMCPServer {
     this.server = new Server(
       {
         name: "wsapi-mcp-server",
-        version: "2.0.0",
+        version: SERVER_VERSION,
       },
       {
         capabilities: {
@@ -296,7 +304,7 @@ export class WSAPIMCPServer {
   getServerInfo(): object {
     return {
       name: "wsapi-mcp-server",
-      version: "2.0.0",
+      version: SERVER_VERSION,
       toolCount: this.tools.size,
       tools: Array.from(this.tools.keys()),
       config: {

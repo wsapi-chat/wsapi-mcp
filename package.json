@@ -1,6 +1,6 @@
 {
   "name": "@wsapichat/mcp-server",
-  "version": "2.0.0",
+  "version": "3.2.0",
   "description": "A comprehensive Model Context Protocol (MCP) server for WSAPI - the powerful WhatsApp API Gateway. Enables LLMs to send messages, manage contacts and groups, handle chat operations, and monitor session status through WhatsApp.",
   "main": "dist/index.js",
   "type": "module",

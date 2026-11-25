@@ -2756,7 +2756,7 @@ export interface components {
       content: {
         /**
          * @example {
-         *       "status": 403,
+         *       "status": 409,
          *       "detail": "device not paired"
          *     }
          */

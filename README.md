@@ -126,6 +126,6 @@ MIT - see [LICENSE](LICENSE) for details.
 - [WSAPI Documentation](https://docs.wsapi.chat)
 - [Model Context Protocol](https://modelcontextprotocol.io)
 
-## Unreleased contract update
+## Scope
 
-The source covers 105 WhatsApp operations; Cloud Account/subscription and OSS admin APIs are outside this integration's scope. Changes in this working tree have not been published. See [CHANGELOG.md](CHANGELOG.md).
+The server covers 105 WhatsApp operations; Cloud Account/subscription and OSS admin APIs are outside this integration's scope. See [CHANGELOG.md](CHANGELOG.md).

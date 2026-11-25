@@ -3421,7 +3421,7 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
           example:
-            status: 403
+            status: 409
             detail: "device not paired"
 
     PasskeyPending:
